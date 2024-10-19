@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-lightBackground text-lightText;
+}
+
+.dark body {
+  @apply bg-darkBackground text-darkText;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
