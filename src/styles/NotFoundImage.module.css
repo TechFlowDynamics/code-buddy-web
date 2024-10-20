@@ -23,13 +23,17 @@
 }
 
 .mobileImage {
+  display: block;
+
   @media (min-width: 768px) {
     display: none;
   }
 }
 
 .desktopImage {
-  @media (max-width: 768px) {
-    display: none;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
   }
 }
