@@ -19,7 +19,9 @@ const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300  ${
-        scrolled ? "bg-gray-300/60 dark:bg-gray-500/40 backdrop-blur-md" : "bg-transparent"
+        scrolled
+          ? "bg-gray-300/60 dark:bg-gray-500/40 backdrop-blur-md"
+          : "bg-transparent"
       }`}>
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Left section: Business name */}
