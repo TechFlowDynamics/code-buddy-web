@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Image,
@@ -9,8 +10,9 @@ import {
 } from "@mantine/core";
 import image from "../assets/images/svgs/not-found.svg";
 import classes from "../styles/NotFoundImage.module.css";
-
+import useNavigate from "@/hooks/useNavigation";
 export default function NotFound() {
+  const navigate = useNavigate();
   return (
     <Container className={classes.root}>
       <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
@@ -30,7 +32,8 @@ export default function NotFound() {
             variant="outline"
             size="md"
             mt="xl"
-            className={classes.control}>
+            className={classes.control}
+            onClick={() => navigate("/")}>
             Get back to home page
           </Button>
         </div>

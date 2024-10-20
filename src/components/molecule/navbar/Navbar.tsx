@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300  ${
-        scrolled ? "bg-[#121212] backdrop-blur-md" : "bg-transparent"
+        scrolled ? "bg-gray-300/60 dark:bg-gray-500/40 backdrop-blur-md" : "bg-transparent"
       }`}>
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Left section: Business name */}
@@ -28,7 +28,10 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Middle section: Glassmorphism container */}
-        <div className="flex space-x-4 bg-white/20 backdrop-blur-lg py-2 px-4 gap-4 firefox:bg-opacity-70 rounded-full">
+        <div
+          className="
+        h-full  bg-clip-padding rounded-full backdrop-filter backdrop-blur-md bg-opacity-0 border dark:border-gray-400/20 border-gray-400/20
+        flex space-x-4 bg-gray-700/20 dark:bg-gray-700/50 py-2 px-4 gap-4 firefox:bg-opacity-70">
           <Link href="/about" className="  hover:underline">
             About
           </Link>
