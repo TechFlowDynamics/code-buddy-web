@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
 
         {/* Middle section: Glassmorphism container (Hidden on small screens) */}
         <div className="hidden md:flex space-x-4 bg-gray-700/20 dark:bg-gray-700/50 py-2 px-4 rounded-full backdrop-blur-md border border-gray-400/20 dark:border-gray-400/20 gap-4 ">
-          <Link href="/about" className="hover:underline">
+          <Link href="/about-us" className="hover:underline">
             About
           </Link>
           <Link href="/pricing" className="hover:underline">
