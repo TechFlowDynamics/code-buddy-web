@@ -1,4 +1,5 @@
 "use client";
+import { fadeInUp } from "@/utils/motionVariants.utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 export default function AboutPage() {
@@ -6,9 +7,13 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800/70 p-6">
       <motion.h1
         className="text-4xl font-bold text-center text-blue-700 mb-6"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}>
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        // initial={{ opacity: 0, y: -50 }}
+        // animate={{ opacity: 1, y: 0 }}
+        // transition={{ duration: 0.8 }}
+      >
         About Us
       </motion.h1>
 
@@ -23,25 +28,27 @@ export default function AboutPage() {
         experiences for our clients.
       </motion.p>
 
-      <motion.div
-        className="mt-8 flex space-x-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}>
-        <Link href="/" passHref>
-          <motion.a
+      <motion.div className="mt-8 flex space-x-4">
+        <Link href="/learn-more" passHref>
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
             className="bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-blue-600"
             whileHover={{ scale: 1.1 }}>
             Learn More
-          </motion.a>
+          </motion.div>
         </Link>
 
         <Link href="/contact-us" passHref>
-          <motion.a
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
             className="bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-gray-600"
             whileHover={{ scale: 1.1 }}>
             Contact Us
-          </motion.a>
+          </motion.div>
         </Link>
       </motion.div>
     </div>
