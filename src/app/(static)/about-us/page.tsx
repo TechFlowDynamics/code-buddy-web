@@ -10,9 +10,6 @@ export default function AboutPage() {
         variants={fadeInUp}
         initial="hidden"
         animate="visible"
-        // initial={{ opacity: 0, y: -50 }}
-        // animate={{ opacity: 1, y: 0 }}
-        // transition={{ duration: 0.8 }}
       >
         About Us
       </motion.h1>

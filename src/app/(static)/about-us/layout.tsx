@@ -1,3 +1,4 @@
+import Navbar from "@/components/molecule/navbar/Navbar";
 import { Metadata } from "next";
 import React from "react";
 
@@ -11,5 +12,11 @@ export default function StaticPageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return (
+    <div>
+      {" "}
+      <Navbar />
+      <main>{children}</main>
+    </div>
+  );
 }
