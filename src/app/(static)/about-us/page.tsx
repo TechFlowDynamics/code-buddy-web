@@ -9,20 +9,36 @@ export default function AboutPage() {
         className="text-4xl font-bold text-center text-blue-700 mb-6"
         variants={fadeInUp}
         initial="hidden"
-        animate="visible"
-      >
-        About Us
+        animate="visible">
+        About Codie-Buddy
       </motion.h1>
 
       <motion.p
-        className="text-lg text-gray-700 dark:text-gray-300 text-center max-w-2xl"
-        initial={{ opacity: 0, y: 50 }}
+        className="text-lg text-center mb-4"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.8 }}>
-        We are a team of dedicated professionals driven by innovation and
-        committed to delivering high-quality software solutions. With expertise
-        in various technologies, we focus on creating seamless and impactful
-        experiences for our clients.
+        transition={{ duration: 0.8 }}>
+        Welcome to Codie-Buddy, your ultimate coding companion! We are dedicated
+        to making programming fun, collaborative, and accessible for everyone.
+      </motion.p>
+
+      <motion.p
+        className="text-lg text-center mb-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}>
+        At Codie-Buddy, we believe in real-time collaboration, allowing
+        developers to work together seamlessly and enhance their coding skills
+        through shared learning experiences.
+      </motion.p>
+
+      <motion.p
+        className="text-lg text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}>
+        Join us as we create a vibrant community of coders, providing tools for
+        effective learning, friendly competition, and a place to grow together!
       </motion.p>
 
       <motion.div className="mt-8 flex space-x-4">
