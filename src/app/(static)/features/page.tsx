@@ -29,7 +29,9 @@ export default function FeaturesPage() {
               whileHover={{ scale: 1.02 }}>
               {feature.title}
             </motion.h2>
-            <p className="dark:text-gray-300/40 text-gray-800">{feature.description}</p>
+            <p className="dark:text-gray-300/40 text-gray-800">
+              {feature.description}
+            </p>
           </motion.div>
         ))}
       </div>

@@ -56,4 +56,9 @@ export const PRICING_PLANS_CONSTANT = [
   },
 ];
 
-export default { FEATURE_CONSTANT, PRICING_PLANS_CONSTANT };
+const defaultConstants = {
+  FEATURE_CONSTANT,
+  PRICING_PLANS_CONSTANT,
+};
+
+export default defaultConstants;
