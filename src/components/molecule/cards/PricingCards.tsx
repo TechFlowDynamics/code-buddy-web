@@ -24,7 +24,7 @@ export default function PricingCard({
       whileHover={{ scale: 1.05 }}>
       <h2 className="text-2xl font-semibold mb-2 text-blue-700">{title}</h2>
       <p className="text-4xl font-bold mb-4">{price}</p>
-      <p className="text-gray-700 mb-6">{description}</p>
+      <p className="dark:text-gray-700 text-gray-800/70 mb-6">{description}</p>
       <p className="text-lg font-semibold text-gray-900 mb-4">
         {credits} Credits
       </p>
@@ -37,7 +37,7 @@ export default function PricingCard({
         ))}
       </ul>
       <motion.button
-        className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500"
+        className="mt-6 px-6 py-2 bg-blue-600 dark:text-white text-gray-200 rounded-lg font-semibold hover:bg-blue-500"
         whileHover={{ scale: 1.05 }}>
         Get {title}
       </motion.button>
