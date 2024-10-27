@@ -18,17 +18,17 @@ export default function PricingCard({
 }: Readonly<PricingCardProps>) {
   return (
     <motion.div
-      className="p-6 bg-white rounded-lg shadow-lg flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300"
+      className="p-6 bg-white dark:bg-gray-600/50 rounded-lg shadow-lg flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.05 }}>
       <h2 className="text-2xl font-semibold mb-2 text-blue-700">{title}</h2>
       <p className="text-4xl font-bold mb-4">{price}</p>
-      <p className="dark:text-gray-700 text-gray-800/70 mb-6">{description}</p>
-      <p className="text-lg font-semibold text-gray-900 mb-4">
+      <p className="dark:text-gray-200 text-gray-800/70 mb-6">{description}</p>
+      <p className="text-lg font-semibold text-gray-900 dark:text-gray-300 mb-4">
         {credits} Credits
       </p>
-      <ul className="text-gray-600 mb-6 space-y-2">
+      <ul className="text-gray-600 dark:text-gray-300/70 mb-6 space-y-2">
         {features.map(feature => (
           <li key={uuidv4()} className="flex items-center">
             <span className="mr-2 text-blue-600">✓</span>
