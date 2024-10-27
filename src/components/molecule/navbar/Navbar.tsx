@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal } from "@mantine/core";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
+import { FaBars } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -45,6 +47,8 @@ const Navbar: React.FC = () => {
 
         {/* Right section: Get Started and Login buttons */}
         <div className="flex space-x-4">
+          {/* Theme Toggle */}
+          <ThemeToggle />
           <Button
             variant="outline"
             className=" hover:bg-blue-600/60 hover:text-white hidden md:block">
@@ -57,9 +61,9 @@ const Navbar: React.FC = () => {
           {/* Mobile Menu Button */}
           <Button
             variant="outline"
-            className="md:hidden"
+            className="md:hidden px-2"
             onClick={() => setOpened(true)}>
-            Menu
+            <FaBars size={20} />
           </Button>
         </div>
       </div>
@@ -78,7 +82,7 @@ const Navbar: React.FC = () => {
           </Modal.Header>
           <Modal.Body className="flex flex-col items-center gap-4 p-4  bg-gray-800/40 dark:bg-gray-400/70 backdrop-blur-lg">
             <Link
-              href="/about"
+              href="/about-us"
               className="hover:underline"
               onClick={() => setOpened(false)}>
               About
