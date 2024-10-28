@@ -1,5 +1,5 @@
-'use client';
-
+"use client";
+import React from "react";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { ThemeProvider } from "@/hooks/ThemeContext";
 import Navbar from "../components/molecule/navbar/ClientNavbar";
@@ -8,11 +8,11 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../store/store";
 import { SnackbarProvider } from "notistack";
 import {
-    ErrorMessage,
-    InfoMessage,
-    SuccessMessage,
-    WarningMessage,
-  } from "@/components/molecule/snackbar/snackbar";
+  ErrorMessage,
+  InfoMessage,
+  SuccessMessage,
+  WarningMessage,
+} from "@/components/molecule/snackbar/snackbar";
 
 export default function RootLayoutClient({
   children,

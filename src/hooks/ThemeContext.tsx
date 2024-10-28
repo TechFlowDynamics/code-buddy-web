@@ -42,7 +42,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Memoize the value to avoid unnecessary re-renders
-  const value = useMemo(() => ({ theme, toggleTheme: handleToggleTheme }), [theme]);
+  const value = useMemo(
+    () => ({ theme, toggleTheme: handleToggleTheme }),
+    [theme],
+  );
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

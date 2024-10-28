@@ -1,5 +1,6 @@
 import snackbar from "@/hooks/useSnackbar";
 import { authActions } from "./authSlice";
+import { removeItem } from "@/utils/storage";
 
 export interface authDetails {
   accessToken: string;
@@ -20,7 +21,7 @@ const loginHandler = (authDetails: authDetails) => {
     dispatch: (arg0: {
       payload: any;
       type: "auth/logout" | "auth/login";
-    }) => void
+    }) => void,
   ) => {
     dispatch(authActions.login(authDetails));
   };
@@ -28,15 +29,19 @@ const loginHandler = (authDetails: authDetails) => {
 
 const logoutHandler = (config: config) => {
   return (
-    dispatch: (arg0: { payload: undefined; type: "auth/logout" }) => void
+    dispatch: (arg0: { payload: undefined; type: "auth/logout" }) => void,
   ) => {
-    console.log("cleaned");
     if (typeof window !== "undefined") {
-      localStorage.removeItem("userData");
+      removeItem("userData");
       window.location.reload();
     }
+
+    // Use an if statement instead of a logical NOT expression
+    if (!config?.isSession) {
+      snackbar.error("Logged out");
+    }
+
     dispatch(authActions.logout());
-    !config?.isSession && snackbar.error("Logged out");
   };
 };
 

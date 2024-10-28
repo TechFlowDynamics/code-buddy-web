@@ -1,12 +1,13 @@
-import { Card, CloseButton, Text, ThemeIcon } from '@mantine/core';
+import React from "react";
+import { Card, CloseButton, Text, ThemeIcon } from "@mantine/core";
 import {
   IconAlertCircle,
   IconAlertTriangle,
   IconCheck,
   IconInfoCircle,
-} from '@tabler/icons-react';
-import { SnackbarContent, useSnackbar } from 'notistack';
-import { forwardRef, useCallback } from 'react';
+} from "@tabler/icons-react";
+import { SnackbarContent, useSnackbar } from "notistack";
+import { forwardRef, useCallback } from "react";
 
 interface MessageProps {
   id: string;
@@ -31,17 +32,14 @@ const MessageBase = forwardRef<HTMLDivElement, MessageProps>(
           p="sm"
           radius="md"
           style={{ backgroundColor: bgColor }}
-          className={`snackbar ${props.className}`}
-        >
+          className={`snackbar ${props.className}`}>
           <div
             className="container"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
+            style={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon
               size="md"
               radius="lg"
-              style={{ backgroundColor: iconBgColor }}
-            >
+              style={{ backgroundColor: iconBgColor }}>
               {props.icon}
             </ThemeIcon>
             <Text size="sm" style={{ flex: 1, marginLeft: 8 }}>
@@ -55,7 +53,7 @@ const MessageBase = forwardRef<HTMLDivElement, MessageProps>(
   },
 );
 
-MessageBase.displayName = 'MessageBase';
+MessageBase.displayName = "MessageBase";
 
 const SuccessMessage = forwardRef<HTMLDivElement, MessageProps>(
   (props, ref) => (
@@ -69,7 +67,7 @@ const SuccessMessage = forwardRef<HTMLDivElement, MessageProps>(
     />
   ),
 );
-SuccessMessage.displayName = 'SuccessMessage';
+SuccessMessage.displayName = "SuccessMessage";
 
 const ErrorMessage = forwardRef<HTMLDivElement, MessageProps>((props, ref) => (
   <MessageBase
@@ -81,7 +79,7 @@ const ErrorMessage = forwardRef<HTMLDivElement, MessageProps>((props, ref) => (
     iconBgColor="#221361"
   />
 ));
-ErrorMessage.displayName = 'ErrorMessage';
+ErrorMessage.displayName = "ErrorMessage";
 
 const WarningMessage = forwardRef<HTMLDivElement, MessageProps>(
   (props, ref) => (
@@ -95,7 +93,7 @@ const WarningMessage = forwardRef<HTMLDivElement, MessageProps>(
     />
   ),
 );
-WarningMessage.displayName = 'WarningMessage';
+WarningMessage.displayName = "WarningMessage";
 
 const InfoMessage = forwardRef<HTMLDivElement, MessageProps>((props, ref) => (
   <MessageBase
@@ -107,6 +105,6 @@ const InfoMessage = forwardRef<HTMLDivElement, MessageProps>((props, ref) => (
     iconBgColor="#221361"
   />
 ));
-InfoMessage.displayName = 'InfoMessage';
+InfoMessage.displayName = "InfoMessage";
 
 export { ErrorMessage, InfoMessage, SuccessMessage, WarningMessage };

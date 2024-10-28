@@ -5,7 +5,7 @@ import { getAuthToken } from "@/core/config/auth.config";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  prepareHeaders: (headers) => {
+  prepareHeaders: headers => {
     const accessToken = getAuthToken();
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
@@ -17,9 +17,9 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReAuth = async (
   args: any,
   api: any,
-  extraOptions: any
+  extraOptions: any,
 ): Promise<{ data?: any; error?: any }> => {
-  let result = await baseQuery(args, api, extraOptions);
+  const result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
     api.dispatch(logoutHandler({ isSession: false }));
