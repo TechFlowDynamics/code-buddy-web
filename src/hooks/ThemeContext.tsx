@@ -1,14 +1,16 @@
 // context/ThemeContext.tsx
 "use client";
+import { RootState } from "@/store/store";
 import storage from "@/utils/storage";
 import {
   createContext,
   useContext,
   useEffect,
   useMemo,
-  useState,
   ReactNode,
 } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme, setTheme } from "@/reducer/theme/themeSlice";
 
 interface ThemeContextProps {
   theme: "light" | "dark";
@@ -18,28 +20,29 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const dispatch = useDispatch();
+  const theme = useSelector((state: RootState) => state.theme.theme); // accessing `theme` directly from state
 
   useEffect(() => {
     const storedTheme = storage.getItem("theme");
     if (storedTheme) {
-      setTheme(storedTheme as "light" | "dark");
+      dispatch(setTheme(storedTheme as "light" | "dark"));
       document.documentElement.classList.toggle("dark", storedTheme === "dark");
     } else {
-      setTheme("dark");
+      dispatch(setTheme("dark"));
       document.documentElement.classList.toggle("dark", true);
     }
-  }, []);
+  }, [dispatch]);
 
-  const toggleTheme = () => {
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme()); // Toggle theme in Redux state
     const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
     storage.setItem("theme", newTheme);
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
   // Memoize the value to avoid unnecessary re-renders
-  const value = useMemo(() => ({ theme, toggleTheme }), [theme]);
+  const value = useMemo(() => ({ theme, toggleTheme: handleToggleTheme }), [theme]);
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
