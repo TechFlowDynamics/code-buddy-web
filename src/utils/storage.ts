@@ -1,5 +1,7 @@
 // utils/storageUtils.ts
 
+import { AuthData } from "@/core/interface/auth.interface";
+
 type StorageType = "localStorage" | "sessionStorage";
 
 /**
@@ -18,7 +20,7 @@ const getStorage = (type: StorageType): Storage => {
 export const setItem = (
   key: string,
   value: object | string | number | Array<object | string | number>,
-  storageType: StorageType = "localStorage",
+  storageType: StorageType = "localStorage"
 ): void => {
   try {
     const storage = getStorage(storageType);
@@ -38,7 +40,7 @@ export const setItem = (
  */
 export const getItem = <T>(
   key: string,
-  storageType: StorageType = "localStorage",
+  storageType: StorageType = "localStorage"
 ): T | null => {
   try {
     const storage = getStorage(storageType);
@@ -59,7 +61,7 @@ export const getItem = <T>(
  */
 export const removeItem = (
   key: string,
-  storageType: StorageType = "localStorage",
+  storageType: StorageType = "localStorage"
 ): void => {
   try {
     const storage = getStorage(storageType);
@@ -74,7 +76,7 @@ export const removeItem = (
  * @param storageType - 'localStorage' or 'sessionStorage'
  */
 export const clearStorage = (
-  storageType: StorageType = "localStorage",
+  storageType: StorageType = "localStorage"
 ): void => {
   try {
     const storage = getStorage(storageType);
@@ -84,9 +86,37 @@ export const clearStorage = (
   }
 };
 
+export const saveAuthToLocal = (loginDetails: AuthData): void => {
+  if (typeof localStorage !== 'undefined' && localStorage) {
+    localStorage.setItem('loginDetails', JSON.stringify(loginDetails));
+  }
+};
+
+export const removeAuthFromLocal = (): void => {
+  if (typeof localStorage !== "undefined" && localStorage) {
+    localStorage.removeItem("loginDetails");
+    localStorage.removeItem("accessToken");
+  }
+};
+
+export const getAuthFromLocal = (): AuthData | null => {
+  if (
+    typeof localStorage !== 'undefined' &&
+    localStorage?.getItem('loginDetails')
+  ) {
+    const auth = JSON.parse(localStorage.getItem('loginDetails') as string);
+    return auth || null;
+  }
+  return null;
+};
+
+
 const defaultStorage = {
   setItem,
   getItem,
+  saveAuthToLocal,
+  getAuthFromLocal,
+  removeAuthFromLocal,
   removeItem,
   clearStorage,
 };

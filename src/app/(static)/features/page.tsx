@@ -1,7 +1,7 @@
 // app/features/page.tsx
 "use client";
 
-import { FEATURE_CONSTANT } from "@/constants/static.constant";
+import { FEATURE_CONSTANT } from "@/core/constants/static.constant";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 

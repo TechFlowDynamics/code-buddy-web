@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
-import { PRICING_PLANS_CONSTANT } from "@/constants/static.constant";
+import { PRICING_PLANS_CONSTANT } from "@/core/constants/static.constant";
 import PricingCard from "@/components/molecule/cards/PricingCards";
 
 export default function PricingPage() {
