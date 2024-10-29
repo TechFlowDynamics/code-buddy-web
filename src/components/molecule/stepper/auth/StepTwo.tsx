@@ -10,9 +10,19 @@ interface StepTwoProps {
   handlePrev: () => void;
 }
 
-const StepTwo: React.FC<StepTwoProps> = ({ formData, updateFormData, handleNext, handlePrev }) => (
+const StepTwo: React.FC<StepTwoProps> = ({
+  formData,
+  updateFormData,
+  handleNext,
+  handlePrev,
+}) => (
   <div>
-    <InputField label="OTP" placeholder="Enter your OTP" value={formData.otp} onChange={(e) => updateFormData({ otp: e.target.value })} />
+    <InputField
+      label="OTP"
+      placeholder="Enter your OTP"
+      value={formData.otp}
+      onChange={e => updateFormData({ otp: e.target.value })}
+    />
     <div className="flex justify-between">
       <SubmitButton label="Back" onClick={handlePrev} />
       <SubmitButton label="Next" onClick={handleNext} />

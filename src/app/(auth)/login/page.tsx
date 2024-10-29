@@ -12,17 +12,17 @@ const LoginPage: React.FC = () => {
         </h1>
 
         <form>
-          <InputField 
-            label="Email" 
-            type="email" 
-            placeholder="Enter your email" 
-            required 
+          <InputField
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+            required
           />
-          <InputField 
-            label="Password" 
-            type="password" 
-            placeholder="Enter your password" 
-            required 
+          <InputField
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+            required
           />
           <SubmitButton label="Login" />
         </form>
