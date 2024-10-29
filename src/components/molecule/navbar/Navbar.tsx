@@ -4,8 +4,10 @@ import { Button, Modal } from "@mantine/core";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import { FaBars } from "react-icons/fa";
+import useNavigate from "@/hooks/useNavigation";
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [opened, setOpened] = useState(false); // Modal state for mobile menu
 
@@ -50,11 +52,14 @@ const Navbar: React.FC = () => {
           {/* Theme Toggle */}
           <ThemeToggle />
           <Button
+            onClick={() => navigate("/get-started")}
             variant="outline"
             className=" hover:bg-blue-600/60 hover:text-white hidden md:block">
             Get Started
           </Button>
-          <Button className="bg-blue-500 hover:bg-blue-600 hidden md:block">
+          <Button
+            onClick={() => navigate("/login")}
+            className="bg-blue-500 hover:bg-blue-600 hidden md:block">
             Login
           </Button>
 
