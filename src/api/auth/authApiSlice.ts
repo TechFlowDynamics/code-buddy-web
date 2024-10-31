@@ -25,9 +25,9 @@ interface AuthResponse {
 }
 
 export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     login: builder.mutation<AuthResponse, LoginCredentials>({
-      query: (credentials) => ({
+      query: credentials => ({
         url: "/auth/login",
         method: "POST",
         body: credentials,
@@ -36,7 +36,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
 
     signUp: builder.mutation<AuthResponse, SignUpCredentials>({
-      query: (credentials) => ({
+      query: credentials => ({
         url: "/user/signup-user",
         method: "POST",
         body: credentials,
