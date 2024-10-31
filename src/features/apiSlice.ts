@@ -1,11 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// features/apiSlice.ts
+
+import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { logoutHandler } from "@/reducer/auth/authActions";
 import snackbar from "../hooks/useSnackbar";
 import { getAuthToken } from "@/core/config/auth.config";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  prepareHeaders: headers => {
+  prepareHeaders: (headers) => {
     const accessToken = getAuthToken();
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
@@ -14,11 +16,12 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReAuth = async (
-  args: any,
-  api: any,
-  extraOptions: any,
-): Promise<{ data?: any; error?: any }> => {
+// Define `baseQueryWithReAuth` without explicitly assigning `QueryReturnValue`
+const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions
+) => {
   const result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
@@ -32,7 +35,7 @@ const baseQueryWithReAuth = async (
     api.dispatch(logoutHandler({ isSession: false }));
   }
 
-  return result;
+  return result; // Return without explicit typecasting
 };
 
 const apiSlice = createApi({
