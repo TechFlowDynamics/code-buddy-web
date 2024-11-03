@@ -1,8 +1,8 @@
-'use client';
-import { createContext, ReactNode, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '@/reducer/auth/authSlice';
-import { RootState } from '@/store/store'; // Import RootState to use with useSelector
+"use client";
+import { createContext, ReactNode, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "@/reducer/auth/authSlice";
+import { RootState } from "@/store/store"; // Import RootState to use with useSelector
 
 interface AuthContextProps {
   isLoggedIn: boolean;
@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: !!accessToken, accessToken, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: !!accessToken, accessToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

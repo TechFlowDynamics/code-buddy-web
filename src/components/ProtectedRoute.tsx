@@ -1,7 +1,7 @@
 "use client";
-import { useAuth } from '@/hooks/AuthContext';
-import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
+import { useAuth } from "@/hooks/AuthContext";
+import { useRouter } from "next/navigation";
+import { ReactNode, useEffect } from "react";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [isLoggedIn, router]);
 
