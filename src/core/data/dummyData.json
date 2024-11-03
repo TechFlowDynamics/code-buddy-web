@@ -1,0 +1,6 @@
+[
+    { "id": 1, "title": "Problem Solving", "value": "75%", "progress": 75 },
+    { "id": 2, "title": "Data Structures", "value": "50%", "progress": 50 },
+    { "id": 3, "title": "Algorithms", "value": "30%", "progress": 30 }
+  ]
+  

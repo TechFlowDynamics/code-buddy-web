@@ -13,6 +13,7 @@ import {
   SuccessMessage,
   WarningMessage,
 } from "@/components/molecule/snackbar/snackbar";
+import { AuthProvider } from "@/hooks/AuthContext";
 
 export default function RootLayoutClient({
   children,
@@ -27,26 +28,28 @@ export default function RootLayoutClient({
       <body className={`antialiased`}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <ThemeProvider>
-              <MantineProvider>
-                <SnackbarProvider
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  Components={{
-                    success: SuccessMessage,
-                    error: ErrorMessage,
-                    warning: WarningMessage,
-                    info: InfoMessage,
-                  }}
-                  maxSnack={3}
-                  autoHideDuration={2000}>
-                  <Navbar />
-                  <main>{children}</main>
-                </SnackbarProvider>
-              </MantineProvider>
-            </ThemeProvider>
+            <AuthProvider>
+              <ThemeProvider>
+                <MantineProvider>
+                  <SnackbarProvider
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    Components={{
+                      success: SuccessMessage,
+                      error: ErrorMessage,
+                      warning: WarningMessage,
+                      info: InfoMessage,
+                    }}
+                    maxSnack={3}
+                    autoHideDuration={2000}>
+                    <Navbar />
+                    <main>{children}</main>
+                  </SnackbarProvider>
+                </MantineProvider>
+              </ThemeProvider>
+            </AuthProvider>
           </PersistGate>
         </Provider>
       </body>

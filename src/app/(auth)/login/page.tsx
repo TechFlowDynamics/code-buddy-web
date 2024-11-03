@@ -1,10 +1,36 @@
 // pages/login.tsx
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import InputField from "@/components/atoms/inputs/InputFields";
 import SubmitButton from "@/components/atoms/buttons/SubmitButton";
 import BackButton from "@/components/atoms/buttons/BackButton";
+import { useAuth } from "@/hooks/AuthContext";
+import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Dummy user data
+    const userData = {
+      accessToken: "dummyAccessToken123",
+      userId: "1",
+      email,
+      fullName: "Vivek Kumar",
+      active: true,
+      isEmailVerified: true,
+      registrationStatus: "completed",
+    };
+
+    login(userData); // Pass user data to login function
+    router.push("/dashboard"); // Redirect to dashboard
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
       <BackButton />
@@ -14,17 +40,21 @@ const LoginPage: React.FC = () => {
             Login to CodieBuddy
           </h1>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <InputField
               label="Email"
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               required
             />
             <InputField
               label="Password"
               type="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               required
             />
             <SubmitButton label="Login" />
