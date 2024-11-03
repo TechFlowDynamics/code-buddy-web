@@ -2,6 +2,7 @@
 import React from "react";
 import { useAuth } from "@/hooks/AuthContext";
 import { useRouter } from "next/navigation";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const { logout } = useAuth();
@@ -28,8 +29,9 @@ const Sidebar = () => {
       </nav>
       <button
         onClick={handleLogout}
-        className="w-full p-2 mt-auto text-center rounded-md bg-red-500 hover:bg-red-600">
-        Logout
+        className="w-full flex items-center justify-center gap-2 p-2 mt-auto text-center rounded-md bg-red-500 hover:bg-red-600">
+        <IoLogOutOutline size={20} />
+        <span>Logout</span>
       </button>
     </div>
   );
