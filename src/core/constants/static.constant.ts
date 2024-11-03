@@ -56,8 +56,15 @@ export const PRICING_PLANS_CONSTANT = [
   },
 ];
 
+const DASHBOARD_SIDEBAR_CONSTANT = [
+  { name: "Overview", path: "/dashboard" },
+  { name: "Progress", path: "/dashboard/progress" },
+  { name: "Settings", path: "/dashboard/settings" },
+];
+
 const defaultConstants = {
   FEATURE_CONSTANT,
+  DASHBOARD_SIDEBAR_CONSTANT,
   PRICING_PLANS_CONSTANT,
 };
 
