@@ -1,18 +1,26 @@
+"use client";
+import React from "react";
+import HeroBanner from "@/components/molecule/banner/HeroBanner";
+import useNavigate from "@/hooks/useNavigation";
+import HeroBannerImg from "@/assets/images/png/hero_banner_ (1).jpg";
 export default function Home() {
+  const navigate = useNavigate();
+  const handleButtonClick = () => {
+    navigate("/lobby");
+  };
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              coding with <s>life</s> coding partner
-            </code>
-            {""}.
-          </li>
-          <li>Submit and see your analysis leaderboard.</li>
-        </ol>
-      </main>
-    </div>
+    <>
+      <div className=" ">
+        <main className="">
+          <HeroBanner
+            title="Code Together, Solve Challenges"
+            subtitle="Collaborate, Code, and Challenge Friends in Real-Time"
+            buttonLabel="Get Into Lobby"
+            onButtonClick={handleButtonClick}
+            backgroundImage={HeroBannerImg}
+          />
+        </main>
+      </div>
+    </>
   );
 }

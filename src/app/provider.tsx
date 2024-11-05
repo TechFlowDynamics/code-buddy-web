@@ -28,28 +28,29 @@ export default function RootLayoutClient({
       <body className={`antialiased`}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <AuthProvider>
-              <ThemeProvider>
-                <MantineProvider>
-                  <SnackbarProvider
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    Components={{
-                      success: SuccessMessage,
-                      error: ErrorMessage,
-                      warning: WarningMessage,
-                      info: InfoMessage,
-                    }}
-                    maxSnack={3}
-                    autoHideDuration={2000}>
+            <SnackbarProvider
+              preventDuplicate
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              Components={{
+                success: SuccessMessage,
+                error: ErrorMessage,
+                warning: WarningMessage,
+                info: InfoMessage,
+              }}
+              maxSnack={3}
+              autoHideDuration={2000}>
+              <AuthProvider>
+                <ThemeProvider>
+                  <MantineProvider>
                     <Navbar />
                     <main>{children}</main>
-                  </SnackbarProvider>
-                </MantineProvider>
-              </ThemeProvider>
-            </AuthProvider>
+                  </MantineProvider>
+                </ThemeProvider>
+              </AuthProvider>
+            </SnackbarProvider>
           </PersistGate>
         </Provider>
       </body>

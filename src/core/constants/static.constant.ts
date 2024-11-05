@@ -58,6 +58,7 @@ export const PRICING_PLANS_CONSTANT = [
 
 const DASHBOARD_SIDEBAR_CONSTANT = [
   { name: "Overview", path: "/dashboard" },
+  { name: "Lobby", path: "/dashboard/lobby" },
   { name: "Progress", path: "/dashboard/progress" },
   { name: "Settings", path: "/dashboard/settings" },
 ];

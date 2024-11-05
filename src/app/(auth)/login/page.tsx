@@ -6,6 +6,7 @@ import SubmitButton from "@/components/atoms/buttons/SubmitButton";
 import BackButton from "@/components/atoms/buttons/BackButton";
 import { useAuth } from "@/hooks/AuthContext";
 import { useRouter } from "next/navigation";
+import snackbar from "@/hooks/useSnackbar";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -27,6 +28,18 @@ const LoginPage: React.FC = () => {
       registrationStatus: "completed",
     };
 
+    if (!email || !password) {
+      console.log("🚀 ~ handleSubmit ~ password:", email);
+      snackbar.error("Please enter email and password");
+      return;
+    }
+    if (
+      email !== "vivekumar2003bsr@gmail.com" ||
+      password !== "Vivekumar@1234"
+    ) {
+      snackbar.error("Please enter email and password");
+      return;
+    }
     login(userData); // Pass user data to login function
     router.push("/dashboard"); // Redirect to dashboard
   };
@@ -47,7 +60,6 @@ const LoginPage: React.FC = () => {
               placeholder="Enter your email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              required
             />
             <InputField
               label="Password"
@@ -55,7 +67,6 @@ const LoginPage: React.FC = () => {
               placeholder="Enter your password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              required
             />
             <SubmitButton label="Login" />
           </form>
