@@ -20,7 +20,7 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
 
   return (
     <>
-      {!!className ? (
+      {className ? (
         <Link
           href={href}
           className={`no-underline ${className}  ${

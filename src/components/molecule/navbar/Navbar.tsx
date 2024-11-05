@@ -21,8 +21,12 @@ const Navbar: React.FC = () => {
           : "bg-transparent"
       }`}>
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div >
-          <NavbarLink href="/" label="CodieBuddy" className="!text-4xl !font-bold"/>
+        <div>
+          <NavbarLink
+            href="/"
+            label="CodieBuddy"
+            className="!text-4xl !font-bold"
+          />
         </div>
 
         <div className="hidden md:flex space-x-4 bg-gray-700/20 dark:bg-gray-700/50 py-2 px-4 rounded-full backdrop-blur-md border border-gray-400/20 dark:border-gray-400/20 gap-4">

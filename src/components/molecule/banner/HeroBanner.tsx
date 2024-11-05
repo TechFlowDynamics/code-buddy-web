@@ -31,7 +31,6 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       <div className="absolute top-0 left-0 w-full h-20 bg-darkBackground bg-opacity-10 backdrop-blur-md z-10" />
       <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-b from-gray-900/70 to-darkBackground bg-opacity-70 backdrop-blur-sm z-10" />
 
-
       {/* Content */}
       <div className="z-20 bg-opacity-50 p-10 rounded-lg">
         <h1 className="text-6xl font-bold mb-4">{title}</h1>
