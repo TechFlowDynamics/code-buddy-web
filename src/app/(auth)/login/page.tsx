@@ -29,7 +29,6 @@ const LoginPage: React.FC = () => {
     };
 
     if (!email || !password) {
-      console.log("🚀 ~ handleSubmit ~ password:", email);
       snackbar.error("Please enter email and password");
       return;
     }
@@ -37,6 +36,7 @@ const LoginPage: React.FC = () => {
       email !== "vivekumar2003bsr@gmail.com" ||
       password !== "Vivekumar@1234"
     ) {
+      // console.log("🚀 ~ handleSubmit ~ password:", email);
       snackbar.error("Please enter email and password");
       return;
     }
