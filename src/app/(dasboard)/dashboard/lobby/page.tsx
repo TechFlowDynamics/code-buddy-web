@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import JoinRoomForm from "@/components/molecule/lobby/JoinRoomForm";
 import CreateRoomButton from "@/components/molecule/lobby/CreateRoomButton";
 import BackgroundAnimation from "@/components/molecule/lobby/BackgroundAnimation";

@@ -1,4 +1,5 @@
 // /src/app/lobby/components/BackgroundAnimation.tsx
+import React from "react";
 import { motion } from "framer-motion";
 
 const BackgroundAnimation: React.FC = () => {

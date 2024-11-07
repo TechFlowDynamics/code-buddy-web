@@ -1,6 +1,6 @@
 // /src/app/lobby/components/JoinRoomForm.tsx
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import InputField from "@/components/atoms/inputs/InputFields";
 

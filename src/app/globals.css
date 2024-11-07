@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Apply custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -10,18 +9,14 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg,
-      #94e8ff,
-      #526f92);
+  background: linear-gradient(180deg, #94e8ff, #526f92);
   /* Gradient color for the scrollbar */
   border-radius: 4px;
   /* Rounded edges for a sleek look */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg,
-      #94e8ff,
-      #526f92);
+  background: linear-gradient(180deg, #94e8ff, #526f92);
   /* Slightly darker gradient on hover */
 }
 
