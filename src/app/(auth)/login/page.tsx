@@ -40,8 +40,8 @@ const LoginPage: React.FC = () => {
       return;
     }
     if (
-      email !== "vivekumar2003bsr@gmail.com" ||
-      password !== "Vivekumar@1234"
+      email !== "vivek.mohit@gmail.com" ||
+      password !== "vivek.mohit@1111"
     ) {
       snackbar.error("Cross check the credentials again!", BOTTOM_CENTER);
       return;

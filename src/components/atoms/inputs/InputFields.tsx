@@ -2,12 +2,20 @@
 import React, { InputHTMLAttributes } from "react";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
+  parentClassName?: string;
+  labelClassName?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ label, ...props }) => (
-  <div className="mb-4">
-    <label className="block text-gray-700 dark:text-gray-200 mb-1">
+const InputField: React.FC<InputFieldProps> = ({
+  label,
+  parentClassName,
+  labelClassName,
+  ...props
+}) => (
+  <div className={`mb-4 ${parentClassName}`}>
+    <label
+      className={`block text-gray-700 dark:text-gray-200 mb-1 ${labelClassName}`}>
       {label}
     </label>
     <input

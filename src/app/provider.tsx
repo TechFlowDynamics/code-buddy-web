@@ -27,7 +27,8 @@ export default function RootLayoutClient({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`antialiased`}>
+      <body
+        className={`bg-lightBackground dark:bg-darkBackground text-lightText dark:text-darkText`}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <AuthProvider>

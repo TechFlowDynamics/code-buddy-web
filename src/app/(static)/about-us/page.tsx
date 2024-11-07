@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800/70 p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center  p-6">
       <motion.h1
         className="text-4xl font-bold text-center text-blue-700 mb-6"
         variants={fadeInUp}
