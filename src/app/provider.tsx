@@ -15,6 +15,7 @@ import {
 } from "@/components/molecule/snackbar/snackbar";
 import { AuthProvider } from "@/hooks/AuthContext";
 import { SnackbarUtilsConfigurator } from "@/hooks/useSnackbar";
+import { TOP_RIGHT } from "@/core/constants/snackbar.constant";
 
 export default function RootLayoutClient({
   children,
@@ -34,10 +35,7 @@ export default function RootLayoutClient({
                 <MantineProvider>
                   <SnackbarProvider
                     preventDuplicate
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
+                    anchorOrigin={TOP_RIGHT}
                     Components={{
                       success: SuccessMessage,
                       error: ErrorMessage,
@@ -46,7 +44,7 @@ export default function RootLayoutClient({
                     }}
                     maxSnack={3}
                     autoHideDuration={2000}>
-                      <SnackbarUtilsConfigurator />
+                    <SnackbarUtilsConfigurator />
                     <Navbar />
                     <main>{children}</main>
                   </SnackbarProvider>

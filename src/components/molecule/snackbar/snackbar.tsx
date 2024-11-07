@@ -70,17 +70,14 @@ const SuccessMessage = forwardRef<HTMLDivElement, MessageProps>(
 SuccessMessage.displayName = "SuccessMessage";
 
 const ErrorMessage = forwardRef<HTMLDivElement, MessageProps>((props, ref) => (
-  <>
-    <span>djoieojwjdw</span>
-    <MessageBase
-      {...props}
-      ref={ref}
-      className="error"
-      icon={<IconAlertCircle size={15} color="#F67476" />}
-      bgColor="#D3CEFF"
-      iconBgColor="#221361"
-    />
-  </>
+  <MessageBase
+    {...props}
+    ref={ref}
+    className="error"
+    icon={<IconAlertCircle size={15} color="#F67476" />}
+    bgColor="#D3CEFF"
+    iconBgColor="#221361"
+  />
 ));
 ErrorMessage.displayName = "ErrorMessage";
 

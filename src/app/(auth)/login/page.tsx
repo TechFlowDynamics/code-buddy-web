@@ -1,18 +1,25 @@
 // pages/login.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "@/components/atoms/inputs/InputFields";
 import SubmitButton from "@/components/atoms/buttons/SubmitButton";
 import BackButton from "@/components/atoms/buttons/BackButton";
 import { useAuth } from "@/hooks/AuthContext";
 import { useRouter } from "next/navigation";
 import snackbar from "@/hooks/useSnackbar";
+import { BOTTOM_CENTER } from "@/core/constants/snackbar.constant";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, isLoggedIn } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/dashboard"); // Redirect to dashboard
+    }
+  }, [isLoggedIn]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,19 +36,18 @@ const LoginPage: React.FC = () => {
     };
 
     if (!email || !password) {
-      snackbar.error("Please enter email and password");
+      snackbar.error("Please enter email and password", BOTTOM_CENTER);
       return;
     }
     if (
       email !== "vivekumar2003bsr@gmail.com" ||
       password !== "Vivekumar@1234"
     ) {
-      // console.log("🚀 ~ handleSubmit ~ password:", email);
-      snackbar.error("Please enter email and password");
+      snackbar.error("Cross check the credentials again!", BOTTOM_CENTER);
       return;
     }
-    login(userData); // Pass user data to login function
-    router.push("/dashboard"); // Redirect to dashboard
+    login(userData);
+    router.push("/dashboard");
   };
 
   return (

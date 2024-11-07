@@ -1,5 +1,5 @@
 import React from "react";
-import { closeSnackbar, useSnackbar } from "notistack";
+import { closeSnackbar, useSnackbar, SnackbarOrigin } from "notistack";
 
 let useSnackbarRef: {
   enqueueSnackbar: (message: string, options?: any) => any;
@@ -12,37 +12,39 @@ export const SnackbarUtilsConfigurator: React.FC = () => {
 };
 
 interface SnackbarUtilsProps {
-  success(msg: string): void;
-  warning(msg: string): void;
-  info(msg: string): void;
-  error(msg: string): void;
-  toast(msg: string, variant?: string): void;
-  savingToast(msg?: string, variant?: string): void;
+  success(msg: string, anchorOrigin?: SnackbarOrigin): void;
+  warning(msg: string, anchorOrigin?: SnackbarOrigin): void;
+  info(msg: string, anchorOrigin?: SnackbarOrigin): void;
+  error(msg: string, anchorOrigin?: SnackbarOrigin): void;
+  toast(msg: string, variant?: string, anchorOrigin?: SnackbarOrigin): void;
+  savingToast(msg?: string, variant?: string, anchorOrigin?: SnackbarOrigin): void;
   hideToast(): void;
 }
 
 const SnackbarUtils: SnackbarUtilsProps = {
-  success(msg) {
-    this.toast(msg, "success");
+  success(msg, anchorOrigin) {
+    this.toast(msg, "success", anchorOrigin);
   },
-  warning(msg) {
-    this.toast(msg, "warning");
+  warning(msg, anchorOrigin) {
+    this.toast(msg, "warning", anchorOrigin);
   },
-  info(msg) {
-    this.toast(msg, "info");
+  info(msg, anchorOrigin) {
+    this.toast(msg, "info", anchorOrigin);
   },
-  error(msg) {
-    this.toast(msg, "error");
+  error(msg, anchorOrigin) {
+    this.toast(msg, "error", anchorOrigin);
   },
-  toast(msg, variant = "default") {
+  toast(msg, variant = "default", anchorOrigin = { vertical: "top", horizontal: "right" }) {
     useSnackbarRef?.enqueueSnackbar(msg, {
       variant,
+      anchorOrigin,
     });
   },
-  savingToast(msg = "Saving please wait", variant = "info") {
+  savingToast(msg = "Saving, please wait", variant = "info", anchorOrigin = { vertical: "bottom", horizontal: "left" }) {
     useSnackbarRef.enqueueSnackbar(msg, {
       variant,
       persist: true,
+      anchorOrigin,
     });
   },
   hideToast() {
