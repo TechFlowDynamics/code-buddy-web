@@ -17,7 +17,11 @@ interface SnackbarUtilsProps {
   info(msg: string, anchorOrigin?: SnackbarOrigin): void;
   error(msg: string, anchorOrigin?: SnackbarOrigin): void;
   toast(msg: string, variant?: string, anchorOrigin?: SnackbarOrigin): void;
-  savingToast(msg?: string, variant?: string, anchorOrigin?: SnackbarOrigin): void;
+  savingToast(
+    msg?: string,
+    variant?: string,
+    anchorOrigin?: SnackbarOrigin,
+  ): void;
   hideToast(): void;
 }
 
@@ -34,13 +38,21 @@ const SnackbarUtils: SnackbarUtilsProps = {
   error(msg, anchorOrigin) {
     this.toast(msg, "error", anchorOrigin);
   },
-  toast(msg, variant = "default", anchorOrigin = { vertical: "top", horizontal: "right" }) {
+  toast(
+    msg,
+    variant = "default",
+    anchorOrigin = { vertical: "top", horizontal: "right" },
+  ) {
     useSnackbarRef?.enqueueSnackbar(msg, {
       variant,
       anchorOrigin,
     });
   },
-  savingToast(msg = "Saving, please wait", variant = "info", anchorOrigin = { vertical: "bottom", horizontal: "left" }) {
+  savingToast(
+    msg = "Saving, please wait",
+    variant = "info",
+    anchorOrigin = { vertical: "bottom", horizontal: "left" },
+  ) {
     useSnackbarRef.enqueueSnackbar(msg, {
       variant,
       persist: true,
