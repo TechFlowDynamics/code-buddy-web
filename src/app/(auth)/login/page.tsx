@@ -48,9 +48,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-darkBgColor p-4">
       <BackButton />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="flex-grow flex items-center justify-center bg-gray-100 dark:bg-darkBgColor">
         <div className="w-full max-w-md p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-lg shadow-lg">
           <h1 className="text-2xl font-semibold text-center text-gray-700 dark:text-gray-200 mb-6">
             Login to CodieBuddy

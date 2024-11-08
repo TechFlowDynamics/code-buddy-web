@@ -1,14 +1,24 @@
 // pages/getStarted.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormWrapper from "@/components/atoms/forms/FormWrapper";
 import StepOne from "@/components/molecule/stepper/auth/StepOne";
 import StepTwo from "@/components/molecule/stepper/auth/StepTwo";
 import StepThree from "@/components/molecule/stepper/auth/StepThree";
 import BackButton from "@/components/atoms/buttons/BackButton";
+import { useAuth } from "@/hooks/AuthContext";
+import { useRouter } from "next/navigation";
 
 const GetStarted: React.FC = () => {
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/dashboard"); // Redirect to dashboard
+    }
+  }, [isLoggedIn]);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     email: "",

@@ -16,6 +16,7 @@ import {
 import { AuthProvider } from "@/hooks/AuthContext";
 import { SnackbarUtilsConfigurator } from "@/hooks/useSnackbar";
 import { TOP_RIGHT } from "@/core/constants/snackbar.constant";
+import { HistoryProvider } from "@/hooks/HistoryContext";
 
 export default function RootLayoutClient({
   children,
@@ -31,27 +32,29 @@ export default function RootLayoutClient({
         className={`bg-lightBackground dark:bg-darkBackground text-lightText dark:text-darkText`}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <AuthProvider>
-              <ThemeProvider>
-                <MantineProvider>
-                  <SnackbarProvider
-                    preventDuplicate
-                    anchorOrigin={TOP_RIGHT}
-                    Components={{
-                      success: SuccessMessage,
-                      error: ErrorMessage,
-                      warning: WarningMessage,
-                      info: InfoMessage,
-                    }}
-                    maxSnack={3}
-                    autoHideDuration={2000}>
-                    <SnackbarUtilsConfigurator />
-                    <Navbar />
-                    <main>{children}</main>
-                  </SnackbarProvider>
-                </MantineProvider>
-              </ThemeProvider>
-            </AuthProvider>
+            <HistoryProvider>
+              <SnackbarProvider
+                preventDuplicate
+                anchorOrigin={TOP_RIGHT}
+                Components={{
+                  success: SuccessMessage,
+                  error: ErrorMessage,
+                  warning: WarningMessage,
+                  info: InfoMessage,
+                }}
+                maxSnack={3}
+                autoHideDuration={2000}>
+                <AuthProvider>
+                  <ThemeProvider>
+                    <MantineProvider>
+                      <SnackbarUtilsConfigurator />
+                      <Navbar />
+                      <main>{children}</main>
+                    </MantineProvider>
+                  </ThemeProvider>
+                </AuthProvider>
+              </SnackbarProvider>
+            </HistoryProvider>
           </PersistGate>
         </Provider>
       </body>
