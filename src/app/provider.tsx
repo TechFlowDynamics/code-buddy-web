@@ -14,6 +14,7 @@ import {
   WarningMessage,
 } from "@/components/molecule/snackbar/snackbar";
 import { AuthProvider } from "@/hooks/AuthContext";
+import { SnackbarUtilsConfigurator } from "@/hooks/useSnackbar";
 
 export default function RootLayoutClient({
   children,
@@ -34,8 +35,8 @@ export default function RootLayoutClient({
                   <SnackbarProvider
                     preventDuplicate
                     anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
+                      vertical: "bottom",
+                      horizontal: "center",
                     }}
                     Components={{
                       success: SuccessMessage,
@@ -45,6 +46,7 @@ export default function RootLayoutClient({
                     }}
                     maxSnack={3}
                     autoHideDuration={2000}>
+                      <SnackbarUtilsConfigurator />
                     <Navbar />
                     <main>{children}</main>
                   </SnackbarProvider>
