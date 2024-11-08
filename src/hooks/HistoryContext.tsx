@@ -23,15 +23,13 @@ export const HistoryProvider: React.FC<{ children: React.ReactNode }> = ({
     if (pathname && pathname !== paths.currPath) {
       setPaths({
         lastPath: paths.currPath, // Set lastPath to the current path before it changes
-        currPath: pathname,       // Update currPath to the new path
+        currPath: pathname, // Update currPath to the new path
       });
     }
   }, [pathname]);
 
   return (
-    <HistoryContext.Provider value={paths}>
-      {children}
-    </HistoryContext.Provider>
+    <HistoryContext.Provider value={paths}>{children}</HistoryContext.Provider>
   );
 };
 

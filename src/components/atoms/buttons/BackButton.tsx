@@ -1,7 +1,7 @@
 // components/atoms/buttons/BackButton.tsx
 "use client";
 import React from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { TiArrowBack } from "react-icons/ti";
 import { useAuth } from "@/hooks/AuthContext";
 import { useHistory } from "@/hooks/HistoryContext";

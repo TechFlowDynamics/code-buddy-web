@@ -16,7 +16,7 @@ const config: Config = {
           "radial-gradient(circle at 10% 20%, rgb(90, 92, 106) 0%, rgb(32, 45, 58) 81.3%)",
       },
       colors: {
-        darkBgColor: '#111827',
+        darkBgColor: "#111827",
         lightBackground: "#DFF5FF",
         lightText: "#000000",
         darkBackground: "#1a202c",
