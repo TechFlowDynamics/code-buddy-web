@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
     }
   }, [isLoggedIn]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
 
     // Dummy user data
@@ -71,6 +71,15 @@ const LoginPage: React.FC = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
+            <div className="flex gap-2 text-center mt-4">
+              New Buddy?
+              <button
+                type="button"
+                onClick={() => router.push("/get-started")}
+                className="text-blue-500 hover:underline">
+                let's get started
+              </button>
+            </div>
             <SubmitButton label="Login" />
           </form>
 

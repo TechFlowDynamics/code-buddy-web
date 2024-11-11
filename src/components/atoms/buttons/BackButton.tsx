@@ -20,7 +20,7 @@ const BackButton: React.FC = () => {
   return (
     <button
       onClick={() => handleBackButton()}
-      className="flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 my-4 w-fit py-2 px-4 rounded space-x-2">
+      className="flex items-center  fixed text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 my-4 w-fit py-2 px-4 rounded space-x-2">
       <TiArrowBack size={28} />
       <span>Back</span>
     </button>
