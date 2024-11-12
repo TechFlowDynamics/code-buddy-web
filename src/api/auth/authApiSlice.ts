@@ -18,9 +18,9 @@ interface AuthResponse {
 }
 
 export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     login: builder.mutation<AuthResponse, LoginCredentials>({
-      query: (credentials) => ({
+      query: credentials => ({
         url: "/auth/login",
         method: "POST",
         body: credentials,
@@ -29,7 +29,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
 
     signUp: builder.mutation<AuthResponse, SignUpCredentials>({
-      query: (credentials) => ({
+      query: credentials => ({
         url: "/auth/signup-user",
         method: "POST",
         body: credentials,
@@ -37,7 +37,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
     registerStep2: builder.mutation<AuthResponse, UserStepTwo>({
-      query: (credentials) => ({
+      query: credentials => ({
         url: "/auth/register-steps-2",
         method: "POST",
         body: credentials,
@@ -45,7 +45,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
     verifyOtp: builder.mutation<AuthResponse, VerifyOtp>({
-      query: (credentials) => ({
+      query: credentials => ({
         url: "/auth/verify-otp",
         method: "POST",
         body: credentials,

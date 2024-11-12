@@ -6,6 +6,25 @@
   "trailingComma": "all",
   "printWidth": 80,
   "tabWidth": 2,
+  "useTabs": false,
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "importOrder": [
+    "^react$",
+    "^next",
+    "^type",
+    "^@/api",
+    "^@/utils",
+    "^@/core",
+    "^atom",
+    "^molecule",
+    "^[./]"
+  ],
   "semi": true,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "tailwindConfig": "./tailwind.config.ts"
 }

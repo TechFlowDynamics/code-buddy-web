@@ -31,7 +31,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError]
+    [dispatch, signUp, handleApiError],
   );
 
   return { handlerSignUp, loading };

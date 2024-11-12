@@ -12,6 +12,6 @@ export const useApiErrorHandler = () => {
       snackbar.error(errorMessage);
       return errorMessage;
     },
-    []
+    [],
   );
 };
