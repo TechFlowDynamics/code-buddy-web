@@ -9,17 +9,22 @@ import StepThree from "@/components/molecule/stepper/auth/StepThree";
 import BackButton from "@/components/atoms/buttons/BackButton";
 import { useAuth } from "@/hooks/AuthContext";
 import { useRouter } from "next/navigation";
+import { useLoginHandler } from "@/actions/auth.actions";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const GetStarted: React.FC = () => {
   const { isLoggedIn } = useAuth();
+  const userStep = useSelector((state: RootState) => state.auth.step);
   const router = useRouter();
+  const { handlerSignUp } = useLoginHandler();
 
   useEffect(() => {
     if (isLoggedIn) {
       router.push("/dashboard"); // Redirect to dashboard
     }
   }, [isLoggedIn]);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(userStep);
   const [formData, setFormData] = useState({
     email: "",
     userName: "",
@@ -31,7 +36,24 @@ const GetStarted: React.FC = () => {
     image: null,
   });
 
-  const handleNext = () => setStep(step + 1);
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ userStep:", userStep);
+    if (userStep) {
+      setStep(userStep);
+    }
+  }, [userStep]);
+
+  const handleNext = async () => {
+    switch (step) {
+      case 1:
+        await handlerSignUp(formData);
+        break;
+
+      default:
+        break;
+    }
+    setStep(step + 1);
+  };
   const handlePrev = () => setStep(step - 1);
   const updateFormData = (data: any) => setFormData({ ...formData, ...data });
 

@@ -5,6 +5,7 @@ const initialAuthState = {
   accessToken: "",
   userId: "",
   email: "",
+  step: 1,
   fullName: "",
   active: false,
   isEmailVerified: false,
@@ -25,6 +26,10 @@ const authSlice = createSlice({
       state.active = action.payload.active;
       state.isEmailVerified = action.payload.isEmailVerified;
       state.registrationStatus = action.payload.registrationStatus;
+    },
+
+    stepUpdate(state, action) {
+      state.step = action.payload?.step || 1;
     },
 
     logout(state) {

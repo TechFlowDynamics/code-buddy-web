@@ -1,6 +1,11 @@
 // features/auth/authApiSlice.ts
 
-import { LoginCredentials, SignUpCredentials, UserStepTwo, VerifyOtp } from "@/core/interface/auth.interface";
+import {
+  LoginCredentials,
+  SignUpCredentials,
+  UserStepTwo,
+  VerifyOtp,
+} from "@/core/interface/auth.interface";
 import apiSlice from "@/features/apiSlice";
 
 interface AuthResponse {
@@ -50,4 +55,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation } = authApiSlice;
+export const {
+  useLoginMutation,
+  useSignUpMutation,
+  useRegisterStep2Mutation,
+  useVerifyOtpMutation,
+} = authApiSlice;
