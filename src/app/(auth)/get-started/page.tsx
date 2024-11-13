@@ -65,7 +65,9 @@ const GetStarted: React.FC = () => {
       default:
         break;
     }
-    !!flag && setStep(step + 1);
+    if (!!flag) {
+      setStep(step + 1);
+    }
   };
   const handlePrev = () => setStep(step - 1);
   const updateFormData = (data: any) => setFormData({ ...formData, ...data });
