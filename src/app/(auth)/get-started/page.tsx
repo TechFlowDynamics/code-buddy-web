@@ -65,7 +65,7 @@ const GetStarted: React.FC = () => {
       default:
         break;
     }
-    if (!!flag) {
+    if (flag) {
       setStep(step + 1);
     }
   };
