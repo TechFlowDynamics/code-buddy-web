@@ -1,17 +1,8 @@
-// /src/app/lobby/components/CreateRoomButton.tsx
 "use client";
 
 import { motion } from "framer-motion";
 
 import React from "react";
-
-// /src/app/lobby/components/CreateRoomButton.tsx
-
-// /src/app/lobby/components/CreateRoomButton.tsx
-
-// /src/app/lobby/components/CreateRoomButton.tsx
-
-// /src/app/lobby/components/CreateRoomButton.tsx
 
 interface CreateRoomButtonProps {
   label: string;

@@ -1,4 +1,3 @@
-// /src/app/lobby/components/JoinRoomForm.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -7,13 +6,6 @@ import React, { useState } from "react";
 
 import InputField from "@/components/atoms/inputs/InputFields";
 
-// /src/app/lobby/components/JoinRoomForm.tsx
-
-// /src/app/lobby/components/JoinRoomForm.tsx
-
-// /src/app/lobby/components/JoinRoomForm.tsx
-
-// /src/app/lobby/components/JoinRoomForm.tsx
 
 const JoinRoomForm: React.FC = () => {
   const [roomCode, setRoomCode] = useState("");

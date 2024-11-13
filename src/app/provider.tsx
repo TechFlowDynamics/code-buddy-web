@@ -1,5 +1,7 @@
 "use client";
 
+import Navbar from "../components/molecule/navbar/ClientNavbar";
+import { persistor, store } from "../store/store";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
@@ -20,9 +22,6 @@ import {
   SuccessMessage,
   WarningMessage,
 } from "@/components/molecule/snackbar/snackbar";
-
-import Navbar from "../components/molecule/navbar/ClientNavbar";
-import { persistor, store } from "../store/store";
 
 export default function RootLayoutClient({
   children,

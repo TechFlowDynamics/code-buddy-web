@@ -1,17 +1,9 @@
-// /src/app/lobby/components/JoinRandomRoomButton.tsx
 "use client";
 
 import { motion } from "framer-motion";
 
 import React from "react";
 
-// /src/app/lobby/components/JoinRandomRoomButton.tsx
-
-// /src/app/lobby/components/JoinRandomRoomButton.tsx
-
-// /src/app/lobby/components/JoinRandomRoomButton.tsx
-
-// /src/app/lobby/components/JoinRandomRoomButton.tsx
 
 interface CreateRoomButtonProps {
   label: string;

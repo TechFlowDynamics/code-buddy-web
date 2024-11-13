@@ -1,9 +1,9 @@
+import DashboardLayoutClient from "./provider";
+
 import React from "react";
 
 import TopNavbar from "@/components/molecule/navbar/TopNavbar";
 import Sidebar from "@/components/molecule/sidebar/Sidebar";
-
-import DashboardLayoutClient from "./provider";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

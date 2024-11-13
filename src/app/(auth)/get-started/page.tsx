@@ -1,4 +1,3 @@
-// pages/getStarted.tsx
 "use client";
 
 import { useSelector } from "react-redux";
@@ -18,14 +17,6 @@ import FormWrapper from "@/components/atoms/forms/FormWrapper";
 import StepOne from "@/components/molecule/stepper/auth/StepOne";
 import StepThree from "@/components/molecule/stepper/auth/StepThree";
 import StepTwo from "@/components/molecule/stepper/auth/StepTwo";
-
-// pages/getStarted.tsx
-
-// pages/getStarted.tsx
-
-// pages/getStarted.tsx
-
-// pages/getStarted.tsx
 
 const GetStarted: React.FC = () => {
   const { isLoggedIn } = useAuth();

@@ -1,4 +1,3 @@
-// context/ThemeContext.tsx
 "use client";
 
 import { setTheme, toggleTheme } from "@/reducer/theme/themeSlice";
@@ -15,14 +14,6 @@ import {
 import { RootState } from "@/store/store";
 
 import storage from "@/utils/storage";
-
-// context/ThemeContext.tsx
-
-// context/ThemeContext.tsx
-
-// context/ThemeContext.tsx
-
-// context/ThemeContext.tsx
 
 interface ThemeContextProps {
   theme: "light" | "dark";

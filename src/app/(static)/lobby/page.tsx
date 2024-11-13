@@ -1,4 +1,3 @@
-// /src/app/lobby/page.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -15,13 +14,6 @@ import CreditsIndicator from "@/components/molecule/lobby/CreditsIndicator";
 import JoinRandomRoomButton from "@/components/molecule/lobby/JoinRandomRoomButton";
 import JoinRoomForm from "@/components/molecule/lobby/JoinRoomForm";
 
-// /src/app/lobby/page.tsx
-
-// /src/app/lobby/page.tsx
-
-// /src/app/lobby/page.tsx
-
-// /src/app/lobby/page.tsx
 
 export default function LobbyPage() {
   const { isLoggedIn } = useAuth();

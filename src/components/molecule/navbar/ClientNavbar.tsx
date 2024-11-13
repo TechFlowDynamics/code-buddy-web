@@ -1,12 +1,12 @@
 "use client";
 
+import Navbar from "./Navbar";
+
 import React from "react";
 
 import { usePathname } from "next/navigation";
 
 import routeConstants from "@/core/constants/visibleRoutes.constant";
-
-import Navbar from "./Navbar";
 
 const ClientNavbar: React.FC = () => {
   const pathname = usePathname();

@@ -1,4 +1,5 @@
 // features/apiSlice.ts
+import snackbar from "../hooks/useSnackbar";
 import { logoutHandler } from "@/reducer/auth/authActions";
 import {
   BaseQueryFn,
@@ -9,8 +10,6 @@ import {
 } from "@reduxjs/toolkit/query/react";
 
 import { getAuthToken } from "@/core/config/auth.config";
-
-import snackbar from "../hooks/useSnackbar";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,

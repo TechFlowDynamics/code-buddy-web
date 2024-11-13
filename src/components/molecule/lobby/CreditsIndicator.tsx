@@ -1,17 +1,9 @@
-// /src/app/lobby/components/CreditsIndicator.tsx
 "use client";
 
 import { motion } from "framer-motion";
 
 import React from "react";
 
-// /src/app/lobby/components/CreditsIndicator.tsx
-
-// /src/app/lobby/components/CreditsIndicator.tsx
-
-// /src/app/lobby/components/CreditsIndicator.tsx
-
-// /src/app/lobby/components/CreditsIndicator.tsx
 
 interface CreditsIndicatorInterface {
   credits: string;

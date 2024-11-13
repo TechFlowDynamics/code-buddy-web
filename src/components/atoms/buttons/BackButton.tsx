@@ -1,4 +1,3 @@
-// components/atoms/buttons/BackButton.tsx
 "use client";
 
 import { TiArrowBack } from "react-icons/ti";
@@ -10,13 +9,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
 import { useHistory } from "@/hooks/HistoryContext";
 
-// components/atoms/buttons/BackButton.tsx
-
-// components/atoms/buttons/BackButton.tsx
-
-// components/atoms/buttons/BackButton.tsx
-
-// components/atoms/buttons/BackButton.tsx
 
 const BackButton: React.FC = () => {
   const router = useRouter();

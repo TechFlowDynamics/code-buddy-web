@@ -1,4 +1,3 @@
-// app/features/page.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -6,13 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { FEATURE_CONSTANT } from "@/core/constants/static.constant";
 
-// app/features/page.tsx
-
-// app/features/page.tsx
-
-// app/features/page.tsx
-
-// app/features/page.tsx
 
 export default function FeaturesPage() {
   return (

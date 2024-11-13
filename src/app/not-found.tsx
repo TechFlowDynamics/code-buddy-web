@@ -1,5 +1,7 @@
 "use client";
 
+import image from "../assets/images/svgs/not-found.svg";
+import classes from "../styles/NotFoundImage.module.css";
 import {
   Button,
   Container,
@@ -12,9 +14,6 @@ import {
 import React from "react";
 
 import useNavigate from "@/hooks/useNavigation";
-
-import image from "../assets/images/svgs/not-found.svg";
-import classes from "../styles/NotFoundImage.module.css";
 
 export default function NotFound() {
   const navigate = useNavigate();

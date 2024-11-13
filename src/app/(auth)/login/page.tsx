@@ -1,4 +1,3 @@
-// pages/login.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -13,14 +12,6 @@ import { BOTTOM_CENTER } from "@/core/constants/snackbar.constant";
 import BackButton from "@/components/atoms/buttons/BackButton";
 import SubmitButton from "@/components/atoms/buttons/SubmitButton";
 import InputField from "@/components/atoms/inputs/InputFields";
-
-// pages/login.tsx
-
-// pages/login.tsx
-
-// pages/login.tsx
-
-// pages/login.tsx
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");

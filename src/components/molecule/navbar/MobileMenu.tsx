@@ -1,8 +1,7 @@
+import NavbarLink from "./NavbarLink";
 import { Modal } from "@mantine/core";
 
 import React from "react";
-
-import NavbarLink from "./NavbarLink";
 
 interface MobileMenuProps {
   opened: boolean;

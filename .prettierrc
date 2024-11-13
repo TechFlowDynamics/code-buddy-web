@@ -19,8 +19,7 @@
     "^@/core",
     "^@/components",
     "^atom",
-    "^molecule",
-    "^[./]"
+    "^molecule"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,

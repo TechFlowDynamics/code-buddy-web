@@ -1,4 +1,3 @@
-// app/pricing/page.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -9,14 +8,6 @@ import React from "react";
 import { PRICING_PLANS_CONSTANT } from "@/core/constants/static.constant";
 
 import PricingCard from "@/components/molecule/cards/PricingCards";
-
-// app/pricing/page.tsx
-
-// app/pricing/page.tsx
-
-// app/pricing/page.tsx
-
-// app/pricing/page.tsx
 
 export default function PricingPage() {
   return (

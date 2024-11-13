@@ -1,5 +1,7 @@
 "use client";
 
+import MobileMenu from "./MobileMenu";
+import NavbarLink from "./NavbarLink";
 import { Button } from "@mantine/core";
 import { FaBars } from "react-icons/fa";
 
@@ -9,9 +11,6 @@ import useNavigate from "@/hooks/useNavigation";
 import useScroll from "@/hooks/useScroll";
 
 import ThemeToggle from "@/components/ThemeToggle";
-
-import MobileMenu from "./MobileMenu";
-import NavbarLink from "./NavbarLink";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
