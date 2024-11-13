@@ -1,8 +1,10 @@
 // components/StepOne.tsx
 import React from "react";
-import InputField from "@/components/atoms/inputs/InputFields";
-import SubmitButton from "@/components/atoms/buttons/SubmitButton";
+
 import { useRouter } from "next/navigation";
+
+import SubmitButton from "@/components/atoms/buttons/SubmitButton";
+import InputField from "@/components/atoms/inputs/InputFields";
 
 interface StepOneProps {
   formData: any;
@@ -37,7 +39,7 @@ const StepOne: React.FC<StepOneProps> = ({
         value={formData.password}
         onChange={e => updateFormData({ password: e.target.value })}
       />
-      <div className="flex text-center gap-2 mt-4">
+      <div className="mt-4 flex gap-2 text-center">
         Already Part of Buddy Community?
         <button
           onClick={() => router.push("/login")}

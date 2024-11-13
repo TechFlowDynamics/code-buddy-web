@@ -1,4 +1,5 @@
 // features/auth/authApiSlice.ts
+import apiSlice from "@/features/apiSlice";
 
 import {
   LoginCredentials,
@@ -6,7 +7,6 @@ import {
   UserStepTwo,
   VerifyOtp,
 } from "@/core/interface/auth.interface";
-import apiSlice from "@/features/apiSlice";
 
 interface AuthResponse {
   token: string;

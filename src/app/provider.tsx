@@ -1,22 +1,28 @@
 "use client";
-import React from "react";
+
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import { ThemeProvider } from "@/hooks/ThemeContext";
-import Navbar from "../components/molecule/navbar/ClientNavbar";
+import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "../store/store";
-import { SnackbarProvider } from "notistack";
+
+import React from "react";
+
+import { AuthProvider } from "@/hooks/AuthContext";
+import { HistoryProvider } from "@/hooks/HistoryContext";
+import { ThemeProvider } from "@/hooks/ThemeContext";
+import { SnackbarUtilsConfigurator } from "@/hooks/useSnackbar";
+
+import { TOP_RIGHT } from "@/core/constants/snackbar.constant";
+
 import {
   ErrorMessage,
   InfoMessage,
   SuccessMessage,
   WarningMessage,
 } from "@/components/molecule/snackbar/snackbar";
-import { AuthProvider } from "@/hooks/AuthContext";
-import { SnackbarUtilsConfigurator } from "@/hooks/useSnackbar";
-import { TOP_RIGHT } from "@/core/constants/snackbar.constant";
-import { HistoryProvider } from "@/hooks/HistoryContext";
+
+import Navbar from "../components/molecule/navbar/ClientNavbar";
+import { persistor, store } from "../store/store";
 
 export default function RootLayoutClient({
   children,
@@ -29,7 +35,7 @@ export default function RootLayoutClient({
         <ColorSchemeScript />
       </head>
       <body
-        className={`bg-lightBackground dark:bg-darkBackground text-lightText dark:text-darkText`}>
+        className={`bg-lightBackground text-lightText dark:bg-darkBackground dark:text-darkText`}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <HistoryProvider>

@@ -1,15 +1,16 @@
 // features/apiSlice.ts
-
+import { logoutHandler } from "@/reducer/auth/authActions";
 import {
-  createApi,
-  fetchBaseQuery,
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { logoutHandler } from "@/reducer/auth/authActions";
-import snackbar from "../hooks/useSnackbar";
+
 import { getAuthToken } from "@/core/config/auth.config";
+
+import snackbar from "../hooks/useSnackbar";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,

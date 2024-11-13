@@ -1,10 +1,16 @@
-import { useState, useCallback } from "react";
-import snackbar from "@/hooks/useSnackbar";
-import { useDispatch } from "react-redux";
-import { useSignUpMutation } from "@/api/auth/authApiSlice";
-import { useApiErrorHandler } from "@/utils/errorHandler.utils";
-import { AppDispatch } from "@/store/store";
 import { authActions } from "@/reducer/auth/authSlice";
+import { useDispatch } from "react-redux";
+
+import { useCallback, useState } from "react";
+
+import { AppDispatch } from "@/store/store";
+
+import snackbar from "@/hooks/useSnackbar";
+
+import { useSignUpMutation } from "@/api/auth/authApiSlice";
+
+import { useApiErrorHandler } from "@/utils/errorHandler.utils";
+
 import { SignUpCredentials } from "@/core/interface/auth.interface";
 
 export const useLoginHandler = () => {

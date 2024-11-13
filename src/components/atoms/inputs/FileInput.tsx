@@ -8,13 +8,13 @@ interface FileInputProps {
 
 const FileInput: React.FC<FileInputProps> = ({ label, onChange }) => (
   <div className="mb-4">
-    <label className="block text-gray-700 dark:text-gray-200 mb-1">
+    <label className="mb-1 block text-gray-700 dark:text-gray-200">
       {label}
     </label>
     <input
       type="file"
       onChange={e => onChange(e.target.files?.[0] || null)}
-      className="w-full border p-2 rounded-md dark:bg-gray-700 dark:border-gray-600"
+      className="w-full rounded-md border p-2 dark:border-gray-600 dark:bg-gray-700"
     />
   </div>
 );

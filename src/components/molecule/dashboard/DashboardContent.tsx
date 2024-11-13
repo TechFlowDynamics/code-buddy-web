@@ -1,6 +1,7 @@
 import React from "react";
-import StatisticsCard from "../cards/StatisticsCard";
+
 import data from "../../../core/data/dummyData.json";
+import StatisticsCard from "../cards/StatisticsCard";
 
 const DashboardContent = () => {
   return (

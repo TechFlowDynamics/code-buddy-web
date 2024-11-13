@@ -1,13 +1,26 @@
 // pages/login.tsx
 "use client";
+
 import React, { useEffect, useState } from "react";
-import InputField from "@/components/atoms/inputs/InputFields";
-import SubmitButton from "@/components/atoms/buttons/SubmitButton";
-import BackButton from "@/components/atoms/buttons/BackButton";
-import { useAuth } from "@/hooks/AuthContext";
+
 import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/hooks/AuthContext";
 import snackbar from "@/hooks/useSnackbar";
+
 import { BOTTOM_CENTER } from "@/core/constants/snackbar.constant";
+
+import BackButton from "@/components/atoms/buttons/BackButton";
+import SubmitButton from "@/components/atoms/buttons/SubmitButton";
+import InputField from "@/components/atoms/inputs/InputFields";
+
+// pages/login.tsx
+
+// pages/login.tsx
+
+// pages/login.tsx
+
+// pages/login.tsx
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -48,11 +61,11 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-darkBgColor p-4">
+    <div className="flex min-h-screen flex-col bg-gray-100 p-4 dark:bg-darkBgColor">
       <BackButton />
-      <div className="flex-grow flex items-center justify-center bg-gray-100 dark:bg-darkBgColor">
-        <div className="w-full max-w-md p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-lg shadow-lg">
-          <h1 className="text-2xl font-semibold text-center text-gray-700 dark:text-gray-200 mb-6">
+      <div className="flex flex-grow items-center justify-center bg-gray-100 dark:bg-darkBgColor">
+        <div className="w-full max-w-md rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-lg dark:bg-gray-800/80">
+          <h1 className="mb-6 text-center text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Login to CodieBuddy
           </h1>
 
@@ -71,7 +84,7 @@ const LoginPage: React.FC = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
-            <div className="flex gap-2 text-center mt-4">
+            <div className="mt-4 flex gap-2 text-center">
               New Buddy?
               <button
                 type="button"
@@ -83,7 +96,7 @@ const LoginPage: React.FC = () => {
             <SubmitButton label="Login" />
           </form>
 
-          <div className="text-center mt-4">
+          <div className="mt-4 text-center">
             <a
               href="/forgot-password"
               className="text-blue-500 hover:underline">

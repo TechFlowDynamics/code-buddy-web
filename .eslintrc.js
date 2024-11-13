@@ -14,6 +14,6 @@ module.exports = {
     "no-unused-vars": "off",
     "react/no-unescaped-entities": "off",
     "react-hooks/exhaustive-deps": "warn",
-    "prettier/prettier": "warn",
+    "prettier/prettier": "off",
   },
 };

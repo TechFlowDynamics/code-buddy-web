@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CloseButton, Text, ThemeIcon } from "@mantine/core";
 import {
   IconAlertCircle,
@@ -7,6 +6,8 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { SnackbarContent, useSnackbar } from "notistack";
+
+import React from "react";
 import { forwardRef, useCallback } from "react";
 
 interface MessageProps {

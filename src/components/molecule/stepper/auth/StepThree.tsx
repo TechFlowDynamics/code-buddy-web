@@ -1,8 +1,9 @@
 // components/StepThree.tsx
 import React from "react";
-import InputField from "@/components/atoms/inputs/InputFields";
-import FileInput from "@/components/atoms/inputs/FileInput";
+
 import SubmitButton from "@/components/atoms/buttons/SubmitButton";
+import FileInput from "@/components/atoms/inputs/FileInput";
+import InputField from "@/components/atoms/inputs/InputFields";
 
 interface StepThreeProps {
   formData: any;

@@ -1,17 +1,31 @@
 // pages/getStarted.tsx
 "use client";
 
+import { useSelector } from "react-redux";
+
 import React, { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
+import { RootState } from "@/store/store";
+
+import { useAuth } from "@/hooks/AuthContext";
+
+import { useLoginHandler } from "@/actions/auth.actions";
+
+import BackButton from "@/components/atoms/buttons/BackButton";
 import FormWrapper from "@/components/atoms/forms/FormWrapper";
 import StepOne from "@/components/molecule/stepper/auth/StepOne";
-import StepTwo from "@/components/molecule/stepper/auth/StepTwo";
 import StepThree from "@/components/molecule/stepper/auth/StepThree";
-import BackButton from "@/components/atoms/buttons/BackButton";
-import { useAuth } from "@/hooks/AuthContext";
-import { useRouter } from "next/navigation";
-import { useLoginHandler } from "@/actions/auth.actions";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import StepTwo from "@/components/molecule/stepper/auth/StepTwo";
+
+// pages/getStarted.tsx
+
+// pages/getStarted.tsx
+
+// pages/getStarted.tsx
+
+// pages/getStarted.tsx
 
 const GetStarted: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -58,11 +72,11 @@ const GetStarted: React.FC = () => {
   const updateFormData = (data: any) => setFormData({ ...formData, ...data });
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+    <div className="min-h-screen bg-gray-100 p-4 dark:bg-gray-900">
       <BackButton />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-        <div className="w-full max-w-md p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-lg shadow-lg">
-          <h1 className="text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-6">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="w-full max-w-md rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-lg dark:bg-gray-800/80">
+          <h1 className="mb-6 text-center text-2xl font-semibold text-gray-800 dark:text-gray-200">
             Get Started
           </h1>
           <FormWrapper>

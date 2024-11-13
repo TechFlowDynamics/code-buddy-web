@@ -1,6 +1,8 @@
 import snackbar from "@/hooks/useSnackbar";
-import { authActions } from "./authSlice";
+
 import { removeItem } from "@/utils/storage";
+
+import { authActions } from "./authSlice";
 
 export interface authDetails {
   accessToken: string;

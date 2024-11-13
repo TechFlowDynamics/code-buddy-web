@@ -1,5 +1,6 @@
+import { SnackbarOrigin, closeSnackbar, useSnackbar } from "notistack";
+
 import React from "react";
-import { closeSnackbar, useSnackbar, SnackbarOrigin } from "notistack";
 
 let useSnackbarRef: {
   enqueueSnackbar: (message: string, options?: any) => any;

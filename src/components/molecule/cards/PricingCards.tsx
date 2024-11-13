@@ -1,6 +1,7 @@
 // components/PricingCard.tsx
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
+
 interface PricingCardProps {
   title: string;
   price: string;
@@ -18,17 +19,17 @@ export default function PricingCard({
 }: Readonly<PricingCardProps>) {
   return (
     <motion.div
-      className="p-6 bg-white dark:bg-gray-600/50 rounded-lg shadow-lg flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300"
+      className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg transition-shadow duration-300 hover:shadow-2xl dark:bg-gray-600/50"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.05 }}>
-      <h2 className="text-2xl font-semibold mb-2 text-blue-700">{title}</h2>
-      <p className="text-4xl font-bold mb-4">{price}</p>
-      <p className="dark:text-gray-200 text-gray-800/70 mb-6">{description}</p>
-      <p className="text-lg font-semibold text-gray-900 dark:text-gray-300 mb-4">
+      <h2 className="mb-2 text-2xl font-semibold text-blue-700">{title}</h2>
+      <p className="mb-4 text-4xl font-bold">{price}</p>
+      <p className="mb-6 text-gray-800/70 dark:text-gray-200">{description}</p>
+      <p className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-300">
         {credits} Credits
       </p>
-      <ul className="text-gray-600 dark:text-gray-300/70 mb-6 space-y-2">
+      <ul className="mb-6 space-y-2 text-gray-600 dark:text-gray-300/70">
         {features.map(feature => (
           <li key={uuidv4()} className="flex items-center">
             <span className="mr-2 text-blue-600">✓</span>
@@ -37,7 +38,7 @@ export default function PricingCard({
         ))}
       </ul>
       <motion.button
-        className="mt-6 px-6 py-2 bg-blue-600 dark:text-white text-gray-200 rounded-lg font-semibold hover:bg-blue-500"
+        className="mt-6 rounded-lg bg-blue-600 px-6 py-2 font-semibold text-gray-200 hover:bg-blue-500 dark:text-white"
         whileHover={{ scale: 1.05 }}>
         Get {title}
       </motion.button>

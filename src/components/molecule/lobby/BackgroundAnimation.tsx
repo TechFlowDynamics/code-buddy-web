@@ -1,6 +1,7 @@
 // /src/app/lobby/components/BackgroundAnimation.tsx
-import React from "react";
 import { motion } from "framer-motion";
+
+import React from "react";
 
 const BackgroundAnimation: React.FC = () => {
   const circleAnimation = {
@@ -14,11 +15,11 @@ const BackgroundAnimation: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-0  overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden">
       {Array.from({ length: 20 }).map((_, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full dark:bg-gray-300/30 bg-slate-400/40 backdrop-blur-lg bg-opacity-20 w-32 h-32"
+          className="absolute h-32 w-32 rounded-full bg-slate-400/40 bg-opacity-20 backdrop-blur-lg dark:bg-gray-300/30"
           style={{
             top: `${Math.random() * 90}%`,
             left: `${Math.random() * 85}%`,

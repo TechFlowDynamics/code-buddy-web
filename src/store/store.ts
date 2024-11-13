@@ -1,17 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { createLogger } from "redux-logger";
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+
 import rootReducer from "./rootReducer";
-import { createLogger } from "redux-logger";
 
 const persistConfig = {
   key: "root",

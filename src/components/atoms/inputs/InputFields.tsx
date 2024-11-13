@@ -15,12 +15,12 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => (
   <div className={`mb-4 ${parentClassName}`}>
     <label
-      className={`block text-gray-700 dark:text-gray-200 mb-1 ${labelClassName}`}>
+      className={`mb-1 block text-gray-700 dark:text-gray-200 ${labelClassName}`}>
       {label}
     </label>
     <input
       {...props}
-      className="w-full px-3 py-2 border rounded-md transition-transform duration-200 transform focus:scale-105 outline-none dark:bg-gray-700 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400"
+      className="w-full transform rounded-md border px-3 py-2 outline-none transition-transform duration-200 focus:scale-105 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:border-blue-400"
     />
   </div>
 );

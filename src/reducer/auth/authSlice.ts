@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { removeAuthFromLocal, saveAuthToLocal } from "@/utils/storage";
 
 const initialAuthState = {

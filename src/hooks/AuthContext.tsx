@@ -1,8 +1,13 @@
 "use client";
-import { createContext, ReactNode, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import { authActions } from "@/reducer/auth/authSlice";
-import { RootState } from "@/store/store"; // Import RootState to use with useSelector
+import { useDispatch, useSelector } from "react-redux";
+
+import { ReactNode, createContext, useContext } from "react";
+
+import { RootState } from "@/store/store";
+
+// Import RootState to use with useSelector
 
 interface AuthContextProps {
   isLoggedIn: boolean;

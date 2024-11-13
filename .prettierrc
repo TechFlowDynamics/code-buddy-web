@@ -7,22 +7,26 @@
   "printWidth": 80,
   "tabWidth": 2,
   "useTabs": false,
+  "importOrder": [
+    "^react$",
+    "^next",
+    "^type",
+    "^@/store",
+    "^@/hooks",
+    "^@/actions",
+    "^@/api",
+    "^@/utils",
+    "^@/core",
+    "^@/components",
+    "^atom",
+    "^molecule",
+    "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "plugins": [
     "@trivago/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
-  ],
-  "importOrder": [
-    "^react$",
-    "^next",
-    "^type",
-    "^@/api",
-    "^@/utils",
-    "^@/core",
-    "^atom",
-    "^molecule",
-    "^[./]"
   ],
   "semi": true,
   "endOfLine": "lf",

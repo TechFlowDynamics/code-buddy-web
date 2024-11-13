@@ -1,10 +1,22 @@
 // components/atoms/buttons/BackButton.tsx
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+
 import { TiArrowBack } from "react-icons/ti";
+
+import React from "react";
+
+import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/hooks/AuthContext";
 import { useHistory } from "@/hooks/HistoryContext";
+
+// components/atoms/buttons/BackButton.tsx
+
+// components/atoms/buttons/BackButton.tsx
+
+// components/atoms/buttons/BackButton.tsx
+
+// components/atoms/buttons/BackButton.tsx
 
 const BackButton: React.FC = () => {
   const router = useRouter();
@@ -20,7 +32,7 @@ const BackButton: React.FC = () => {
   return (
     <button
       onClick={() => handleBackButton()}
-      className="flex items-center  fixed text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600 my-4 w-fit py-2 px-4 rounded space-x-2">
+      className="fixed my-4 flex w-fit items-center space-x-2 rounded px-4 py-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-600">
       <TiArrowBack size={28} />
       <span>Back</span>
     </button>

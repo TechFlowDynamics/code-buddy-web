@@ -1,4 +1,5 @@
 import React from "react";
+
 import Image, { StaticImageData } from "next/image";
 
 interface HeroBannerProps {
@@ -17,7 +18,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
   backgroundImage,
 }) => {
   return (
-    <section className="relative flex items-center justify-center h-screen text-center text-white transition-shadow duration-500 ease-in-out group/section overflow-hidden">
+    <section className="group/section relative flex h-screen items-center justify-center overflow-hidden text-center text-white transition-shadow duration-500 ease-in-out">
       {/* Background image */}
       <Image
         src={backgroundImage}
@@ -28,17 +29,17 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       />
 
       {/* Top and Bottom Glow Shadows on Hover */}
-      <div className="absolute top-0 left-0 w-full h-20 bg-darkBackground bg-opacity-10 backdrop-blur-md z-10" />
-      <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-b from-gray-900/70 to-darkBackground bg-opacity-70 backdrop-blur-sm z-10" />
+      <div className="absolute left-0 top-0 z-10 h-20 w-full bg-darkBackground bg-opacity-10 backdrop-blur-md" />
+      <div className="absolute bottom-0 left-0 z-10 h-10 w-full bg-opacity-70 bg-gradient-to-b from-gray-900/70 to-darkBackground backdrop-blur-sm" />
 
       {/* Content */}
-      <div className="z-20 bg-opacity-50 p-10 rounded-lg">
-        <h1 className="text-6xl font-bold mb-4">{title}</h1>
-        <p className="text-lg mb-6">{subtitle}</p>
+      <div className="z-20 rounded-lg bg-opacity-50 p-10">
+        <h1 className="mb-4 text-6xl font-bold">{title}</h1>
+        <p className="mb-6 text-lg">{subtitle}</p>
         <button
           onClick={onButtonClick}
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 text-lg font-semibold">
+          className="group relative mb-2 me-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white dark:focus:ring-cyan-800">
+          <span className="relative rounded-md bg-white px-5 py-2.5 text-lg font-semibold transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900">
             {buttonLabel}
           </span>
         </button>

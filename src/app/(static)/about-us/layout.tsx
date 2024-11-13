@@ -1,6 +1,8 @@
-import Navbar from "@/components/molecule/navbar/Navbar";
-import { Metadata } from "next";
 import React from "react";
+
+import { Metadata } from "next";
+
+import Navbar from "@/components/molecule/navbar/Navbar";
 
 export const metadata: Metadata = {
   title: "Codie buddy | About Us",

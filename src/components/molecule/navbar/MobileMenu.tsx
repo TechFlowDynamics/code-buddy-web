@@ -1,5 +1,7 @@
-import React from "react";
 import { Modal } from "@mantine/core";
+
+import React from "react";
+
 import NavbarLink from "./NavbarLink";
 
 interface MobileMenuProps {
@@ -15,12 +17,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ opened, onClose }) => {
       centered
       className="p-0"
       transitionProps={{ transition: "fade", duration: 200 }}>
-      <Modal.Overlay className="bg-gray-400/20 dark:bg-gray-800/50 backdrop-blur-" />
-      <Modal.Content className="bg-gray-400/20 dark:bg-gray-800/50 backdrop-blur-lg">
-        <Modal.Header className="flex flex-col items-center gap-4 p-4 bg-gray-800/65 dark:bg-gray-600/76">
+      <Modal.Overlay className="backdrop-blur- bg-gray-400/20 dark:bg-gray-800/50" />
+      <Modal.Content className="bg-gray-400/20 backdrop-blur-lg dark:bg-gray-800/50">
+        <Modal.Header className="dark:bg-gray-600/76 flex flex-col items-center gap-4 bg-gray-800/65 p-4">
           <Modal.CloseButton className="text-white" />
         </Modal.Header>
-        <Modal.Body className="flex flex-col items-center gap-4 p-4 bg-gray-800/70 dark:bg-gray-600/80 backdrop-blur-lg">
+        <Modal.Body className="flex flex-col items-center gap-4 bg-gray-800/70 p-4 backdrop-blur-lg dark:bg-gray-600/80">
           <NavbarLink href="/" label="Home" />
           <NavbarLink href="/about-us" label="About" />
           <NavbarLink href="/pricing" label="Pricing" />

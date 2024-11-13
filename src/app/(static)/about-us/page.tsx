@@ -1,12 +1,16 @@
 "use client";
-import { fadeInUp } from "@/utils/motionVariants.utils";
+
 import { motion } from "framer-motion";
+
 import Link from "next/link";
+
+import { fadeInUp } from "@/utils/motionVariants.utils";
+
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center  p-6">
+    <div className="flex min-h-screen flex-col items-center justify-center p-6">
       <motion.h1
-        className="text-4xl font-bold text-center text-blue-700 mb-6"
+        className="mb-6 text-center text-4xl font-bold text-blue-700"
         variants={fadeInUp}
         initial="hidden"
         animate="visible">
@@ -14,7 +18,7 @@ export default function AboutPage() {
       </motion.h1>
 
       <motion.p
-        className="text-lg text-center mb-4"
+        className="mb-4 text-center text-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}>
@@ -23,7 +27,7 @@ export default function AboutPage() {
       </motion.p>
 
       <motion.p
-        className="text-lg text-center mb-4"
+        className="mb-4 text-center text-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}>
@@ -33,7 +37,7 @@ export default function AboutPage() {
       </motion.p>
 
       <motion.p
-        className="text-lg text-center"
+        className="text-center text-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}>
@@ -47,7 +51,7 @@ export default function AboutPage() {
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
-            className="bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-blue-600"
+            className="rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white shadow-lg hover:bg-blue-600"
             whileHover={{ scale: 1.1 }}>
             Learn More
           </motion.div>
@@ -58,7 +62,7 @@ export default function AboutPage() {
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
-            className="bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-gray-600"
+            className="rounded-lg bg-gray-700 px-6 py-3 font-semibold text-white shadow-lg hover:bg-gray-600"
             whileHover={{ scale: 1.1 }}>
             Contact Us
           </motion.div>

@@ -1,4 +1,5 @@
 import React from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,21 +24,21 @@ const NavbarLink: React.FC<NavbarLinkProps> = ({
       {className ? (
         <Link
           href={href}
-          className={`no-underline ${className}  ${
+          className={`no-underline ${className} ${
             isActive
-              ? "!text-blue-500 font-semibold"
+              ? "font-semibold !text-blue-500"
               : `dark:text-white ${pathname === `/` ? "text-white" : ""}`
-          } ${highlight ? "!text-green-500 font-semibold" : ""}`}>
+          } ${highlight ? "font-semibold !text-green-500" : ""}`}>
           {label}
         </Link>
       ) : (
         <Link
           href={href}
-          className={`no-underline text-lg  ${
+          className={`text-lg no-underline ${
             isActive
-              ? "!text-blue-500 font-semibold"
+              ? "font-semibold !text-blue-500"
               : `dark:text-white ${pathname === `/` ? "text-white" : ""}`
-          } ${highlight ? "!text-green-500 font-semibold" : ""}`}>
+          } ${highlight ? "font-semibold !text-green-500" : ""}`}>
           {label}
         </Link>
       )}

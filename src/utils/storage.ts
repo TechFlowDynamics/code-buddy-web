@@ -1,5 +1,4 @@
 // utils/storageUtils.ts
-
 import { AuthData } from "@/core/interface/auth.interface";
 
 type StorageType = "localStorage" | "sessionStorage";

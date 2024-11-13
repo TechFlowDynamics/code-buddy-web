@@ -1,10 +1,15 @@
 "use client";
-import React, { useState } from "react";
+
 import { Button } from "@mantine/core";
-import ThemeToggle from "@/components/ThemeToggle";
 import { FaBars } from "react-icons/fa";
+
+import React, { useState } from "react";
+
 import useNavigate from "@/hooks/useNavigation";
 import useScroll from "@/hooks/useScroll";
+
+import ThemeToggle from "@/components/ThemeToggle";
+
 import MobileMenu from "./MobileMenu";
 import NavbarLink from "./NavbarLink";
 
@@ -15,12 +20,12 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-blue-300/20 dark:bg-gray-500/40 backdrop-blur-sm shadow-md"
+          ? "bg-blue-300/20 shadow-md backdrop-blur-sm dark:bg-gray-500/40"
           : "bg-transparent"
       }`}>
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="container mx-auto flex items-center justify-between px-4 py-3">
         <div>
           <NavbarLink
             href="/"
@@ -29,7 +34,7 @@ const Navbar: React.FC = () => {
           />
         </div>
 
-        <div className="hidden md:flex space-x-4 bg-gray-700/20 dark:bg-gray-700/50 py-2 px-4 rounded-full backdrop-blur-md border border-gray-400/20 dark:border-gray-400/20 gap-4">
+        <div className="hidden gap-4 space-x-4 rounded-full border border-gray-400/20 bg-gray-700/20 px-4 py-2 backdrop-blur-md md:flex dark:border-gray-400/20 dark:bg-gray-700/50">
           <NavbarLink href="/" label="Home" />
           <NavbarLink href="/about-us" label="About" />
           <NavbarLink href="/pricing" label="Pricing" />
@@ -42,17 +47,17 @@ const Navbar: React.FC = () => {
           <Button
             onClick={() => navigate("/get-started")}
             variant="outline"
-            className="hover:bg-blue-600/60 hover:text-white hidden md:block">
+            className="hidden hover:bg-blue-600/60 hover:text-white md:block">
             Get Started
           </Button>
           <Button
             onClick={() => navigate("/login")}
-            className="bg-blue-500 hover:bg-blue-600 hidden md:block">
+            className="hidden bg-blue-500 hover:bg-blue-600 md:block">
             Login
           </Button>
           <Button
             variant="outline"
-            className="md:hidden px-2"
+            className="px-2 md:hidden"
             onClick={() => setOpened(true)}>
             <FaBars size={20} />
           </Button>

@@ -1,7 +1,10 @@
-import React from "react";
-import type { Metadata } from "next";
-import "./globals.css";
 import "@mantine/core/styles.css";
+
+import React from "react";
+
+import type { Metadata } from "next";
+
+import "./globals.css";
 import RootLayoutClient from "./provider";
 
 export const metadata: Metadata = {

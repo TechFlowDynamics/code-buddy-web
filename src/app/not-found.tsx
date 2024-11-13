@@ -1,16 +1,21 @@
 "use client";
-import React from "react";
+
 import {
-  Image,
-  Container,
-  Title,
-  Text,
   Button,
+  Container,
+  Image,
   SimpleGrid,
+  Text,
+  Title,
 } from "@mantine/core";
+
+import React from "react";
+
+import useNavigate from "@/hooks/useNavigation";
+
 import image from "../assets/images/svgs/not-found.svg";
 import classes from "../styles/NotFoundImage.module.css";
-import useNavigate from "@/hooks/useNavigation";
+
 export default function NotFound() {
   const navigate = useNavigate();
   return (

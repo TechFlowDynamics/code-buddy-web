@@ -1,18 +1,21 @@
 "use client";
-import JoinRoomForm from "@/components/molecule/lobby/JoinRoomForm";
-import CreateRoomButton from "@/components/molecule/lobby/CreateRoomButton";
-import BackgroundAnimation from "@/components/molecule/lobby/BackgroundAnimation";
-import JoinRandomRoomButton from "@/components/molecule/lobby/JoinRandomRoomButton";
-import CreditsIndicator from "@/components/molecule/lobby/CreditsIndicator";
-import React from "react";
+
 import { motion } from "framer-motion";
+
+import React from "react";
+
+import BackgroundAnimation from "@/components/molecule/lobby/BackgroundAnimation";
+import CreateRoomButton from "@/components/molecule/lobby/CreateRoomButton";
+import CreditsIndicator from "@/components/molecule/lobby/CreditsIndicator";
+import JoinRandomRoomButton from "@/components/molecule/lobby/JoinRandomRoomButton";
+import JoinRoomForm from "@/components/molecule/lobby/JoinRoomForm";
 
 const Lobby = () => {
   return (
-    <div className="relative flex flex-col items-center min-h-screen p-4 mt-4 justify-center  overflow-hidden">
+    <div className="relative mt-4 flex min-h-screen flex-col items-center justify-center overflow-hidden p-4">
       <BackgroundAnimation />
       <motion.h1
-        className="text-4xl font-extrabold mb-4 z-10  text-center"
+        className="z-10 mb-4 text-center text-4xl font-extrabold"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6 }}>
@@ -20,7 +23,7 @@ const Lobby = () => {
       </motion.h1>
       <CreditsIndicator credits="10" />
       <motion.div
-        className="flex flex-col gap-6 w-full max-w-lg p-6 rounded-lg bg-opacity-80 backdrop-blur-md z-10 shadow-lg"
+        className="z-10 flex w-full max-w-lg flex-col gap-6 rounded-lg bg-opacity-80 p-6 shadow-lg backdrop-blur-md"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}>

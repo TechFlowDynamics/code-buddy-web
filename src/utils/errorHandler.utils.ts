@@ -1,5 +1,7 @@
 "use Client";
+
 import { useCallback } from "react";
+
 import snackbar from "@/hooks/useSnackbar";
 
 const GENERIC_ERROR_MESSAGE = "An unexpected error occurred";
