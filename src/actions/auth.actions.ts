@@ -12,6 +12,7 @@ import { useSignUpMutation } from "@/api/auth/authApiSlice";
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
 
 import { SignUpCredentials } from "@/core/interface/auth.interface";
+import { validateSignUpData } from "@/validators/functions/auth.validationFunctions";
 
 export const useLoginHandler = () => {
   const [signUp] = useSignUpMutation();
@@ -22,8 +23,23 @@ export const useLoginHandler = () => {
   const handlerSignUp = useCallback(
     async ({ userName, email, password }: SignUpCredentials) => {
       setLoading(true);
+      const { valid, errors } = await validateSignUpData({
+        userName,
+        email,
+        password,
+      });
+      if (!valid) {
+        snackbar.error(errors.join(", "));
+        setLoading(false);
+        return;
+      }
       try {
-        const data = await signUp({ userName, email, password }).unwrap();
+        const body = {
+          userName: userName.toLowerCase(),
+          email: email.toLowerCase(),
+          password: password,
+        };
+        const data = await signUp(body).unwrap();
         if (data) {
           dispatch(authActions.stepUpdate(2));
           snackbar.success("Otp sent successfully!!");
@@ -37,7 +53,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError],
+    [dispatch, signUp, handleApiError]
   );
 
   return { handlerSignUp, loading };

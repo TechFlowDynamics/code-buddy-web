@@ -30,7 +30,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
     signUp: builder.mutation<AuthResponse, SignUpCredentials>({
       query: credentials => ({
-        url: "/auth/signup-user",
+        url: "/auth/register-steps-1",
         method: "POST",
         body: credentials,
       }),

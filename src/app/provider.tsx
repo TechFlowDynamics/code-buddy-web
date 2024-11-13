@@ -38,27 +38,27 @@ export default function RootLayoutClient({
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <HistoryProvider>
-              <SnackbarProvider
-                preventDuplicate
-                anchorOrigin={TOP_RIGHT}
-                Components={{
-                  success: SuccessMessage,
-                  error: ErrorMessage,
-                  warning: WarningMessage,
-                  info: InfoMessage,
-                }}
-                maxSnack={3}
-                autoHideDuration={2000}>
-                <AuthProvider>
-                  <ThemeProvider>
-                    <MantineProvider>
+              <MantineProvider>
+                <SnackbarProvider
+                  preventDuplicate
+                  anchorOrigin={TOP_RIGHT}
+                  Components={{
+                    success: SuccessMessage,
+                    error: ErrorMessage,
+                    warning: WarningMessage,
+                    info: InfoMessage,
+                  }}
+                  maxSnack={3}
+                  autoHideDuration={2000}>
+                  <AuthProvider>
+                    <ThemeProvider>
                       <SnackbarUtilsConfigurator />
                       <Navbar />
                       <main>{children}</main>
-                    </MantineProvider>
-                  </ThemeProvider>
-                </AuthProvider>
-              </SnackbarProvider>
+                    </ThemeProvider>
+                  </AuthProvider>
+                </SnackbarProvider>
+              </MantineProvider>
             </HistoryProvider>
           </PersistGate>
         </Provider>

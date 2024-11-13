@@ -22,6 +22,7 @@ const StepOne: React.FC<StepOneProps> = ({
     <div>
       <InputField
         label="Email"
+        type="email"
         placeholder="Enter your email"
         value={formData.email}
         onChange={e => updateFormData({ email: e.target.value })}

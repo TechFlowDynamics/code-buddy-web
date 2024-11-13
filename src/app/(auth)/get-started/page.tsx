@@ -42,22 +42,30 @@ const GetStarted: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ userStep:", userStep);
     if (userStep) {
       setStep(userStep);
     }
   }, [userStep]);
 
+  useEffect(() => {
+    setFormData(prevData => ({
+      ...prevData,
+      userName: prevData.userName ? prevData.userName.toLowerCase() : "",
+      email: prevData.email ? prevData.email.toLowerCase() : "",
+    }));
+  }, [formData.userName, formData.email]);
+
   const handleNext = async () => {
+    let flag;
     switch (step) {
       case 1:
-        await handlerSignUp(formData);
+        flag = await handlerSignUp(formData);
         break;
 
       default:
         break;
     }
-    setStep(step + 1);
+    !!flag && setStep(step + 1);
   };
   const handlePrev = () => setStep(step - 1);
   const updateFormData = (data: any) => setFormData({ ...formData, ...data });
