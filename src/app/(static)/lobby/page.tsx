@@ -14,7 +14,6 @@ import CreditsIndicator from "@/components/molecule/lobby/CreditsIndicator";
 import JoinRandomRoomButton from "@/components/molecule/lobby/JoinRandomRoomButton";
 import JoinRoomForm from "@/components/molecule/lobby/JoinRoomForm";
 
-
 export default function LobbyPage() {
   const { isLoggedIn } = useAuth();
   const router = useRouter();

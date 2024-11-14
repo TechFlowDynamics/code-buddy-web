@@ -1,9 +1,10 @@
-import * as yup from "yup";
-import { SignUpCredentials, VerifyOtp } from "@/core/interface/auth.interface";
 import {
   signUpValidationSchema,
   verifyOtpSchema,
 } from "../schemas/auth.validationSchema";
+import * as yup from "yup";
+
+import { SignUpCredentials, VerifyOtp } from "@/core/interface/auth.interface";
 
 // A function to validate signup data
 export const validateSignUpData = async (data: SignUpCredentials) => {

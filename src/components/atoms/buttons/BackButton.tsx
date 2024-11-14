@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
 import { useHistory } from "@/hooks/HistoryContext";
 
-
 const BackButton: React.FC = () => {
   const router = useRouter();
   const { isLoggedIn } = useAuth();

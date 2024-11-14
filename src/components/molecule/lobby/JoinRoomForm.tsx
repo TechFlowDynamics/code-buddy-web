@@ -6,7 +6,6 @@ import React, { useState } from "react";
 
 import InputField from "@/components/atoms/inputs/InputFields";
 
-
 const JoinRoomForm: React.FC = () => {
   const [roomCode, setRoomCode] = useState("");
 

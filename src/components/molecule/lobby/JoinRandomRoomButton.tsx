@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 
 import React from "react";
 
-
 interface CreateRoomButtonProps {
   label: string;
   onClick?: () => void;

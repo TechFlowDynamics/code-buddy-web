@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { FEATURE_CONSTANT } from "@/core/constants/static.constant";
 
-
 export default function FeaturesPage() {
   return (
     <div className="mt-[3%] min-h-screen p-10 text-gray-900">

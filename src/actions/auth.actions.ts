@@ -1,4 +1,8 @@
 import { authActions } from "@/reducer/auth/authSlice";
+import {
+  validateSignUpData,
+  verifyOtpData,
+} from "@/validators/functions/auth.validationFunctions";
 import { useDispatch } from "react-redux";
 
 import { useCallback, useState } from "react";
@@ -15,10 +19,6 @@ import {
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
 
 import { SignUpCredentials, VerifyOtp } from "@/core/interface/auth.interface";
-import {
-  validateSignUpData,
-  verifyOtpData,
-} from "@/validators/functions/auth.validationFunctions";
 
 export const useLoginHandler = () => {
   const [signUp] = useSignUpMutation();
@@ -61,7 +61,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError]
+    [dispatch, signUp, handleApiError],
   );
 
   const handlerVerifyOtp = useCallback(
@@ -98,7 +98,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError]
+    [dispatch, signUp, handleApiError],
   );
 
   return { handlerSignUp, loading, handlerVerifyOtp };

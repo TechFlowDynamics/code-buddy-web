@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 
-
 const useNavigate = () => {
   const router = useRouter();
 

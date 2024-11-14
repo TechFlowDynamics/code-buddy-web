@@ -12,12 +12,13 @@ import { useAuth } from "@/hooks/AuthContext";
 
 import { useLoginHandler } from "@/actions/auth.actions";
 
+import { Purpose } from "@/core/interface/auth.interface";
+
 import BackButton from "@/components/atoms/buttons/BackButton";
 import FormWrapper from "@/components/atoms/forms/FormWrapper";
 import StepOne from "@/components/molecule/stepper/auth/StepOne";
 import StepThree from "@/components/molecule/stepper/auth/StepThree";
 import StepTwo from "@/components/molecule/stepper/auth/StepTwo";
-import { Purpose } from "@/core/interface/auth.interface";
 
 const GetStarted: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -44,7 +45,7 @@ const GetStarted: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ userStep:", userStep)
+    console.log("🚀 ~ useEffect ~ userStep:", userStep);
     if (userStep) {
       setStep(userStep);
     }
