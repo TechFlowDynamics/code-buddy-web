@@ -4,6 +4,7 @@ import apiSlice from "@/features/apiSlice";
 import {
   LoginCredentials,
   SignUpCredentials,
+  StepOneResponse,
   UserStepTwo,
   VerifyOtp,
 } from "@/core/interface/auth.interface";
@@ -28,7 +29,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    signUp: builder.mutation<AuthResponse, SignUpCredentials>({
+    signUp: builder.mutation<StepOneResponse, SignUpCredentials>({
       query: credentials => ({
         url: "/auth/register-steps-1",
         method: "POST",

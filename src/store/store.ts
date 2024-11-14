@@ -1,3 +1,4 @@
+import apiSlice from "@/features/apiSlice";
 import rootReducer from "./rootReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
@@ -35,7 +36,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(logger),
+    }).concat(apiSlice.middleware,logger),
 });
 
 export const persistor = persistStore(store);

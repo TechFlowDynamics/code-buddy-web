@@ -17,12 +17,13 @@ import FormWrapper from "@/components/atoms/forms/FormWrapper";
 import StepOne from "@/components/molecule/stepper/auth/StepOne";
 import StepThree from "@/components/molecule/stepper/auth/StepThree";
 import StepTwo from "@/components/molecule/stepper/auth/StepTwo";
+import { Purpose } from "@/core/interface/auth.interface";
 
 const GetStarted: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const userStep = useSelector((state: RootState) => state.auth.step);
   const router = useRouter();
-  const { handlerSignUp } = useLoginHandler();
+  const { handlerSignUp, handlerVerifyOtp } = useLoginHandler();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -34,14 +35,16 @@ const GetStarted: React.FC = () => {
     email: "",
     userName: "",
     password: "",
-    otp: "",
     firstName: "",
+    purpose: Purpose.SIGNUP,
+    code: "",
     lastName: "",
     phone: "",
     image: null,
   });
 
   useEffect(() => {
+    console.log("🚀 ~ useEffect ~ userStep:", userStep)
     if (userStep) {
       setStep(userStep);
     }
@@ -60,6 +63,9 @@ const GetStarted: React.FC = () => {
     switch (step) {
       case 1:
         flag = await handlerSignUp(formData);
+        break;
+      case 2:
+        flag = await handlerVerifyOtp(formData);
         break;
 
       default:

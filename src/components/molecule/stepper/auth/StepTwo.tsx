@@ -22,7 +22,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
       label="OTP"
       placeholder="Enter your OTP"
       value={formData.otp}
-      onChange={e => updateFormData({ otp: e.target.value })}
+      onChange={e => updateFormData({ code: e.target.value })}
     />
     <div className="flex justify-between">
       <SubmitButton label="Back" onClick={handlePrev} />

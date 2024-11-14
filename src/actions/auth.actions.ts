@@ -7,15 +7,22 @@ import { AppDispatch } from "@/store/store";
 
 import snackbar from "@/hooks/useSnackbar";
 
-import { useSignUpMutation } from "@/api/auth/authApiSlice";
+import {
+  useSignUpMutation,
+  useVerifyOtpMutation,
+} from "@/api/auth/authApiSlice";
 
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
 
-import { SignUpCredentials } from "@/core/interface/auth.interface";
-import { validateSignUpData } from "@/validators/functions/auth.validationFunctions";
+import { SignUpCredentials, VerifyOtp } from "@/core/interface/auth.interface";
+import {
+  validateSignUpData,
+  verifyOtpData,
+} from "@/validators/functions/auth.validationFunctions";
 
 export const useLoginHandler = () => {
   const [signUp] = useSignUpMutation();
+  const [verifyOtp] = useVerifyOtpMutation();
   const dispatch = useDispatch<AppDispatch>();
   const handleApiError = useApiErrorHandler();
   const [loading, setLoading] = useState(false);
@@ -41,7 +48,8 @@ export const useLoginHandler = () => {
         };
         const data = await signUp(body).unwrap();
         if (data) {
-          dispatch(authActions.stepUpdate(2));
+          dispatch(authActions.stepUpdate(data.data.steps + 1));
+          dispatch(authActions.tempSignUp(data.data));
           snackbar.success("Otp sent successfully!!");
           return data;
         } else {
@@ -56,5 +64,42 @@ export const useLoginHandler = () => {
     [dispatch, signUp, handleApiError]
   );
 
-  return { handlerSignUp, loading };
+  const handlerVerifyOtp = useCallback(
+    async ({ purpose, email, code }: VerifyOtp) => {
+      setLoading(true);
+      const { valid, errors } = await verifyOtpData({
+        purpose,
+        email,
+        code,
+      });
+      if (!valid) {
+        snackbar.error(errors.join(", "));
+        setLoading(false);
+        return;
+      }
+      try {
+        const body = {
+          purpose: purpose,
+          email: email.toLowerCase(),
+          code: code,
+        };
+        const data = await verifyOtp(body).unwrap();
+        if (data) {
+          // dispatch(authActions.stepUpdate(data.data.steps));
+          // dispatch(authActions.tempSignUp(data.data));
+          snackbar.success("Otp Verified!!");
+          return data;
+        } else {
+          snackbar.error("Signup failed");
+        }
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [dispatch, signUp, handleApiError]
+  );
+
+  return { handlerSignUp, loading, handlerVerifyOtp };
 };

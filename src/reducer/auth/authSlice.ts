@@ -8,6 +8,8 @@ const initialAuthState = {
   email: "",
   step: 1,
   fullName: "",
+  purpose: "",
+  userName: "",
   active: false,
   isEmailVerified: false,
   registrationStatus: "",
@@ -30,9 +32,14 @@ const authSlice = createSlice({
     },
 
     stepUpdate(state, action) {
-      state.step = action.payload?.step || 1;
+      state.step = action.payload?.steps || 1;
     },
-
+    tempSignUp(state, action) {
+      state.email = action.payload.email;
+      state.userName = action.payload.userName;
+      state.isEmailVerified = action.payload.isEmailVerified || false;
+      state.purpose = action.payload.purpose;
+    },
     logout(state) {
       // Reset each state property to the initial state
       state.accessToken = initialAuthState.accessToken;
