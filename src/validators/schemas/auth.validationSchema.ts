@@ -28,3 +28,10 @@ export const verifyOtpSchema = yup.object().shape({
     .required("Code is required")
     .length(4, "Code must be at least 4 characters"),
 });
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
