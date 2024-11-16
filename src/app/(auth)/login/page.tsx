@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
 import snackbar from "@/hooks/useSnackbar";
 
+import { useLoginHandler } from "@/actions/auth.actions";
+
 import { BOTTOM_CENTER } from "@/core/constants/snackbar.constant";
 
 import BackButton from "@/components/atoms/buttons/BackButton";
@@ -17,6 +19,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, isLoggedIn } = useAuth();
+  const { handlerLogin } = useLoginHandler();
   const router = useRouter();
 
   useEffect(() => {
@@ -47,6 +50,7 @@ const LoginPage: React.FC = () => {
       login(userData);
       return;
     }
+    handlerLogin({ email: email, password: password });
     router.push("/dashboard");
   };
 

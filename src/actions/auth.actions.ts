@@ -1,5 +1,6 @@
 import { authActions } from "@/reducer/auth/authSlice";
 import {
+  loginData,
   validateSignUpData,
   verifyOtpData,
 } from "@/validators/functions/auth.validationFunctions";
@@ -12,19 +13,25 @@ import { AppDispatch } from "@/store/store";
 import snackbar from "@/hooks/useSnackbar";
 
 import {
+  useLoginMutation,
   useSignUpMutation,
   useVerifyOtpMutation,
 } from "@/api/auth/authApiSlice";
 
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
 
-import { SignUpCredentials, VerifyOtp } from "@/core/interface/auth.interface";
+import {
+  LoginCredentials,
+  SignUpCredentials,
+  VerifyOtp,
+} from "@/core/interface/auth.interface";
 
 export const useLoginHandler = () => {
   const [signUp] = useSignUpMutation();
+  const [login] = useLoginMutation();
   const [verifyOtp] = useVerifyOtpMutation();
-  const dispatch = useDispatch<AppDispatch>();
   const handleApiError = useApiErrorHandler();
+  const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
 
   const handlerSignUp = useCallback(
@@ -61,7 +68,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError],
+    [dispatch, signUp, handleApiError]
   );
 
   const handlerVerifyOtp = useCallback(
@@ -98,8 +105,42 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError],
+    [dispatch, signUp, handleApiError]
+  );
+  const handlerLogin = useCallback(
+    async ({ email, password }: LoginCredentials) => {
+      setLoading(true);
+      const { valid, errors } = await loginData({
+        email,
+        password,
+      });
+      if (!valid) {
+        snackbar.error(errors.join(", "));
+        setLoading(false);
+        return;
+      }
+      try {
+        const body = {
+          email: email.toLowerCase(),
+          password: password,
+        };
+        const data = await login(body).unwrap();
+        if (data) {
+          // dispatch(authActions.stepUpdate(data.data.steps));
+          // dispatch(authActions.tempSignUp(data.data));
+          snackbar.success("Login Successfull!!");
+          return data;
+        } else {
+          snackbar.error("Signup failed");
+        }
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [dispatch, signUp, handleApiError]
   );
 
-  return { handlerSignUp, loading, handlerVerifyOtp };
+  return { handlerSignUp, handlerVerifyOtp, handlerLogin, loading };
 };
