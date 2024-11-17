@@ -63,6 +63,7 @@ const LoginPage: React.FC = () => {
         router.push("/dashboard");
       }
     } catch (error) {
+      console.error("🚀 ~ handleSubmit ~ error:", error);
       snackbar.error("Invalid email or password", BOTTOM_CENTER);
     }
   };

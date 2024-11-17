@@ -68,7 +68,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError]
+    [dispatch, signUp, handleApiError],
   );
 
   const handlerVerifyOtp = useCallback(
@@ -105,7 +105,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError]
+    [dispatch, signUp, handleApiError],
   );
   const handlerLogin = useCallback(
     async ({ email, password }: LoginCredentials) => {
@@ -139,7 +139,7 @@ export const useLoginHandler = () => {
         setLoading(false);
       }
     },
-    [dispatch, signUp, handleApiError]
+    [dispatch, signUp, handleApiError],
   );
 
   return { handlerSignUp, handlerVerifyOtp, handlerLogin, loading };
