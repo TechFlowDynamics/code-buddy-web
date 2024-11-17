@@ -28,8 +28,14 @@ const LoginPage: React.FC = () => {
     }
   }, [isLoggedIn]);
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
+
+    // Validation
+    if (!email || !password) {
+      snackbar.error("Please enter email and password", BOTTOM_CENTER);
+      return;
+    }
 
     // Dummy user data
     const userData = {
@@ -42,18 +48,24 @@ const LoginPage: React.FC = () => {
       registrationStatus: "completed",
     };
 
-    if (!email || !password) {
-      snackbar.error("Please enter email and password", BOTTOM_CENTER);
-      return;
-    }
+    // Simulated login check
     if (email === "vivek.mohit@gmail.com" && password === "vivek.mohit@1111") {
-      login(userData);
+      login(userData); // Replace with actual state update function
+      router.push("/dashboard");
       return;
     }
-    handlerLogin({ email: email, password: password });
-    router.push("/dashboard");
-  };
 
+    // API login attempt
+    try {
+      const loginData = await handlerLogin({ email, password });
+      if (loginData) {
+        login(loginData); // Replace with actual state update function
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      snackbar.error("Invalid email or password", BOTTOM_CENTER);
+    }
+  };
   return (
     <div className="flex min-h-screen flex-col bg-gray-100 p-4 dark:bg-darkBgColor">
       <BackButton />

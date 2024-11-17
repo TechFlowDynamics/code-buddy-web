@@ -13,6 +13,7 @@ const initialAuthState = {
   active: false,
   isEmailVerified: false,
   registrationStatus: "",
+  refreshToken: "",
 };
 
 const authSlice = createSlice({
@@ -23,11 +24,13 @@ const authSlice = createSlice({
       saveAuthToLocal(action.payload);
       // Directly update the state properties instead of reassigning the state
       state.accessToken = action.payload.accessToken;
-      state.userId = action.payload.userId;
-      state.email = action.payload.email;
-      state.fullName = action.payload.fullName;
-      state.active = action.payload.active;
-      state.isEmailVerified = action.payload.isEmailVerified;
+      state.refreshToken = action.payload.refreshToken;
+      state.userId = action.payload.data.userId;
+      state.email = action.payload.data.email;
+      state.fullName = action.payload.data.userName;
+      state.active = action.payload.data.active;
+      state.isEmailVerified = action.payload.data.emailVerified;
+      state.step = action.payload.data.steps || undefined;
       state.registrationStatus = action.payload.registrationStatus;
     },
 
