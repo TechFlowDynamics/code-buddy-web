@@ -1,14 +1,17 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import snackbar from "@/hooks/useSnackbar";
+
 import { useQuestionQuery } from "@/api/questions/questionApiSlice";
+
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
+
 import { QuestionParamInterface } from "@/core/interface/question.interface";
 
 export const useQuestionHandler = () => {
   const handleApiError = useApiErrorHandler();
   const [queryParams, setQueryParams] = useState<QuestionParamInterface | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +47,7 @@ export const useQuestionHandler = () => {
         setLoading(false);
       }
     },
-    [data, error, handleApiError, queryParams, isFetching]
+    [data, error, handleApiError, queryParams, isFetching],
   );
 
   return { handlerAllQuestions, loading: loading || isFetching };

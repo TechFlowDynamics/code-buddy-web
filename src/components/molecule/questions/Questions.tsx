@@ -10,7 +10,7 @@ export default function QuestionHome() {
   const { handlerAllQuestions } = useQuestionHandler();
   const [questionData, setQuestionData] = useState<QuestionResponseInterface>();
   useEffect(() => {
-    handlerAllQuestions({ pageSize: 20, pageNo:1 }).then(data => {
+    handlerAllQuestions({ pageSize: 20, pageNo: 1 }).then(data => {
       if (data) {
         setQuestionData(data);
       }
