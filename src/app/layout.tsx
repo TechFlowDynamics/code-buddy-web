@@ -1,4 +1,3 @@
-import "./app.css";
 import "./globals.css";
 import RootLayoutClient from "./provider";
 import "@mantine/core/styles.css";
