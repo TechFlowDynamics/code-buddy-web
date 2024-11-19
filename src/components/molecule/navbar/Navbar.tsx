@@ -1,19 +1,24 @@
 "use client";
 
+import AccountDropdown from "./AccountDropdown";
 import MobileMenu from "./MobileMenu";
 import NavbarLink from "./NavbarLink";
 import { Button } from "@mantine/core";
 import { FaBars } from "react-icons/fa";
+import "react-icons/fa";
 
 import React, { useState } from "react";
 
+import { useAuth } from "@/hooks/AuthContext";
 import useNavigate from "@/hooks/useNavigation";
 import useScroll from "@/hooks/useScroll";
 
 import ThemeToggle from "@/components/ThemeToggle";
+import AccountButton from "@/components/atoms/buttons/AccountButton";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
   const scrolled = useScroll();
   const [opened, setOpened] = useState(false);
 
@@ -43,27 +48,42 @@ const Navbar: React.FC = () => {
 
         <div className="flex space-x-4">
           <ThemeToggle />
-          <Button
-            onClick={() => navigate("/get-started")}
-            variant="outline"
-            className="hidden hover:bg-blue-600/60 hover:text-white md:block">
-            Get Started
-          </Button>
-          <Button
-            onClick={() => navigate("/login")}
-            className="hidden bg-blue-500 hover:bg-blue-600 md:block">
-            Login
-          </Button>
-          <Button
-            variant="outline"
-            className="px-2 md:hidden"
-            onClick={() => setOpened(true)}>
-            <FaBars size={20} />
-          </Button>
+          {isLoggedIn ? (
+            <AccountDropdown onLogout={logout} />
+          ) : (
+            <>
+              <Button
+                onClick={() => navigate("/get-started")}
+                variant="outline"
+                className="hidden hover:bg-blue-600/60 hover:text-white md:block">
+                Get Started
+              </Button>
+              <Button
+                onClick={() => navigate("/login")}
+                className="hidden bg-blue-500 hover:bg-blue-600 md:block">
+                Login
+              </Button>
+            </>
+          )}
+          {isLoggedIn ? (
+            <AccountButton onClick={() => setOpened(true)} />
+          ) : (
+            <Button
+              variant="outline"
+              className="px-2 md:hidden"
+              onClick={() => setOpened(true)}>
+              <FaBars size={20} />
+            </Button>
+          )}
         </div>
       </div>
 
-      <MobileMenu opened={opened} onClose={() => setOpened(false)} />
+      <MobileMenu
+        opened={opened}
+        onClose={() => setOpened(false)}
+        onLogout={logout}
+        isLoggedIn={isLoggedIn}
+      />
     </nav>
   );
 };
