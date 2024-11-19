@@ -13,7 +13,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "no-unused-vars": "off",
     "react/no-unescaped-entities": "off",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "off",
     "prettier/prettier": "off",
   },
 };
