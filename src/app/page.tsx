@@ -7,6 +7,7 @@ import React from "react";
 import useNavigate from "@/hooks/useNavigation";
 
 import HeroBanner from "@/components/molecule/banner/HeroBanner";
+import QuestionHome from "@/components/molecule/questions/Questions";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function Home() {
             onButtonClick={handleButtonClick}
             backgroundImage={HeroBannerImg}
           />
+          <QuestionHome />
         </main>
       </div>
     </>
