@@ -15,7 +15,7 @@ export default function ThemeToggle() {
       {theme === "light" ? (
         <FaMoon className={`text-sm md:text-lg`} />
       ) : (
-        <FaSun className={`text-sm md:text-lg `} />
+        <FaSun className={`text-sm md:text-lg`} />
       )}
     </button>
   );

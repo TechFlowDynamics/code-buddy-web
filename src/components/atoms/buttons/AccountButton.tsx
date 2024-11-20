@@ -1,8 +1,8 @@
 // components/AccountButton.tsx
+import { Button } from "@mantine/core";
 import { FaUserCircle } from "react-icons/fa";
 
 import React from "react";
-import { Button } from "@mantine/core";
 
 interface AccountButtonProps {
   onClick?: () => void;

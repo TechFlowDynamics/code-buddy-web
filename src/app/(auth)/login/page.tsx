@@ -55,7 +55,7 @@ const LoginPage: React.FC = () => {
 
     // Simulated login check
     if (email === "vivek.mohit@gmail.com" && password === "vivek.mohit@1111") {
-      login( userData); // Replace with actual state update function
+      login(userData); // Replace with actual state update function
       router.push("/dashboard");
       return;
     }

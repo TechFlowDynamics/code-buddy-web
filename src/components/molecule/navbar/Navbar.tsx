@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
           <NavbarLink
             href="/"
             label="CodieBuddy"
-            className="text-2xl !font-bold "
+            className="text-2xl !font-bold"
           />
         </div>
 
