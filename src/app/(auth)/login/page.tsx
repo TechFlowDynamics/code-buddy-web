@@ -40,17 +40,22 @@ const LoginPage: React.FC = () => {
     // Dummy user data
     const userData = {
       accessToken: "dummyAccessToken123",
-      userId: "1",
-      email,
-      fullName: "Vivek Kumar",
-      active: true,
-      isEmailVerified: true,
-      registrationStatus: "completed",
+      refreshToken: "dummyAccessToken123",
+      data: {
+        userId: "1",
+        steps: "1",
+        email,
+        fullName: "Vivek Kumar",
+        userName: "vivek.kumar",
+        active: true,
+        isEmailVerified: true,
+        registrationStatus: "completed",
+      },
     };
 
     // Simulated login check
     if (email === "vivek.mohit@gmail.com" && password === "vivek.mohit@1111") {
-      login(userData); // Replace with actual state update function
+      login( userData); // Replace with actual state update function
       router.push("/dashboard");
       return;
     }

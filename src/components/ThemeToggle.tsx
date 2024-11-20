@@ -12,7 +12,11 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       className="rounded-md border bg-gray-200 p-2 text-gray-800 dark:bg-gray-700 dark:text-white"
       aria-label="Toggle Theme">
-      {theme === "light" ? <FaMoon /> : <FaSun />}
+      {theme === "light" ? (
+        <FaMoon className={`text-sm md:text-lg`} />
+      ) : (
+        <FaSun className={`text-sm md:text-lg `} />
+      )}
     </button>
   );
 }

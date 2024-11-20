@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
           <NavbarLink
             href="/"
             label="CodieBuddy"
-            className="!text-4xl !font-bold"
+            className="text-2xl !font-bold "
           />
         </div>
 
@@ -65,16 +65,15 @@ const Navbar: React.FC = () => {
               </Button>
             </>
           )}
-          {isLoggedIn ? (
-            <AccountButton onClick={() => setOpened(true)} />
-          ) : (
-            <Button
-              variant="outline"
-              className="px-2 md:hidden"
-              onClick={() => setOpened(true)}>
-              <FaBars size={20} />
-            </Button>
-          )}
+          <span className="block px-2 md:hidden">
+            {isLoggedIn ? (
+              <AccountButton onClick={() => setOpened(true)} />
+            ) : (
+              <Button variant="outline" onClick={() => setOpened(true)}>
+                <FaBars size={20} />
+              </Button>
+            )}
+          </span>
         </div>
       </div>
 
