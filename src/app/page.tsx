@@ -8,6 +8,7 @@ import useNavigate from "@/hooks/useNavigation";
 
 import HeroBanner from "@/components/molecule/banner/HeroBanner";
 import QuestionHome from "@/components/molecule/questions/Questions";
+import Footer from "@/components/atoms/footer/Footer";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function Home() {
             backgroundImage={HeroBannerImg}
           />
           <QuestionHome />
+          <Footer />
         </main>
       </div>
     </>

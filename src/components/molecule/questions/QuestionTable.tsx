@@ -59,9 +59,6 @@ export default function QuestionsTable({ data }: Props) {
           data={["Easy", "Medium", "Hard"]}
           checkIconPosition="right"
           value={difficultyFilter}
-          // comboboxProps={{
-          //   transitionProps: { transition: "pop", duration: 200 },
-          // }}
           onChange={value => setDifficultyFilter(value)}
         />
       </div>
