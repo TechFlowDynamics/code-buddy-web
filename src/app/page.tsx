@@ -6,9 +6,9 @@ import React from "react";
 
 import useNavigate from "@/hooks/useNavigation";
 
+import Footer from "@/components/atoms/footer/Footer";
 import HeroBanner from "@/components/molecule/banner/HeroBanner";
 import QuestionHome from "@/components/molecule/questions/Questions";
-import Footer from "@/components/atoms/footer/Footer";
 
 export default function Home() {
   const navigate = useNavigate();

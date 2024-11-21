@@ -40,7 +40,7 @@ const SelectDropdown = ({
       <Combobox.Option
         value={item}
         key={uuid()}
-        className={`dark:hover:bg-darkBgColor ${value === item && "dark:bg-darkBackground bg-slate-400"}`}>
+        className={`dark:hover:bg-darkBgColor ${value === item && "bg-slate-400 dark:bg-darkBackground"}`}>
         {item}
       </Combobox.Option>
       {data.length !== index + 1 && <Divider />}

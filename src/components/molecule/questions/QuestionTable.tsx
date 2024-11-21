@@ -1,4 +1,4 @@
-import { Badge, Button, Pagination, Select, Table } from "@mantine/core";
+import { Badge, Button, Pagination, Table } from "@mantine/core";
 
 import React, { useState } from "react";
 
