@@ -1,6 +1,6 @@
 import { Badge, Button, Pagination, Table } from "@mantine/core";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { useTheme } from "@/hooks/ThemeContext";
 
