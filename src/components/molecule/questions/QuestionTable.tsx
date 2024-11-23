@@ -17,31 +17,29 @@ interface Question {
 }
 
 interface Props {
+  difficultyFilter: string | null;
+  searchString: string;
+  currentPage: number;
+  pageSize: number;
+  totalContent: number;
+  setDifficultyFilter: (value: string | null) => void;
+  setCurrentPage: (value: number) => void;
+  setSearchString: (value: string) => void;
   data: Question[];
 }
 
-export default function QuestionsTable({ data }: Props) {
+export default function QuestionsTable({
+  data,
+  searchString,
+  pageSize,
+  totalContent,
+  difficultyFilter,
+  currentPage,
+  setCurrentPage,
+  setDifficultyFilter,
+  setSearchString,
+}: Props) {
   const { theme } = useTheme();
-  const [search, setSearch] = useState("");
-  const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const PAGE_SIZE = 15;
-
-  // Filtered data based on search and difficulty filter
-  const filteredData = data.filter(question => {
-    const matchesSearch = question.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesDifficulty =
-      difficultyFilter === null ||
-      question.difficulty.toLowerCase() === difficultyFilter?.toLowerCase();
-    return matchesSearch && matchesDifficulty;
-  });
-
-  // Paginated data
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const paginatedData = filteredData.slice(startIndex, startIndex + PAGE_SIZE);
 
   return (
     <div className="p-2">
@@ -49,8 +47,8 @@ export default function QuestionsTable({ data }: Props) {
       <div className="mb-4 flex items-center gap-4">
         <InputField
           placeholder="Search by title"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
+          value={searchString}
+          onChange={e => setSearchString(e.target.value)}
           parentClassName="flex-1 w-full"
           inputClassName="focus-scale-0 dark:focus-scale-0"
         />
@@ -79,8 +77,8 @@ export default function QuestionsTable({ data }: Props) {
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {paginatedData.length ? (
-            paginatedData.map((question, index) => (
+          {data.length ? (
+            data.map((question, index) => (
               <Table.Tr
                 key={index}
                 className="text-base hover:bg-[#ebf9ff] dark:hover:bg-darkBgColor">
@@ -123,7 +121,7 @@ export default function QuestionsTable({ data }: Props) {
       {/* Pagination */}
       <div className="mt-4 flex w-full justify-end px-4 py-2">
         <Pagination
-          total={Math.ceil(filteredData.length / PAGE_SIZE)}
+          total={Math.ceil(totalContent / pageSize)}
           value={currentPage}
           siblings={3}
           boundaries={3}
