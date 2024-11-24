@@ -4,27 +4,44 @@ import React, { useEffect, useState } from "react";
 
 import { useQuestionHandler } from "@/actions/questions.actions";
 
-import { QuestionResponseInterface } from "@/core/interface/question.interface";
-
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 10;
 
 export default function QuestionHome() {
-  const { handlerAllQuestions } = useQuestionHandler();
   const [searchString, setSearchString] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
-  const [questionData, setQuestionData] = useState<QuestionResponseInterface>();
+  const [totalContent, setTotalContent] = useState(0);
+  const [params, setParams] = useState({
+    pageSize: PAGE_SIZE,
+    pageNo: currentPage,
+    title: searchString,
+    difficulty: difficultyFilter || "",
+  });
+
+  const { fetchQuestions, data } = useQuestionHandler(params);
+
+  // Update query parameters when dependencies change
   useEffect(() => {
-    handlerAllQuestions({
+    const updatedParams = {
       pageSize: PAGE_SIZE,
       pageNo: currentPage,
       title: searchString,
-    }).then(data => {
-      if (data) {
-        setQuestionData(data);
+      difficulty: difficultyFilter || "",
+    };
+    setParams(updatedParams);
+  }, [searchString, currentPage, difficultyFilter]);
+
+  // Fetch questions when `params` change
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetchQuestions();
+      if (response) {
+        setTotalContent(response.total);
       }
-    });
-  }, [searchString, currentPage, difficultyFilter, questionData]);
+    };
+
+    fetchData();
+  }, [params, fetchQuestions]);
 
   return (
     <div className="mx-auto max-w-[80%] p-4">
@@ -36,8 +53,8 @@ export default function QuestionHome() {
         setCurrentPage={setCurrentPage}
         setDifficultyFilter={setDifficultyFilter}
         setSearchString={setSearchString}
-        data={questionData ? questionData.data : []}
-        totalContent={3428}
+        data={data ? data.data : []}
+        totalContent={totalContent}
         pageSize={PAGE_SIZE}
       />
     </div>

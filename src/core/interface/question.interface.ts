@@ -23,4 +23,6 @@ interface TopicTag {
 
 export interface QuestionParamInterface extends PaginationInerface {
   title?: string;
+  tags?: string;
+  difficulty?: string;
 }
