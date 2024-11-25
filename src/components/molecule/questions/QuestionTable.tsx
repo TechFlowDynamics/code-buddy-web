@@ -86,7 +86,9 @@ export default function QuestionsTable({
                   {question.title}
                 </Table.Td>
                 <Table.Td className="text-left">
-                  <Badge color={getBadgeColor(question.difficulty)}>
+                  <Badge
+                    variant="light"
+                    color={getBadgeColor(question.difficulty, theme)}>
                     {question.difficulty}
                   </Badge>
                 </Table.Td>
@@ -95,7 +97,7 @@ export default function QuestionsTable({
                 </Table.Td>
                 <Table.Td className="text-left">
                   {question.topicTags.map(tag => (
-                    <Badge key={tag._id} className="mr-2">
+                    <Badge key={tag._id} variant="light" className="mr-2">
                       {tag.name}
                     </Badge>
                   ))}
@@ -133,7 +135,7 @@ export default function QuestionsTable({
 }
 
 // Utility function to get badge color
-function getBadgeColor(difficulty: string) {
+function getBadgeColor(difficulty: string, theme: "dark" | "light") {
   switch (difficulty.toLowerCase()) {
     case "easy":
       return "green";
