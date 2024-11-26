@@ -18,7 +18,9 @@ export default function StaticPageLayout({
     <div>
       {" "}
       <Navbar />
-      <main>{children}</main>
+      <main
+      className="mt-10 p-8"
+      >{children}</main>
     </div>
   );
 }

@@ -15,14 +15,14 @@ const BackgroundAnimation: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      {Array.from({ length: 20 }).map((_, i) => (
+    <div className="absolute inset-0 -z-1 overflow-hidden">
+      {Array.from({ length: 10 }).map((_, i) => (
         <motion.div
           key={i}
           className="absolute h-32 w-32 rounded-full bg-slate-400/40 bg-opacity-20 backdrop-blur-lg dark:bg-gray-300/30"
           style={{
-            top: `${Math.random() * 90}%`,
-            left: `${Math.random() * 85}%`,
+            top: `${Math.random() * 80}%`,
+            left: `${Math.random() * 75}%`,
           }}
           initial="initial"
           animate="animate"

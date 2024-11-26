@@ -28,7 +28,8 @@ export default function QuestionHome() {
       title: searchString,
       difficulty: difficultyFilter || "",
     };
-    setParams(updatedParams);
+
+    setParams(prev => ({ ...prev, ...updatedParams }));
   }, [searchString, currentPage, difficultyFilter]);
 
   // Fetch questions when `params` change
@@ -41,7 +42,7 @@ export default function QuestionHome() {
     };
 
     fetchData();
-  }, [params, fetchQuestions]);
+  }, [params]);
 
   return (
     <div className="mx-auto max-w-[80%] p-4">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import snackbar from "@/hooks/useSnackbar";
 
@@ -10,27 +10,23 @@ import { QuestionParamInterface } from "@/core/interface/question.interface";
 
 interface UseQuestionHandlerReturn {
   fetchQuestions: () => Promise<any>;
+  refetch: () => Promise<any>;
   loading: boolean;
   data: any;
 }
 
 export const useQuestionHandler = (
-  initialParams: QuestionParamInterface,
+  initialParams: QuestionParamInterface
 ): UseQuestionHandlerReturn => {
-  const [queryParams, setQueryParams] =
-    useState<QuestionParamInterface>(initialParams);
   const handleApiError = useApiErrorHandler();
-  const { data, error, isFetching } = useQuestionQuery(queryParams, {
-    skip: !Object.keys(queryParams).length, // Skip query when params are not provided
+
+  const { data, error, isFetching, refetch } = useQuestionQuery(initialParams, {
+    skip: !Object.keys(initialParams).length, // Skip query when params are not provided
   });
 
   // Handles fetch logic
-  const fetchQuestions = async () => {
-    if (!Object.keys(queryParams).length) {
-      snackbar.error("Query parameters are required.");
-      return null;
-    }
-
+  const fetchQuestions = useCallback(async () => {
+    refetch();
     try {
       if (error) {
         throw new Error("Failed to fetch questions.");
@@ -39,17 +35,16 @@ export const useQuestionHandler = (
       if (data) {
         snackbar.success("Questions fetched successfully!");
         return data;
-      } else {
-        snackbar.error("No questions found.");
       }
     } catch (err) {
       handleApiError(err);
     }
-  };
-
-  useEffect(() => {
-    if (initialParams) setQueryParams(initialParams);
   }, [initialParams]);
 
-  return { fetchQuestions, loading: isFetching, data };
+  useEffect(() => {
+    if (initialParams) {
+      fetchQuestions();
+    }
+  }, [initialParams]);
+  return { fetchQuestions, loading: isFetching, data, refetch };
 };

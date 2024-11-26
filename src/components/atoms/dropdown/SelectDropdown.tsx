@@ -18,6 +18,7 @@ interface Props {
   data: string[];
   onChange: (value: string | null) => void;
   placeholder: string;
+  comboxClassName?: string;
   label?: string;
   checkIconPosition: "left" | "right";
   value: string | null;
@@ -27,6 +28,7 @@ const SelectDropdown = ({
   data,
   label,
   placeholder,
+  comboxClassName,
   value,
   onChange,
 }: Props) => {
@@ -36,7 +38,7 @@ const SelectDropdown = ({
   const { theme } = useTheme();
 
   const options = data.map((item, index) => (
-    <>
+    <div key={uuid()}>
       <Combobox.Option
         value={item}
         key={uuid()}
@@ -44,10 +46,10 @@ const SelectDropdown = ({
         {item}
       </Combobox.Option>
       {data.length !== index + 1 && <Divider />}
-    </>
+    </div>
   ));
   return (
-    <div className={`mb-4`}>
+    <div className={`mb-4 ${comboxClassName}`}>
       <Combobox
         onOptionSubmit={optionValue => {
           onChange(optionValue);
@@ -96,8 +98,8 @@ const SelectDropdown = ({
         </Combobox.Target>
 
         <Combobox.Dropdown className="my-1 dark:bg-gray-700">
-          <Combobox.Options>
-            <ScrollArea.Autosize mah={200} type="scroll">
+          <Combobox.Options key={uuid()}>
+            <ScrollArea.Autosize mah={200} type="scroll" key={uuid()}>
               {options.length === 0 ? (
                 <Combobox.Empty>Nothing found</Combobox.Empty>
               ) : (

@@ -48,7 +48,10 @@ export default function QuestionsTable({
         <InputField
           placeholder="Search by title"
           value={searchString}
-          onChange={e => setSearchString(e.target.value)}
+          onChange={e => {
+            setCurrentPage(1);
+            setSearchString(e.target.value);
+          }}
           parentClassName="flex-1 w-full"
           inputClassName="focus-scale-0 dark:focus-scale-0"
         />
@@ -57,7 +60,10 @@ export default function QuestionsTable({
           data={["Easy", "Medium", "Hard"]}
           checkIconPosition="right"
           value={difficultyFilter}
-          onChange={value => setDifficultyFilter(value)}
+          onChange={value => {
+            setCurrentPage(1);
+            setDifficultyFilter(value);
+          }}
         />
       </div>
 

@@ -1,7 +1,7 @@
 import rootReducer from "./rootReducer";
 import apiSlice from "@/features/apiSlice";
 import { configureStore } from "@reduxjs/toolkit";
-import { createLogger } from "redux-logger";
+// import { createLogger } from "redux-logger";
 import {
   FLUSH,
   PAUSE,
@@ -21,13 +21,13 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Create a custom logger to ignore specific actions
-const logger = createLogger({
-  predicate: (getState, action) => {
-    // Exclude redux-persist actions
-    const ignoreActions = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
-    return !ignoreActions.includes(action.type);
-  },
-});
+// const logger = createLogger({
+//   predicate: (getState, action) => {
+//     // Exclude redux-persist actions
+//     const ignoreActions = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
+//     return !ignoreActions.includes(action.type);
+//   },
+// });
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -36,7 +36,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(apiSlice.middleware, logger),
+    }).concat(apiSlice.middleware),
 });
 
 export const persistor = persistStore(store);
