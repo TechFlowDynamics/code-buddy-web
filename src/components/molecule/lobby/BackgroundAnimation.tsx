@@ -15,7 +15,7 @@ const BackgroundAnimation: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-0 -z-1 overflow-hidden">
+    <div className="-z-1 absolute inset-0 overflow-hidden">
       {Array.from({ length: 10 }).map((_, i) => (
         <motion.div
           key={i}

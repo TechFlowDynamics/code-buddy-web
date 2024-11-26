@@ -1,15 +1,15 @@
 "use client";
 
 import { Button } from "@mantine/core";
+import { v4 as uuid } from "uuid";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/hooks/AuthContext";
 
 import LobbyCards from "@/components/atoms/cards/LobbyCards";
-import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
 
 const games = [
   {
@@ -43,7 +43,6 @@ const games = [
 ];
 
 export default function LobbyPage() {
-  const [lobbyType, setLobbyType] = useState<string | null>(null);
   const { isLoggedIn } = useAuth();
   const router = useRouter();
 
@@ -73,8 +72,8 @@ export default function LobbyPage() {
         </div>
       </div>
       <div className="mx-0 my-4 flex w-full flex-wrap justify-around gap-8 rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <LobbyCards games={games} />
+        {Array.from({ length: 20 }).map(() => (
+          <LobbyCards games={games} key={uuid()} />
         ))}
       </div>
     </div>

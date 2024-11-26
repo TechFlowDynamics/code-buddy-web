@@ -16,7 +16,7 @@ interface UseQuestionHandlerReturn {
 }
 
 export const useQuestionHandler = (
-  initialParams: QuestionParamInterface
+  initialParams: QuestionParamInterface,
 ): UseQuestionHandlerReturn => {
   const handleApiError = useApiErrorHandler();
 
