@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Group, Text } from "@mantine/core";
+import { Avatar, Badge, Button, Group, Indicator, Text } from "@mantine/core";
 
 import React from "react";
 
@@ -24,17 +24,33 @@ interface LobbyCardsProps {
 
 const LobbyCard: React.FC<LobbyCardProps> = ({ game }) => {
   return (
-    <div className="flex w-full flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-lg sm:w-[calc(50%-20px)] lg:w-[calc(25%-20px)] xl:w-[calc(23%-20px)] dark:border-gray-700 dark:bg-gray-800">
+    <div className="flex w-full flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-lg md:w-[calc(50%-20px)] lg:w-[calc(50%-20px)] xl:w-[calc(23%-20px)] dark:border-gray-700 dark:bg-gray-800">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <Text className="text-sm text-gray-600 dark:text-gray-300">
           {game.date} {game.time}
         </Text>
-        <Badge
-          color={game.status === "Playing Now" ? "green" : "gray"}
-          size="sm">
-          {game.status}
-        </Badge>
+        {game.status === "Live" ? (
+          <Indicator
+            processing
+            inline
+            size={14}
+            className="border-2 !border-transparent">
+            <Badge
+              className="m-0 mt-0"
+              color={game.status === "Live" ? "green" : "gray"}
+              size="lg">
+              <span>{game.status}</span>
+            </Badge>
+          </Indicator>
+        ) : (
+          <Badge
+            color={game.status === "Live" ? "green" : "gray"}
+            size="lg"
+            className="flex">
+            <span>{game.status}</span>
+          </Badge>
+        )}
       </div>
 
       {/* Title */}
@@ -43,45 +59,60 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ game }) => {
       </Text>
 
       {/* Avatar Section */}
-      <div className="mt-3 flex items-center space-x-2">
-        {game.avatars.map((avatar, index) => (
-          <Avatar key={index} src={avatar} alt="Player avatar" size="sm" />
-        ))}
+      <div className="mt-3 flex items-center -space-x-2">
+        <Avatar.Group spacing="xs">
+          {game.avatars.slice(0, 4).map((avatar, index) => (
+            <Avatar
+              src={avatar}
+              alt="Player avatar"
+              radius="xl"
+              size="md"
+              key={index}
+            />
+          ))}
+          {game.avatars.length - 4 > 0 && (
+            <Avatar radius="xl">+{game.avatars.length - 4}</Avatar>
+          )}
+        </Avatar.Group>
       </div>
 
       {/* Game Details */}
       <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
         <div>
-          <Text>Small/Big Blind</Text>
+          <Text>Joined</Text>
           <Text className="font-semibold text-gray-800 dark:text-gray-100">
             {game.blinds}
           </Text>
         </div>
         <div>
-          <Text>Min Buy In</Text>
+          <Text>Lobby Size</Text>
           <Text className="font-semibold text-gray-800 dark:text-gray-100">
             {game.minBuyIn}
           </Text>
         </div>
         <div>
-          <Text>Token</Text>
+          <Text>Credits</Text>
           <Text className="font-semibold text-gray-800 dark:text-gray-100">
             {game.token}
           </Text>
         </div>
         <div>
           <Text>Type</Text>
-          <Badge color="pink">{game.type}</Badge>
+          <Badge
+            variant={game.type === "Global" ? "outline" : "gradient"}
+            color={game.type === "Global" ? "pink" : "blue"}>
+            {game.type}
+          </Badge>
         </div>
       </div>
 
       {/* Buttons */}
       <Group mt="4">
         <Button variant="outline" color="blue" fullWidth>
-          Share
+          View
         </Button>
-        <Button variant="filled" color="purple" fullWidth>
-          Play
+        <Button variant="filled" color="violet" fullWidth>
+          Join
         </Button>
       </Group>
     </div>
@@ -90,12 +121,10 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ game }) => {
 
 const LobbyCards: React.FC<LobbyCardsProps> = ({ games }) => {
   return (
-    // <div className="m-2 flex w-full flex-wrap gap-4">
     <>
       {games.map((game, index) => (
         <LobbyCard key={index} game={game} />
       ))}
-      {/* // </div> */}
     </>
   );
 };

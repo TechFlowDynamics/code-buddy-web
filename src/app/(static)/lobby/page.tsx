@@ -15,27 +15,53 @@ const games = [
   {
     date: "22.12.2022",
     time: "20:20:02",
-    title: "Chip Champs",
+    title: "Code Campus",
     avatars: [
-      "https://randomuser.me/api/portraits/men/32.jpg",
-      "https://randomuser.me/api/portraits/women/45.jpg",
+      "https://randomuser.me/api/portraits/men/3.jpg",
+      "https://randomuser.me/api/portraits/men/45.jpg",
+      "https://randomuser.me/api/portraits/men/33.jpg",
+      "https://randomuser.me/api/portraits/men/1.jpg",
+      "https://randomuser.me/api/portraits/women/4.jpg",
+      "https://randomuser.me/api/portraits/women/5.jpg",
+      "https://randomuser.me/api/portraits/women/6.jpg",
+      "https://randomuser.me/api/portraits/women/55.jpg",
     ],
-    blinds: "5/10",
-    minBuyIn: "100",
+    blinds: "10",
+    minBuyIn: "20",
     token: "PKR",
     type: "Local",
-    status: "Playing Now",
+    status: "Live",
   },
   {
     date: "23.12.2022",
     time: "15:10:00",
-    title: "Poker Pros",
+    title: "Hackos coders",
+    avatars: [
+      "https://randomuser.me/api/portraits/men/4.jpg",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+      "https://randomuser.me/api/portraits/women/38.jpg",
+    ],
+    blinds: "35",
+    minBuyIn: "50",
+    token: "USD",
+    type: "Global",
+    status: "Open",
+  },
+  {
+    date: "23.12.2022",
+    time: "15:10:00",
+    title: "Conquer Coder",
     avatars: [
       "https://randomuser.me/api/portraits/men/44.jpg",
       "https://randomuser.me/api/portraits/women/38.jpg",
+      "https://randomuser.me/api/portraits/women/28.jpg",
+      "https://randomuser.me/api/portraits/women/43.jpg",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+      "https://randomuser.me/api/portraits/women/3.jpg",
+      "https://randomuser.me/api/portraits/women/2.jpg",
     ],
-    blinds: "10/20",
-    minBuyIn: "500",
+    blinds: "20",
+    minBuyIn: "50",
     token: "USD",
     type: "Global",
     status: "Open",
@@ -54,7 +80,7 @@ export default function LobbyPage() {
   return (
     <div className="relative mt-0 flex min-h-screen flex-col overflow-hidden md:mt-4 md:px-16">
       {/* <BackgroundAnimation /> */}
-      <div className="relative left-[2%] top-[8%] flex w-full flex-col items-center shadow-md backdrop-blur-sm md:flex-row">
+      <div className="fixed left-[0%] top-[7%] px-[5%] z-10 flex w-full flex-col items-center shadow-md backdrop-blur-sm md:flex-row">
         <div className="m-2 w-full">
           <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
             Global Lobbies
@@ -71,7 +97,7 @@ export default function LobbyPage() {
           </Button>
         </div>
       </div>
-      <div className="mx-0 my-4 flex w-full flex-wrap justify-around gap-8 rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
+      <div className="mx-0 mt-[6%] my-4 flex w-full flex-wrap justify-around gap-8 rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
         {Array.from({ length: 20 }).map(() => (
           <LobbyCards games={games} key={uuid()} />
         ))}
