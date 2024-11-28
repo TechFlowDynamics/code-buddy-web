@@ -29,7 +29,7 @@ const games = [
     blinds: "10",
     minBuyIn: "20",
     token: "PKR",
-    type: "Local",
+    type: "Global",
     status: "Live",
   },
   {
@@ -80,7 +80,7 @@ export default function LobbyPage() {
   return (
     <div className="relative mt-0 flex min-h-screen flex-col overflow-hidden md:mt-4 md:px-16">
       {/* <BackgroundAnimation /> */}
-      <div className="fixed left-[0%] top-[7%] px-[5%] z-10 flex w-full flex-col items-center shadow-md backdrop-blur-sm md:flex-row">
+      <div className="fixed left-[0%] top-[7%] z-10 flex w-full flex-col items-center px-[5%] shadow-md backdrop-blur-sm md:flex-row">
         <div className="m-2 w-full">
           <h1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
             Global Lobbies
@@ -97,7 +97,7 @@ export default function LobbyPage() {
           </Button>
         </div>
       </div>
-      <div className="mx-0 mt-[6%] my-4 flex w-full flex-wrap justify-around gap-8 rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
+      <div className="mx-0 my-4 mt-[6%] flex w-full flex-wrap justify-around gap-8 rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
         {Array.from({ length: 20 }).map(() => (
           <LobbyCards games={games} key={uuid()} />
         ))}

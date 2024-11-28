@@ -35,6 +35,7 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ game }) => {
             processing
             inline
             size={14}
+            zIndex={5}
             className="border-2 !border-transparent">
             <Badge
               className="m-0 mt-0"
