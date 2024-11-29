@@ -63,10 +63,103 @@ const DASHBOARD_SIDEBAR_CONSTANT = [
   { name: "Settings", path: "/dashboard/settings" },
 ];
 
+const PRIVATE_LOBBY = [
+  {
+    date: "22.12.2022",
+    time: "20:20:02",
+    title: "Code Campus",
+    avatars: [
+      "https://randomuser.me/api/portraits/men/3.jpg",
+      "https://randomuser.me/api/portraits/men/45.jpg",
+      "https://randomuser.me/api/portraits/men/33.jpg",
+      "https://randomuser.me/api/portraits/men/1.jpg",
+      "https://randomuser.me/api/portraits/women/4.jpg",
+      "https://randomuser.me/api/portraits/women/5.jpg",
+      "https://randomuser.me/api/portraits/women/6.jpg",
+      "https://randomuser.me/api/portraits/women/55.jpg",
+    ],
+    blinds: "10",
+    minBuyIn: "20",
+    token: "PKR",
+    type: "Local",
+    status: "Live",
+  },
+  {
+    date: "23.12.2022",
+    time: "15:10:00",
+    title: "Hackos coders",
+    avatars: [
+      "https://randomuser.me/api/portraits/men/4.jpg",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+      "https://randomuser.me/api/portraits/women/38.jpg",
+    ],
+    blinds: "35",
+    minBuyIn: "50",
+    token: "USD",
+    type: "Global",
+    status: "Open",
+  },
+  {
+    date: "23.12.2022",
+    time: "15:10:00",
+    title: "Buddy coders",
+    avatars: [
+      "https://randomuser.me/api/portraits/men/14.jpg",
+      "https://randomuser.me/api/portraits/women/18.jpg",
+      "https://randomuser.me/api/portraits/women/34.jpg",
+      "https://randomuser.me/api/portraits/women/32.jpg",
+      "https://randomuser.me/api/portraits/women/37.jpg",
+    ],
+    blinds: "35",
+    minBuyIn: "50",
+    token: "USD",
+    type: "Global",
+    status: "Live",
+  },
+  {
+    date: "23.12.2022",
+    time: "15:10:00",
+    title: "Conquer Coder",
+    avatars: [
+      "https://randomuser.me/api/portraits/men/44.jpg",
+      "https://randomuser.me/api/portraits/women/38.jpg",
+      "https://randomuser.me/api/portraits/women/28.jpg",
+      "https://randomuser.me/api/portraits/women/43.jpg",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+      "https://randomuser.me/api/portraits/women/3.jpg",
+      "https://randomuser.me/api/portraits/women/2.jpg",
+    ],
+    blinds: "20",
+    minBuyIn: "50",
+    token: "USD",
+    type: "Global",
+    status: "Open",
+  },
+  {
+    date: "23.12.2022",
+    time: "15:10:00",
+    title: "Worlds Coder",
+    avatars: [
+      "https://randomuser.me/api/portraits/men/48.jpg",
+      "https://randomuser.me/api/portraits/women/28.jpg",
+      "https://randomuser.me/api/portraits/women/33.jpg",
+      "https://randomuser.me/api/portraits/women/58.jpg",
+      "https://randomuser.me/api/portraits/women/53.jpg",
+      "https://randomuser.me/api/portraits/women/52.jpg",
+    ],
+    blinds: "15",
+    minBuyIn: "25",
+    token: "USD",
+    type: "Local",
+    status: "Open",
+  },
+];
+
 const defaultConstants = {
   FEATURE_CONSTANT,
   DASHBOARD_SIDEBAR_CONSTANT,
   PRICING_PLANS_CONSTANT,
+  PRIVATE_LOBBY,
 };
 
 export default defaultConstants;

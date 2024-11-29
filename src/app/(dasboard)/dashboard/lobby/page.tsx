@@ -1,11 +1,15 @@
 "use client";
 
 import { Button } from "@mantine/core";
+import { v4 as uuid } from "uuid";
 
 import React, { useState } from "react";
 
 import useScroll from "@/hooks/useScroll";
 
+import staticConstant from "@/core/constants/static.constant";
+
+import LobbyCards from "@/components/atoms/cards/LobbyCards";
 import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
 
 const Lobby = () => {
@@ -13,13 +17,15 @@ const Lobby = () => {
   const [lobbyType, setLobbyType] = useState<string | null>(null);
 
   return (
-    <div className="relative mt-4 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-4">
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden p-4">
       <div
-        className={`fixed z-10 flex w-[85%] flex-col items-center px-[5%] shadow-md backdrop-blur-sm transition-all duration-700 md:flex-row ${scrolled ? "top-0" : "top-[8%] !duration-100"}`}>
+        className={`fixed z-10 flex w-[85%] flex-col items-center px-[5%] shadow-md backdrop-blur-sm transition-all duration-500 ease-linear md:flex-row ${
+          scrolled ? "top-0" : "top-[8%]"
+        }`}>
         <div className="m-2 flex w-full gap-4">
           <h1 className="text-2xl font-bold md:text-4xl lg:text-5xl">Lobby</h1>
           <SelectDropdown
-            placeholder="Filter by difficulty"
+            placeholder="Filter by Type"
             data={["Local", "Global"]}
             checkIconPosition="right"
             value={lobbyType}
@@ -38,6 +44,11 @@ const Lobby = () => {
             Create
           </Button>
         </div>
+      </div>
+      <div className="mx-0 mb-0 mt-[5%] flex h-[75vh] w-full flex-wrap justify-evenly gap-2 overflow-y-scroll rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
+        {Array.from({ length: 5 }).map(() => (
+          <LobbyCards games={staticConstant.PRIVATE_LOBBY} key={uuid()} />
+        ))}
       </div>
     </div>
   );
