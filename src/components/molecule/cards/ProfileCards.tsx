@@ -1,11 +1,14 @@
 // src/app/profile/components/ProfileCard.tsx
-'use client'
+"use client";
+
 import { Avatar } from "@mantine/core";
 import { useSelector } from "react-redux";
 
 import React from "react";
 
 import { RootState } from "@/store/store";
+
+// src/app/profile/components/ProfileCard.tsx
 
 const ProfileCard: React.FC = () => {
   const userDetails = useSelector((state: RootState) => state.auth);
