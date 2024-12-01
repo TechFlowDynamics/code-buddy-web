@@ -10,6 +10,8 @@ import { RootState } from "@/store/store";
 
 // src/app/profile/components/ProfileCard.tsx
 
+// src/app/profile/components/ProfileCard.tsx
+
 const ProfileCard: React.FC = () => {
   const userDetails = useSelector((state: RootState) => state.auth);
   return (
