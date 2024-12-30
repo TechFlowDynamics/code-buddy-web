@@ -9,7 +9,6 @@ import { RootState } from "@/store/store";
 
 const ProfileCard: React.FC = () => {
   const userDetails = useSelector((state: RootState) => state.auth);
-  console.log("🚀 ~ userDetails:", userDetails)
   return (
     <div className="w-full max-w-2xl rounded-lg bg-lightBackground bg-opacity-10 p-6 text-center shadow-md backdrop-blur-lg dark:bg-darkBgColor dark:bg-opacity-30">
       <Avatar

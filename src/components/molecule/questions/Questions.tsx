@@ -1,3 +1,5 @@
+"use client";
+
 import QuestionsTable from "./QuestionTable";
 
 import React, { useEffect, useState } from "react";

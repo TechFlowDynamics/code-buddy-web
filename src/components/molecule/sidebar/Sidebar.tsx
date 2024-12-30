@@ -1,5 +1,6 @@
 "use client";
 
+import { Divider } from "@mantine/core";
 import { IoLogOutOutline } from "react-icons/io5";
 
 import React from "react";
@@ -21,7 +22,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-glass flex h-screen w-64 flex-col space-y-4 p-6 shadow-xl backdrop-blur-md">
+    <div className="bg-glass flex min-h-full w-64 flex-col space-y-4 p-6 shadow-xl backdrop-blur-md">
       <h2 className="text-center text-2xl font-bold">Dashboard</h2>
       <nav className="flex-grow space-y-2">
         {staticConstants.DASHBOARD_SIDEBAR_CONSTANT.map(item => (
@@ -36,13 +37,14 @@ const Sidebar = () => {
             {item.name}
           </button>
         ))}
+        <Divider className="border-gray-600/60" />
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-red-500 p-2 text-center hover:bg-red-600">
+          <IoLogOutOutline size={20} />
+          <span>Logout</span>
+        </button>
       </nav>
-      <button
-        onClick={handleLogout}
-        className="mt-auto flex w-full items-center justify-center gap-2 rounded-md bg-red-500 p-2 text-center hover:bg-red-600">
-        <IoLogOutOutline size={20} />
-        <span>Logout</span>
-      </button>
     </div>
   );
 };

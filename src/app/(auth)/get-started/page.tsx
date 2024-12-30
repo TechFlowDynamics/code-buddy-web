@@ -45,7 +45,6 @@ const GetStarted: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ userStep:", userStep);
     if (userStep) {
       setStep(userStep);
     }

@@ -1,4 +1,5 @@
 import ProfileCard from "../cards/ProfileCards";
+import QuestionHome from "../questions/Questions";
 
 import React from "react";
 
@@ -16,8 +17,8 @@ const DashboardContent = () => {
             progress={item.progress}
           />
         ))} */}
-        {/* <Progress /> */}
       </div>
+      <QuestionHome />
     </div>
   );
 };
