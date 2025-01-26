@@ -89,7 +89,7 @@ const Lobby = () => {
 
      
 
-      const response = await handlerCreateRoom(payload);
+       await handlerCreateRoom(payload);
 
     
 
@@ -123,7 +123,7 @@ const Lobby = () => {
     }
 
     try {
-      const response = await handlerJoinRoom({ roomCode });
+       await handlerJoinRoom({ roomCode });
 
       alert("Successfully joined the lobby!");
       router.push(`/room/${roomCode}`);

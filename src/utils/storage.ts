@@ -87,10 +87,7 @@ export const clearStorage = (
 
 export const saveAuthToLocal = (loginDetails: AuthData): void => {
   if (typeof localStorage !== "undefined" && localStorage) {
-
     localStorage.setItem("loginDetails", JSON.stringify(loginDetails));
-    const { accessToken } = loginDetails;
-   
   }
 };
 

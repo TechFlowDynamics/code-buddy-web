@@ -134,7 +134,7 @@ export default function LobbyPage() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        await response.json();
        
         alert("Lobby created successfully!");
         setIsOpen(false);
