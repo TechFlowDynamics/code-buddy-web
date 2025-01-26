@@ -15,8 +15,9 @@ const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   prepareHeaders: headers => {
     const accessToken = getAuthToken();
+  
     if (accessToken) {
-      headers.set("authorization", `Bearer ${accessToken}`);
+      headers.set("Authorization", `Bearer ${accessToken}`);
     }
     return headers;
   },
