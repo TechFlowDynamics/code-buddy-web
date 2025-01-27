@@ -118,12 +118,12 @@ const Lobby = () => {
     }
 
     try {
-      console.log("Joining room with code:", roomCode);
+     
       const payload = {
         roomCode: roomCode,
       };
       const response = await handlerJoinRoom(payload);
-      console.log("response", response);
+      
       if (response) {
         router.push(`/dashboard/room/${roomCode}`);
       }

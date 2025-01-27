@@ -74,24 +74,23 @@ export const useRoomHandler = () => {
 
   const handlerJoinRoom = useCallback(
     async ({ roomCode }: IJoinRoom) => {
-      console.log("roomCode", roomCode);
+     
       setLoading(true);
       const { valid, errors } = await validateJoinRoom({
         roomCode,
       });
-      console.log("valid", valid);
-      console.log("errors", errors);
+     
 
       if (!valid) {
         snackbar.error(errors.join(", "));
-        console.log("errors", errors);
+        
         setLoading(false);
         return;
       }
       try {
-        console.log("roomCode", roomCode);
+       
         const data = await joinRoom({roomCode}).unwrap();
-        console.log("dayaayfsjsgjshh", data);
+       
         if (data) {
           snackbar.success("Room created successfully!!");
           return data;

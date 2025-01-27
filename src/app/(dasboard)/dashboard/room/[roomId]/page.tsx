@@ -45,7 +45,7 @@ const Page = () => {
     if (storedData) {
       try {
         const parsedData: { data: UserData } = JSON.parse(storedData);
-        console.log(parsedData);
+       
         setUser(parsedData.data);
       } catch (error) {
         console.error("Failed to parse user data:", error);
