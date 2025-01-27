@@ -1,5 +1,5 @@
 import { IJoinRoom, IRoom } from "@/core/interface/room.interface";
-import { roomValidatorSchema } from "../schemas/room.validationSchema";
+import { joinRoomValidatorSchema, roomValidatorSchema } from "../schemas/room.validationSchema";
 import * as yup from "yup";
 
 export const validteCreateRoom = async (data: IRoom) => {
@@ -16,7 +16,7 @@ export const validteCreateRoom = async (data: IRoom) => {
 
 export const validateJoinRoom = async (data: IJoinRoom) => {
   try {
-    await roomValidatorSchema.validate(data, { abortEarly: false });
+    await joinRoomValidatorSchema.validate(data, { abortEarly: false });
     return { valid: true, errors: [] };
   } catch (error) {
     if (error instanceof yup.ValidationError) {

@@ -46,7 +46,6 @@ const Lobby = () => {
   const scrolled = useScroll();
   const router = useRouter();
 
-
   const [lobbyType, setLobbyType] = useState<string | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
@@ -87,11 +86,7 @@ const Lobby = () => {
         endTime: new Date(formData.endTime),
       };
 
-     
-
-       await handlerCreateRoom(payload);
-
-    
+      await handlerCreateRoom(payload);
 
       alert("Lobby created successfully!");
 
@@ -123,10 +118,15 @@ const Lobby = () => {
     }
 
     try {
-       await handlerJoinRoom({ roomCode });
-
-      alert("Successfully joined the lobby!");
-      router.push(`/room/${roomCode}`);
+      console.log("Joining room with code:", roomCode);
+      const payload = {
+        roomCode: roomCode,
+      };
+      const response = await handlerJoinRoom(payload);
+      console.log("response", response);
+      if (response) {
+        router.push(`/dashboard/room/${roomCode}`);
+      }
     } catch (error) {
       console.error("Error joining room:", error);
       alert(error || "An error occurred while joining the lobby.");
@@ -199,10 +199,9 @@ const Lobby = () => {
       </Modal>
 
       <Modal
-         isOpen={isCreateOpen}
-         onClose={() => setIsCreateOpen(false)}
-         title="Create a Lobby"
-        >
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        title="Create a Lobby">
         <h2 className="mb-4 text-lg font-bold">Create a Lobby</h2>
         <form onSubmit={handleCreateSubmit} className="space-y-4">
           <div>

@@ -1,9 +1,15 @@
-import { validateJoinRoom, validteCreateRoom } from "@/validators/functions/room.validationFunctions";
+import {
+  validateJoinRoom,
+  validteCreateRoom,
+} from "@/validators/functions/room.validationFunctions";
+
 import { useCallback, useState } from "react";
+
 import snackbar from "@/hooks/useSnackbar";
-import { useCreateRoomsMutation, useJoinRoomsMutation } from "@/api/rooms/roomApiSlice";
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
+
 import { IJoinRoom, IRoom } from "@/core/interface/room.interface";
+import { useCreateRoomsMutation, useJoinRoomsMutation } from "@/api/rooms/roomApiSlice";
 
 export const useRoomHandler = () => {
   const [createRoom] = useCreateRoomsMutation();
@@ -33,12 +39,11 @@ export const useRoomHandler = () => {
       });
       if (!valid) {
         snackbar.error(errors.join(", "));
-      
+
         setLoading(false);
         return;
       }
       try {
-
         const body = {
           roomName,
           questionIds,
@@ -48,13 +53,12 @@ export const useRoomHandler = () => {
           endTime,
           roomSize,
         };
-       
 
         const data = await createRoom(body).unwrap();
-       
+
         if (data) {
           snackbar.success("Room created successfully!!");
-         
+
           return data;
         } else {
           snackbar.error("Room creation failed");
@@ -68,23 +72,26 @@ export const useRoomHandler = () => {
     [createRoom, handleApiError],
   );
 
-
   const handlerJoinRoom = useCallback(
-    async ({
-      roomCode
-    }: IJoinRoom) => {
+    async ({ roomCode }: IJoinRoom) => {
+      console.log("roomCode", roomCode);
       setLoading(true);
       const { valid, errors } = await validateJoinRoom({
-       roomCode
+        roomCode,
       });
+      console.log("valid", valid);
+      console.log("errors", errors);
+
       if (!valid) {
         snackbar.error(errors.join(", "));
+        console.log("errors", errors);
         setLoading(false);
         return;
       }
       try {
-       
-        const data = await joinRoom(roomCode).unwrap();
+        console.log("roomCode", roomCode);
+        const data = await joinRoom({roomCode}).unwrap();
+        console.log("dayaayfsjsgjshh", data);
         if (data) {
           snackbar.success("Room created successfully!!");
           return data;
@@ -100,5 +107,5 @@ export const useRoomHandler = () => {
     [joinRoom, handleApiError],
   );
 
-  return { handlerCreateRoom, handlerJoinRoom ,loading };
+  return { handlerCreateRoom, handlerJoinRoom, loading };
 };

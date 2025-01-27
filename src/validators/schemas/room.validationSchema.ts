@@ -26,3 +26,7 @@ export const roomValidatorSchema = yup.object().shape({
     .matches(/^[0-9]+$/, "Credits must be a number")
     .required("Credits are required"),
 });
+
+export const joinRoomValidatorSchema = yup.object().shape({
+  roomCode : yup.string().required("Room code is required"),
+});

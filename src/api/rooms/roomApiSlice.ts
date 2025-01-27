@@ -2,7 +2,7 @@
 import apiSlice from "@/features/apiSlice";
 import { IJoinRoom, IRoom } from "@/core/interface/room.interface";
 
-export const authApiSlice = apiSlice.injectEndpoints({
+export const roomApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     createRooms: builder.mutation<IRoom, any>({
       query: credentials => ({
@@ -23,4 +23,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 
 
-export const { useCreateRoomsMutation,useJoinRoomsMutation  } = authApiSlice;
+export const { useCreateRoomsMutation , useJoinRoomsMutation  } = roomApiSlice;
