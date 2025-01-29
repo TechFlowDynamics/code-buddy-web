@@ -30,10 +30,13 @@ function getAuthToken(): string {
 
   if (typeof window !== "undefined") {
     try {
-      const userData = localStorage.getItem("userData");
+      const userData = localStorage.getItem("loginDetails");
+     
       if (userData) {
         const parsedUserData: UserData = JSON.parse(userData);
+       
         authToken = parsedUserData.accessToken;
+       
       } else {
         console.log("No userData found in localStorage");
       }
