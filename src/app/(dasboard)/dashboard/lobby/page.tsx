@@ -1,19 +1,12 @@
 "use client";
-
 import { Button } from "@mantine/core";
 import { v4 as uuid } from "uuid";
-
 import React, { useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import useScroll from "@/hooks/useScroll";
-
 import { useRoomHandler } from "@/actions/room.actions";
-
 import staticConstant from "@/core/constants/static.constant";
-import { RoomType } from "@/core/interface/room.interface";
-
+import { IJoinRoom, IJoinRoomResponse, RoomType } from "@/core/interface/room.interface";
 import LobbyCards from "@/components/atoms/cards/LobbyCards";
 import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
 
@@ -88,7 +81,7 @@ const Lobby = () => {
 
       await handlerCreateRoom(payload);
 
-      alert("Lobby created successfully!");
+
 
       // Redirect to the room page
       router.push("/dashboard/room");
@@ -106,33 +99,48 @@ const Lobby = () => {
       setIsCreateOpen(false);
     } catch (error) {
       console.error("Error creating lobby:", error);
-      alert(error || "An error occurred while creating the lobby.");
+      
     }
   };
 
   const handleJoinSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (roomCode.length !== 6) {
-      alert("Join code must be exactly 6 characters.");
-      return;
-    }
-
+  
+ 
+  
     try {
-     
-      const payload = {
-        roomCode: roomCode,
-      };
-      const response = await handlerJoinRoom(payload);
-      
-      if (response) {
-        router.push(`/dashboard/room/${roomCode}`);
+      const payload: IJoinRoom = { roomCode };
+      const response = await handlerJoinRoom(payload) as IJoinRoomResponse | undefined;
+  
+      if (!response) {
+        throw new Error("No response received from the server.");
       }
-    } catch (error) {
+  
+      if (response.status === "success" && response.room) {
+        const { message, room } = response;
+  
+      
+  
+        console.log("Joined Room Data:", room); // Debugging info
+  
+        router.push(`/dashboard/room/${room.roomCode}`);
+      } else {
+        throw new Error(response?.message || "Failed to join the room.");
+      }
+    } catch (error: any) {
       console.error("Error joining room:", error);
-      alert(error || "An error occurred while joining the lobby.");
+  
+      let errorMessage = "An error occurred while joining the lobby.";
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message; // Extract specific error message
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+  
+
     }
   };
-
+  
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden p-4">
       <div

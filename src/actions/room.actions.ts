@@ -92,10 +92,10 @@ export const useRoomHandler = () => {
         const data = await joinRoom({roomCode}).unwrap();
        
         if (data) {
-          snackbar.success("Room created successfully!!");
+          snackbar.success("Room joined successfully!!");
           return data;
         } else {
-          snackbar.error("Room creation failed");
+          snackbar.error("Room joining failed");
         }
       } catch (error) {
         handleApiError(error);
