@@ -15,6 +15,7 @@
     "@mantine/hooks": "^7.13.3",
     "@reduxjs/toolkit": "^2.3.0",
     "@tabler/icons-react": "^3.20.0",
+    "appwrite": "^16.1.0",
     "framer-motion": "^11.11.10",
     "next": "14.2.15",
     "notistack": "^3.0.1",
