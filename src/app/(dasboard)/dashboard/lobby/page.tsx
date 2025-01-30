@@ -1,12 +1,24 @@
 "use client";
+
 import { Button } from "@mantine/core";
 import { v4 as uuid } from "uuid";
+
 import React, { useState } from "react";
+
 import { useRouter } from "next/navigation";
+
 import useScroll from "@/hooks/useScroll";
+
 import { useRoomHandler } from "@/actions/room.actions";
+
 import staticConstant from "@/core/constants/static.constant";
-import { IJoinRoom, IJoinRoomResponse, RoomType } from "@/core/interface/room.interface";
+import {
+  ICreateRoomResponse,
+  IJoinRoom,
+  IJoinRoomResponse,
+  RoomType,
+} from "@/core/interface/room.interface";
+
 import LobbyCards from "@/components/atoms/cards/LobbyCards";
 import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
 
@@ -43,7 +55,9 @@ const Lobby = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
 
-  const { handlerCreateRoom, handlerJoinRoom } = useRoomHandler();
+  const [roomCode, setRoomCode] = useState("");
+  const { handlerCreateRoom, handlerJoinRoom, handlerGetRoom } =
+    useRoomHandler(roomCode);
 
   const [formData, setFormData] = useState({
     roomName: "",
@@ -54,8 +68,6 @@ const Lobby = () => {
     startTime: "",
     endTime: "",
   });
-
-  const [roomCode, setRoomCode] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -79,13 +91,14 @@ const Lobby = () => {
         endTime: new Date(formData.endTime),
       };
 
-      await handlerCreateRoom(payload);
-
-
-
-      // Redirect to the room page
-      router.push("/dashboard/room");
-
+      const response = (await handlerCreateRoom(payload)) as
+        | ICreateRoomResponse
+        | undefined;
+      console.log("Response:", response?.room); // Debugging info
+      const { room } = response || {};
+      if (response?.statusCode === 200) {
+        router.push(`/dashboard/room/${room?.roomCode}`);
+      }
       // Reset form and close modal
       setFormData({
         roomName: "",
@@ -99,48 +112,42 @@ const Lobby = () => {
       setIsCreateOpen(false);
     } catch (error) {
       console.error("Error creating lobby:", error);
-      
     }
   };
 
   const handleJoinSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
- 
-  
     try {
       const payload: IJoinRoom = { roomCode };
-      const response = await handlerJoinRoom(payload) as IJoinRoomResponse | undefined;
-  
+      const response = (await handlerJoinRoom(payload)) as
+        | IJoinRoomResponse
+        | undefined;
+
       if (!response) {
         throw new Error("No response received from the server.");
       }
-  
+
       if (response.status === "success" && response.room) {
         const { message, room } = response;
-  
-      
-  
+
         console.log("Joined Room Data:", room); // Debugging info
-  
+
         router.push(`/dashboard/room/${room.roomCode}`);
       } else {
         throw new Error(response?.message || "Failed to join the room.");
       }
     } catch (error: any) {
       console.error("Error joining room:", error);
-  
+
       let errorMessage = "An error occurred while joining the lobby.";
       if (error?.response?.data?.message) {
         errorMessage = error.response.data.message; // Extract specific error message
       } else if (error?.message) {
         errorMessage = error.message;
       }
-  
-
     }
   };
-  
+
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden p-4">
       <div
