@@ -5,10 +5,13 @@ import {
 
 import { useCallback, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import snackbar from "@/hooks/useSnackbar";
 
 import {
   useCreateRoomsMutation,
+  useExitRoomMutation,
   useGetRoomQuery,
   useJoinRoomsMutation,
 } from "@/api/rooms/roomApiSlice";
@@ -16,16 +19,11 @@ import {
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
 
 import { ICreateRoom, IJoinRoom, IRoom } from "@/core/interface/room.interface";
-import { useRouter } from "next/navigation";
 
-export const useRoomHandler = (roomId: string) => {
+export const useRoomHandler = () => {
   const [createRoom] = useCreateRoomsMutation();
   const [joinRoom] = useJoinRoomsMutation();
-  // Automatic query call on mount:
-  const { data, error:getRoomError, isLoading, refetch } = useGetRoomQuery(roomId, {
-    skip: !roomId // Skip query when params are not provided
-  });
-  const router = useRouter();
+
   const handleApiError = useApiErrorHandler();
   const [loading, setLoading] = useState(false);
 
@@ -115,44 +113,75 @@ export const useRoomHandler = (roomId: string) => {
     [joinRoom, handleApiError],
   );
 
-  // const handlerGetRoom = useCallback(
-  //   async (roomId: string) => {
-  //     setLoading(true);
-  //     try {
-  //       const data = await getRoom(roomId);
-  //       return data;
-  //     } catch (error) {
-  //       handleApiError(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   },
-  //   [handleApiError],
-  // );
+  return {
+    handlerCreateRoom,
+    handlerJoinRoom,
+    loading,
+  };
+};
+
+export const useRoomQueryHandler = (roomCode: string) => {
+  const [exitRoom] = useExitRoomMutation();
+  const {
+    data,
+    error: getRoomError,
+    isLoading,
+    refetch,
+  } = useGetRoomQuery(roomCode, {
+    skip: !roomCode, // Skip query when params are not provided
+  });
+  const router = useRouter();
+  const handleApiError = useApiErrorHandler();
+  const [loading, setLoading] = useState(false);
 
   const handlerGetRoom = useCallback(
-    async (roomId: string) => {
+    async (roomCode: string) => {
       setLoading(true);
       try {
         refetch();
 
         if (data) {
           snackbar.success("Room joined successfully!");
-          router.push(`/dashboard/room/${roomId}`);
+          router.push(`/dashboard/room/${roomCode}`);
           return data;
-        } else if(getRoomError){
+        } else if (getRoomError) {
           router.push(`/dashboard/lobby`);
           snackbar.error("Access Denied");
         }
-        
       } catch (error) {
-       
         handleApiError(error);
       } finally {
         setLoading(false);
       }
     },
-    [handleApiError,roomId],
+    [handleApiError, roomCode],
   );
-  return { handlerCreateRoom, handlerJoinRoom, handlerGetRoom, loading };
+
+  const handlerExitRoom = useCallback(
+    async (roomCode: string) => {
+      setLoading(true);
+      try {
+        const data = await exitRoom({ roomCode });
+
+        if (data) {
+          snackbar.success("Exited room successfully!");
+          router.push(`/dashboard/lobby`);
+          return data;
+        } else {
+          snackbar.error("Failed to exit room");
+        }
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [handleApiError, roomCode],
+  );
+
+  return {
+    handlerGetRoom,
+    handlerExitRoom,
+    loading,
+  };
 };

@@ -56,8 +56,7 @@ const Lobby = () => {
   const [isJoinOpen, setIsJoinOpen] = useState(false);
 
   const [roomCode, setRoomCode] = useState("");
-  const { handlerCreateRoom, handlerJoinRoom, handlerGetRoom } =
-    useRoomHandler(roomCode);
+  const { handlerCreateRoom, handlerJoinRoom } = useRoomHandler();
 
   const [formData, setFormData] = useState({
     roomName: "",
@@ -94,7 +93,7 @@ const Lobby = () => {
       const response = (await handlerCreateRoom(payload)) as
         | ICreateRoomResponse
         | undefined;
-      console.log("Response:", response?.room); // Debugging info
+
       const { room } = response || {};
       if (response?.statusCode === 200) {
         router.push(`/dashboard/room/${room?.roomCode}`);
@@ -115,7 +114,9 @@ const Lobby = () => {
     }
   };
 
-  const handleJoinSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleJoinSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault();
     try {
       const payload: IJoinRoom = { roomCode };
@@ -128,9 +129,7 @@ const Lobby = () => {
       }
 
       if (response.status === "success" && response.room) {
-        const { message, room } = response;
-
-        console.log("Joined Room Data:", room); // Debugging info
+        const { room } = response;
 
         router.push(`/dashboard/room/${room.roomCode}`);
       } else {
@@ -184,7 +183,7 @@ const Lobby = () => {
         isOpen={isJoinOpen}
         onClose={() => setIsJoinOpen(false)}
         title="Join a Lobby">
-        <form onSubmit={handleJoinSubmit} className="space-y-4">
+        <form className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Join Code</label>
             <input
@@ -205,6 +204,7 @@ const Lobby = () => {
               Cancel
             </button>
             <button
+              onClick={e => handleJoinSubmit(e)}
               type="submit"
               className="rounded bg-blue-500 px-4 py-2 text-white">
               Join Lobby
