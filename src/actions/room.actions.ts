@@ -19,7 +19,7 @@ import {
 
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
 
-import { ICreateRoom, IJoinRoom, IRoom } from "@/core/interface/room.interface";
+import { ICreateRoom, IJoinRoom } from "@/core/interface/room.interface";
 
 export const useRoomHandler = () => {
   const [createRoom] = useCreateRoomsMutation();
@@ -113,7 +113,7 @@ export const useRoomHandler = () => {
     },
     [joinRoom, handleApiError],
   );
-  const { data, error, isLoading, refetch } = useGetRoomsQuery(undefined, {
+  const { data, refetch } = useGetRoomsQuery(undefined, {
     skip: false,
   });
 
@@ -147,7 +147,6 @@ export const useRoomQueryHandler = (roomCode: string) => {
   const {
     data,
     error: getRoomError,
-    isLoading,
     refetch,
   } = useVerifyRoomQuery(roomCode, {
     skip: !roomCode, // Skip query when params are not provided

@@ -1,4 +1,4 @@
-import { ICreateRoom, ICreateRoomResponse, IJoinRoom, IRoom } from "@/core/interface/room.interface";
+import { ICreateRoom, IJoinRoom } from "@/core/interface/room.interface";
 import { joinRoomValidatorSchema, roomValidatorSchema } from "../schemas/room.validationSchema";
 import * as yup from "yup";
 

@@ -17,7 +17,6 @@ import {
   RoomType,
 } from "@/core/interface/room.interface";
 
-import LobbyCards from "@/components/atoms/cards/LobbyCards";
 import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
 import RoomsLobby from "@/components/atoms/roomsLobby/RoomsLobby";
 
@@ -134,12 +133,7 @@ const Lobby = () => {
       }
     } catch (error: any) {
       console.error("Error joining room:", error);
-      let errorMessage = "An error occurred while joining the lobby.";
-      if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error?.message) {
-        errorMessage = error.message;
-      }
+      throw new Error(error.message);
     }
   };
 
