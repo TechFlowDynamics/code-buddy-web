@@ -12,8 +12,9 @@ import snackbar from "@/hooks/useSnackbar";
 import {
   useCreateRoomsMutation,
   useExitRoomMutation,
-  useGetRoomQuery,
+  useGetRoomsQuery,
   useJoinRoomsMutation,
+  useVerifyRoomQuery,
 } from "@/api/rooms/roomApiSlice";
 
 import { useApiErrorHandler } from "@/utils/errorHandler.utils";
@@ -112,10 +113,31 @@ export const useRoomHandler = () => {
     },
     [joinRoom, handleApiError],
   );
+  const { data, error, isLoading, refetch } = useGetRoomsQuery(undefined, {
+    skip: false,
+  });
+
+  const handlerGetRooms = useCallback(() => {
+    setLoading(true);
+    try {
+      refetch();
+      if (data) {
+        snackbar.success("Rooms fetched successfully!");
+        return data;
+      } else {
+        snackbar.error("Failed to fetch rooms");
+      }
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [data, handleApiError]);
 
   return {
     handlerCreateRoom,
     handlerJoinRoom,
+    handlerGetRooms,
     loading,
   };
 };
@@ -127,14 +149,15 @@ export const useRoomQueryHandler = (roomCode: string) => {
     error: getRoomError,
     isLoading,
     refetch,
-  } = useGetRoomQuery(roomCode, {
+  } = useVerifyRoomQuery(roomCode, {
     skip: !roomCode, // Skip query when params are not provided
   });
+
   const router = useRouter();
   const handleApiError = useApiErrorHandler();
   const [loading, setLoading] = useState(false);
 
-  const handlerGetRoom = useCallback(
+  const handlerVerifyRoom = useCallback(
     async (roomCode: string) => {
       setLoading(true);
       try {
@@ -180,7 +203,7 @@ export const useRoomQueryHandler = (roomCode: string) => {
   );
 
   return {
-    handlerGetRoom,
+    handlerVerifyRoom,
     handlerExitRoom,
     loading,
   };

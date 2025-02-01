@@ -1,7 +1,8 @@
 // features/auth/authApiSlice.ts
 import apiSlice from "@/features/apiSlice";
 
-import { ICreateRoom, IJoinRoom, IRoom } from "@/core/interface/room.interface";
+import { ICreateRoom, IGetRoomsResponse, IJoinRoom, IRoom } from "@/core/interface/room.interface";
+
 
 export const roomApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -19,7 +20,7 @@ export const roomApiSlice = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
-    getRoom: builder.query<{ message: string; room: IRoom }, string>({
+    verifyRoom: builder.query<{ message: string; room: IRoom }, string>({
       query: roomCode => ({
         url: `/room/${roomCode}/verify`,
         method: "get",
@@ -32,12 +33,19 @@ export const roomApiSlice = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    getRooms: builder.query<IGetRoomsResponse, any>({
+      query: () => "/room/getRooms",
+      transformResponse: (response: IGetRoomsResponse) => response, // ✅ Return full response without modification
+    }),
+    
+    
   }),
 });
 
 export const {
   useCreateRoomsMutation,
   useJoinRoomsMutation,
-  useGetRoomQuery,
+  useVerifyRoomQuery,
   useExitRoomMutation,
+  useGetRoomsQuery,
 } = roomApiSlice;

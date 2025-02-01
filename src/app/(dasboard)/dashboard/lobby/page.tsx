@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@mantine/core";
-import { v4 as uuid } from "uuid";
 
 import React, { useState } from "react";
 
@@ -11,7 +10,6 @@ import useScroll from "@/hooks/useScroll";
 
 import { useRoomHandler } from "@/actions/room.actions";
 
-import staticConstant from "@/core/constants/static.constant";
 import {
   ICreateRoomResponse,
   IJoinRoom,
@@ -21,6 +19,9 @@ import {
 
 import LobbyCards from "@/components/atoms/cards/LobbyCards";
 import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
+import RoomsLobby from "@/components/atoms/roomsLobby/RoomsLobby";
+
+// Import the RoomsLobby component
 
 type ModalProps = {
   isOpen: boolean;
@@ -31,7 +32,6 @@ type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
@@ -54,10 +54,8 @@ const Lobby = () => {
   const [lobbyType, setLobbyType] = useState<string | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
-
   const [roomCode, setRoomCode] = useState("");
   const { handlerCreateRoom, handlerJoinRoom } = useRoomHandler();
-
   const [formData, setFormData] = useState({
     roomName: "",
     questionIds: "",
@@ -130,17 +128,15 @@ const Lobby = () => {
 
       if (response.status === "success" && response.room) {
         const { room } = response;
-
         router.push(`/dashboard/room/${room.roomCode}`);
       } else {
         throw new Error(response?.message || "Failed to join the room.");
       }
     } catch (error: any) {
       console.error("Error joining room:", error);
-
       let errorMessage = "An error occurred while joining the lobby.";
       if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message; // Extract specific error message
+        errorMessage = error.response.data.message;
       } else if (error?.message) {
         errorMessage = error.message;
       }
@@ -213,6 +209,7 @@ const Lobby = () => {
         </form>
       </Modal>
 
+      {/* Modal for Creating Lobby */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -317,10 +314,9 @@ const Lobby = () => {
         </form>
       </Modal>
 
-      <div className="mx-0 mb-0 mt-[5%] flex h-[75vh] w-full flex-wrap justify-evenly gap-2 overflow-y-scroll rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
-        {Array.from({ length: 5 }).map(() => (
-          <LobbyCards games={staticConstant.PRIVATE_LOBBY} key={uuid()} />
-        ))}
+      {/* Replace static dummy cards with dynamic RoomsLobby */}
+      <div className="mx-auto mb-0 mt-[5%] flex w-full max-w-6xl flex-wrap justify-center gap-4 overflow-y-scroll rounded-xl border-2 border-dashed border-gray-500 p-4 md:gap-6">
+        <RoomsLobby />
       </div>
     </div>
   );

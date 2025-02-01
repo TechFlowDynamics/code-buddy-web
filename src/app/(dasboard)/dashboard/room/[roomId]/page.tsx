@@ -1,23 +1,20 @@
 "use client";
 
 import { Client, Databases, ID, Query } from "appwrite";
-
-import React, { useEffect, useRef, useState } from "react";
-
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-
 import { useRoomQueryHandler } from "@/actions/room.actions";
-
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID as string;
 const COLLECTION_ID_MESSAGES = process.env
   .NEXT_PUBLIC_COLLECTION_ID_MESSAGES as string;
 
 
+
+
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
   .setProject(PROJECT_ID);
-
 const databases = new Databases(client);
 
 type Message = {
@@ -31,6 +28,7 @@ type Message = {
   userName: string;
   body: string;
   isSystem?: boolean;
+  roomId: string;
 };
 
 type UserData = {
@@ -42,12 +40,13 @@ type UserData = {
 const Page = () => {
   const router = useRouter();
   const { roomId } = useParams() as { roomId: string };
-  const { handlerGetRoom, handlerExitRoom } = useRoomQueryHandler(roomId);
+  const { handlerVerifyRoom, handlerExitRoom } = useRoomQueryHandler(roomId);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [user, setUser] = useState<UserData | null>(null);
   const [accessGranted, setAccessGranted] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Load user data from localStorage
   useEffect(() => {
@@ -62,130 +61,95 @@ const Page = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const verifyAccess = async () => {
-      if (!user) return;
-      try {
-        const res = await handlerGetRoom(roomId);
-        if (res) {
-          setAccessGranted(true);
+  // Verify room access and handle join/exit messages
+  const verifyAccess = useCallback(async () => {
+    if (!user) return;
 
-          // Force fetching fresh data before checking timestamps
-          await new Promise(resolve => setTimeout(resolve, 500)); // Small delay for Appwrite to sync
+    try {
+      const res = await handlerVerifyRoom(roomId);
+      if (res) {
+        setAccessGranted(true);
 
-          // Fetch the last exit message
-          const lastExitResponse = await databases.listDocuments<Message>(
-            DATABASE_ID,
-            COLLECTION_ID_MESSAGES,
-            [
-              Query.equal("roomId", roomId),
-              Query.equal("userId", "system"),
-              Query.search("body", `${user.userName} has left the chat.`),
-              Query.orderDesc("$createdAt"),
-              Query.limit(1),
-            ],
-          );
+        const [lastExitResponse, lastJoinResponse] = await Promise.all([
+          databases.listDocuments<Message>(DATABASE_ID, COLLECTION_ID_MESSAGES, [
+            Query.equal("roomId", roomId),
+            Query.equal("userId", "system"),
+            Query.search("body", `${user.userName} has left the chat.`),
+            Query.orderDesc("$createdAt"),
+            Query.limit(1),
+          ]),
+          databases.listDocuments<Message>(DATABASE_ID, COLLECTION_ID_MESSAGES, [
+            Query.equal("roomId", roomId),
+            Query.equal("userId", "system"),
+            Query.search("body", `${user.userName} has joined the chat.`),
+            Query.orderDesc("$createdAt"),
+            Query.limit(1),
+          ]),
+        ]);
 
-          // Fetch the last join message
-          const lastJoinResponse = await databases.listDocuments<Message>(
-            DATABASE_ID,
-            COLLECTION_ID_MESSAGES,
-            [
-              Query.equal("roomId", roomId),
-              Query.equal("userId", "system"),
-              Query.search("body", `${user.userName} has joined the chat.`),
-              Query.orderDesc("$createdAt"),
-              Query.limit(1),
-            ],
-          );
+        const lastExitTime = lastExitResponse.documents.length
+          ? new Date(lastExitResponse.documents[0].$createdAt).getTime()
+          : 0;
+        const lastJoinTime = lastJoinResponse.documents.length
+          ? new Date(lastJoinResponse.documents[0].$createdAt).getTime()
+          : 0;
 
-          // Convert timestamps
-          const lastExitTime = lastExitResponse.documents.length
-            ? new Date(lastExitResponse.documents[0].$createdAt).getTime()
-            : 0;
-          const lastJoinTime = lastJoinResponse.documents.length
-            ? new Date(lastJoinResponse.documents[0].$createdAt).getTime()
-            : 0;
-
-          // ✅ FIX: Ensure "joined" message appears correctly
-          if (
-            lastExitTime > 0 &&
-            (lastExitTime >= lastJoinTime || lastJoinTime === 0)
-          ) {
-            await databases.createDocument(
-              DATABASE_ID,
-              COLLECTION_ID_MESSAGES,
-              ID.unique(),
-              {
-                userId: "system",
-                userName: "System",
-                body: `${user.userName} has joined the chat.`,
-                roomId: roomId,
-                isSystem: true,
-              },
-            );
-          }
-        } else {
-          setAccessGranted(false);
+        if (!lastJoinTime || lastExitTime > lastJoinTime || Date.now() - lastJoinTime > 10000) {
+          await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
+            userId: "system",
+            userName: "System",
+            body: `${user.userName} has joined the chat.`,
+            roomId: roomId,
+            isSystem: true,
+          });
         }
-      } catch (error) {
-        console.error("Error verifying room access:", error);
+      } else {
         setAccessGranted(false);
       }
-    };
+    } catch (error) {
+      console.error("Error verifying room access:", error);
+      setAccessGranted(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user, roomId, handlerVerifyRoom]);
 
+  useEffect(() => {
     if (user) {
       verifyAccess();
     }
-  }, [user, roomId, router]);
+  }, [user, verifyAccess]);
 
-  // useEffect(() => {
-  //   const unsubscribe = client.subscribe(
-  //     `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
-  //     response => {
-  //       if (
-  //         response.events.includes(
-  //           "databases.*.collections.*.documents.*.create",
-  //         )
-  //       ) {
-  //         setMessages(prevMessages => [
-  //           ...prevMessages,
-  //           response.payload as Message,
-  //         ]);
-  //       }
-  //     },
-  //   );
+  // Fetch messages for the current room
+  const fetchMessages = useCallback(async () => {
+    try {
+      const response = await databases.listDocuments<Message>(
+        DATABASE_ID,
+        COLLECTION_ID_MESSAGES,
+        [Query.equal("roomId", roomId)],
+      );
+      setMessages(response.documents);
+    } catch (error) {
+      console.error("Failed to fetch messages:", error);
+    }
+  }, [roomId]);
 
-  //   return () => unsubscribe();
-  // }, []);
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
 
-  // Fetch initial messages
-
+  // Subscribe to WebSocket for real-time updates
   useEffect(() => {
     let unsubscribe: (() => void) | null = null;
 
     const subscribeToMessages = async () => {
       try {
-        // Unsubscribe from previous WebSocket (if exists)
-        if (unsubscribe) {
-          console.log("DEBUG: Unsubscribing from previous WebSocket.");
-          unsubscribe(); // Close old connection
-          unsubscribe = null;
-        }
-
-        // Establish WebSocket connection
         unsubscribe = client.subscribe(
           `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
-          response => {
-            if (
-              response.events.includes(
-                "databases.*.collections.*.documents.*.create",
-              )
-            ) {
-              setMessages(prevMessages => [
-                ...prevMessages,
-                response.payload as Message,
-              ]);
+          (response) => {
+            const newMessage = response.payload as Message;
+            if (newMessage && newMessage.roomId === roomId) {
+              setMessages((prevMessages) => [...prevMessages, newMessage]);
             }
           },
         );
@@ -198,116 +162,111 @@ const Page = () => {
 
     return () => {
       if (unsubscribe) {
-        console.log("DEBUG: Cleaning up WebSocket.");
-        try {
-          unsubscribe(); // Ensure WebSocket closes when unmounting
-        } catch (error) {
-          console.error("Error unsubscribing WebSocket:", error);
-        }
-        unsubscribe = null;
+        unsubscribe();
       }
     };
-  }, []); // Empty dependency array ensures this runs only once
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const response = await databases.listDocuments<Message>(
-          DATABASE_ID,
-          COLLECTION_ID_MESSAGES,
-          [Query.equal("roomId", roomId)],
-        );
-        setMessages(response.documents);
-      } catch (error) {
-        console.error("Failed to fetch messages:", error);
-      }
-    };
-
-    fetchMessages();
-  }, []);
+  }, [roomId]);
 
   // Handle sending a new message
   const sendMessage = async () => {
-    if (message.trim() && user) {
-      try {
-        await databases.createDocument(
-          DATABASE_ID,
-          COLLECTION_ID_MESSAGES,
-          ID.unique(),
-          {
-            userId: user.userId,
-            userName: user.userName,
-            body: message,
-            roomId: roomId,
-          },
-        );
-
-        setMessage("");
-      } catch (error) {
-        console.error("Error sending message:", error);
-      }
+    if (!message.trim() || !user) return;
+    try {
+      await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
+        userId: user.userId,
+        userName: user.userName,
+        body: message,
+        roomId,
+      });
+      setMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
   };
 
+  // Handle exiting the room
   const exitRoom = async () => {
     if (!user) return;
     try {
-      await databases.createDocument(
-        DATABASE_ID,
-        COLLECTION_ID_MESSAGES,
-        ID.unique(),
-        {
-          userId: "system",
-          userName: "System",
-          body: `${user.userName} has left the chat.`,
-          roomId: roomId,
-          isSystem: true,
-        },
-      );
+      await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
+        userId: "system",
+        userName: "System",
+        body: `${user.userName} has left the chat.`,
+        roomId: roomId,
+        isSystem: true,
+      });
 
-      // Wait for message to be created before navigating away
       setTimeout(async () => {
         const response = await handlerExitRoom(roomId);
-        if (response) {
-          router.push("/dashboard");
-        }
-      }, 500); // Slight delay to allow message processing
+        if (response) router.push("/dashboard/lobby");
+      }, 500);
     } catch (error) {
       console.error("Error leaving room:", error);
     }
   };
 
-  return (
-    <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">Chat Room: {roomId}</h1>
-      <button
-        onClick={exitRoom}
-        className="mb-4 rounded bg-red-500 px-4 py-2 text-white">
-        Leave Room
-      </button>
+  if (isLoading) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
 
-      <div className="mb-4 h-64 overflow-y-auto border p-2">
-        {messages.map(msg => (
-          <div
-            key={msg.$id}
-            className={`mb-2 ${msg.isSystem ? "italic text-gray-500" : ""}`}>
-            <strong>{msg.isSystem ? "" : msg.userName}</strong> {msg.body}
-          </div>
-        ))}
+  if (accessGranted === false) {
+    return <div className="flex h-screen items-center justify-center">Access Denied</div>;
+  }
+
+  return (
+    <div className="flex h-screen flex-col bg-gray-100 p-6 dark:bg-gray-900">
+      {/* Chat Room Header */}
+      <div className="flex items-center justify-between rounded-t-lg bg-blue-600 p-4 text-white shadow-md">
+        <h1 className="text-lg font-semibold">Chat Room: {roomId}</h1>
+        <button
+          onClick={exitRoom}
+          className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+        >
+          Leave Room
+        </button>
       </div>
 
-      <div className="flex">
+      {/* Chat Messages */}
+      <div className="mt-2 flex-1 overflow-y-auto rounded-lg border border-gray-300 bg-white p-4 shadow-md dark:border-gray-700 dark:bg-gray-800">
+        {messages.length === 0 ? (
+          <p className="text-center text-gray-500">
+            No messages yet. Start the conversation!
+          </p>
+        ) : (
+          messages.map((msg) => (
+            <div
+              key={msg.$id}
+              className={`mb-2 rounded-lg p-2 ${
+                msg.isSystem
+                  ? "text-center italic text-gray-500"
+                  : msg.userId === user?.userId
+                  ? "ml-auto bg-blue-500 text-white"
+                  : "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"
+              } w-max max-w-xs`}
+            >
+              {!msg.isSystem && (
+                <strong className="block text-sm text-gray-800 dark:text-gray-300">
+                  {msg.userName}
+                </strong>
+              )}
+              {msg.body}
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Message Input */}
+      <div className="mt-4 flex space-x-2">
         <input
           type="text"
           value={message}
-          onChange={e => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
-          className="mr-2 flex-1 border p-2"
+          className="flex-1 rounded-lg border border-gray-400 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:border-gray-600 dark:focus:ring-blue-600"
         />
         <button
           onClick={sendMessage}
-          className="rounded bg-blue-500 px-4 py-2 text-white"
-          disabled={!user}>
+          className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        >
           Send
         </button>
       </div>
@@ -316,196 +275,3 @@ const Page = () => {
 };
 
 export default Page;
-
-// "use client";
-
-// import { Client, Databases, ID, Query } from "appwrite";
-// import React, { useEffect, useState, useCallback } from "react";
-// import { useParams, useRouter } from "next/navigation";
-// import { useRoomHandler, useRoomQueryHandler } from "@/actions/room.actions";
-
-// const PROJECT_ID = "678ca53800214a472c3d";
-// const DATABASE_ID = "678ca9f50033014018f9";
-// const COLLECTION_ID_MESSAGES = "678caa0c0018dfb97016";
-
-// const client = new Client()
-//   .setEndpoint("https://cloud.appwrite.io/v1")
-//   .setProject(PROJECT_ID);
-
-// const databases = new Databases(client);
-
-// // type Message = {
-// //   $id: string;
-// //   userId: string;
-// //   userName: string;
-// //   body: string;
-// //   isSystem?: boolean;
-// //   $createdAt: string;
-// // };
-
-// // type UserData = {
-// //   userId: string;
-// //   userName: string;
-// //   roomId: string;
-// // };
-
-// const Page = () => {
-//   const router = useRouter();
-//   const { roomId } = useParams() as { roomId: string };
-//   const { handlerGetRoom, handlerExitRoom } = useRoomQueryHandler(roomId);
-
-//   const [messages, setMessages] = useState<Message[]>([]);
-//   const [message, setMessage] = useState("");
-//   const [user, setUser] = useState<UserData | null>(null);
-//   const [accessGranted, setAccessGranted] = useState<boolean | null>(null);
-
-//   useEffect(() => {
-//     const storedData = localStorage.getItem("loginDetails");
-//     if (storedData) {
-//       try {
-//         const parsedData: { data: UserData } = JSON.parse(storedData);
-//         setUser(parsedData.data);
-//       } catch (error) {
-//         console.error("Failed to parse user data:", error);
-//       }
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     if (!user) return;
-//     const verifyAccess = async () => {
-//       try {
-//         const res = await handlerGetRoom(roomId);
-//         setAccessGranted(!!res);
-//         if (!res) return;
-
-//         const lastMessages = await databases.listDocuments<Message>(
-//           DATABASE_ID,
-//           COLLECTION_ID_MESSAGES,
-//           [
-//             Query.equal("roomId", roomId),
-//             Query.equal("userId", "system"),
-//             Query.search("body", `${user.userName} has left the chat.`),
-//             Query.orderDesc("$createdAt"),
-//             Query.limit(1),
-//           ]
-//         );
-
-//         const lastExitTime = lastMessages.documents.length
-//           ? new Date(lastMessages.documents[0].$createdAt).getTime()
-//           : 0;
-
-//         if (lastExitTime > 0) {
-//           await databases.createDocument(
-//             DATABASE_ID,
-//             COLLECTION_ID_MESSAGES,
-//             ID.unique(),
-//             {
-//               userId: "system",
-//               userName: "System",
-//               body: `${user.userName} has joined the chat.`,
-//               roomId,
-//               isSystem: true,
-//             }
-//           );
-//         }
-//       } catch (error) {
-//         console.error("Error verifying room access:", error);
-//         setAccessGranted(false);
-//       }
-//     };
-//     verifyAccess();
-//   }, [user, roomId]);
-
-//   useEffect(() => {
-//     const fetchMessages = async () => {
-//       try {
-//         const response = await databases.listDocuments<Message>(
-//           DATABASE_ID,
-//           COLLECTION_ID_MESSAGES,
-//           [Query.equal("roomId", roomId)]
-//         );
-//         setMessages(response.documents);
-//       } catch (error) {
-//         console.error("Failed to fetch messages:", error);
-//       }
-//     };
-//     fetchMessages();
-//   }, [roomId]);
-
-//   useEffect(() => {
-//     const unsubscribe = client.subscribe(
-//       `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
-//       (response) => {
-//         if (response.events.includes("databases.*.collections.*.documents.*.create")) {
-//           setMessages((prevMessages) => [...prevMessages, response.payload as Message]);
-//         }
-//       }
-//     );
-//     return () => unsubscribe();
-//   }, []);
-
-//   const sendMessage = useCallback(async () => {
-//     if (!message.trim() || !user) return;
-//     try {
-//       await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
-//         userId: user.userId,
-//         userName: user.userName,
-//         body: message,
-//         roomId,
-//       });
-//       setMessage("");
-//     } catch (error) {
-//       console.error("Error sending message:", error);
-//     }
-//   }, [message, user, roomId]);
-
-//   const exitRoom = async () => {
-//     if (!user) return;
-//     try {
-//       await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
-//         userId: "system",
-//         userName: "System",
-//         body: `${user.userName} has left the chat.`,
-//         roomId,
-//         isSystem: true,
-//       });
-//       setTimeout(async () => {
-//         const response = await handlerExitRoom(roomId);
-//         if (response) router.push("/dashboard");
-//       }, 500);
-//     } catch (error) {
-//       console.error("Error leaving room:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="p-4">
-//       <h1 className="mb-4 text-2xl font-bold">Chat Room: {roomId}</h1>
-//       <button onClick={exitRoom} className="mb-4 rounded bg-red-500 px-4 py-2 text-white">
-//         Leave Room
-//       </button>
-//       <div className="mb-4 h-64 overflow-y-auto border p-2">
-//         {messages.map((msg) => (
-//           <div key={msg.$id} className={`mb-2 ${msg.isSystem ? "italic text-gray-500" : ""}`}>
-//             <strong>{msg.isSystem ? "" : msg.userName}</strong> {msg.body}
-//           </div>
-//         ))}
-//       </div>
-//       <div className="flex">
-//         <input
-//           type="text"
-//           value={message}
-//           onChange={(e) => setMessage(e.target.value)}
-//           placeholder="Type your message..."
-//           className="mr-2 flex-1 border p-2"
-//         />
-//         <button onClick={sendMessage} className="rounded bg-blue-500 px-4 py-2 text-white" disabled={!user}>
-//           Send
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Page;

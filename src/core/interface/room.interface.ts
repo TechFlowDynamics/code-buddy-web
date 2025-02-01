@@ -4,14 +4,37 @@ export enum RoomType {
 }
 
 export interface IRoom {
+  _id?: string;
   roomName: string;
+  roomCode?: string;
   questionIds: string[];
-  type: RoomType; // Using enums for better type safety
+  type: RoomType;
+  status?: string; // e.g., "active", "inactive", "scheduled"
   startTime: Date;
   endTime: Date;
-  roomSize: number;
+  duration?: number;
   credits: string;
+  roomSize: number;
+  users?: string[];
+  userId?: string;
+  createdAt?: Date;
+  roomHash?: string; // Optional field for private rooms
 }
+
+// 🔹 Fix the API response structure
+export interface IGetRoomsResponse {
+  status: string;
+  statusCode: number;
+  message: string;
+  rooms: IRoom[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalRooms: number;
+    pageSize: number;
+  };
+}
+
 
 export interface ICreateRoom {
   roomName: string;
