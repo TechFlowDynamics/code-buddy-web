@@ -99,6 +99,6 @@ const LobbyCards: React.FC<LobbyCardsProps> = ({ games }) => {
       ))}
     </div>
   );
-};
+}; 
 
 export default LobbyCards;
