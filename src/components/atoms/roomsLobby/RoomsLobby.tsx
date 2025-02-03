@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useGetRoomsQuery } from "@/api/rooms/roomApiSlice";
 import { IRoom } from "@/core/interface/room.interface";
 import LobbyCards from "../cards/LobbyCards";
@@ -9,11 +9,22 @@ const RoomsLobby: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number | null>(null);
 
   // Fetch rooms for the current page
-  const { data, error, isLoading, refetch } = useGetRoomsQuery({ page, limit: 10 });
+  const { data, error, isLoading, refetch } = useGetRoomsQuery({ page, limit: 10 },{
+    // Prevent unnecessary refetches
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: false,
+    refetchOnReconnect: false
+  });
 
   useEffect(() => {
     if (data?.rooms) {
-      setRooms(data.rooms); // ✅ Replace old rooms instead of appending
+      setRooms(prevRooms => {
+        // Only update if data has changed
+        if (JSON.stringify(prevRooms) !== JSON.stringify(data.rooms)) {
+          return data.rooms;
+        }
+        return prevRooms;
+      }); // ✅ Replace old rooms instead of appending
       setTotalPages(data.pagination?.totalPages || null);
     }
   }, [data]);
@@ -26,17 +37,18 @@ const RoomsLobby: React.FC = () => {
     }, 60000); // 30 seconds
 
     return () => clearInterval(interval); // Cleanup interval on unmount
-  }, [refetch]);
+  }, []);
 
   // Function to load more rooms
-  const loadMoreRooms = () => {
+  const loadMoreRooms = useCallback(() => {
     if (totalPages && page < totalPages) {
-      setPage((prev) => prev + 1);
+      setPage(prev => prev + 1);
     }
-  };
+  }, [page, totalPages]);
 
   // Transform room data for UI
   const games = useMemo(() => {
+    console.log("Processing games..."); 
     return rooms.map((room: IRoom) => ({
       date: new Date(room.startTime).toLocaleDateString(),
       time: new Date(room.startTime).toLocaleTimeString(),
@@ -50,7 +62,6 @@ const RoomsLobby: React.FC = () => {
     }));
   }, [rooms]);
 
-  console.log("RoomsLobby (Processed Games)", games);
 
   if (isLoading && page === 1) return <div>Loading rooms...</div>;
   if (error) return <div>Error fetching rooms.</div>;

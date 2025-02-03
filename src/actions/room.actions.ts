@@ -164,7 +164,7 @@ export const useRoomQueryHandler = (roomCode: string) => {
 
         if (data) {
           snackbar.success("Room joined successfully!");
-          router.push(`/dashboard/room/${roomCode}`);
+          router.push(`/room/${roomCode}`);
           return data;
         } else if (getRoomError) {
           router.push(`/dashboard/lobby`);
