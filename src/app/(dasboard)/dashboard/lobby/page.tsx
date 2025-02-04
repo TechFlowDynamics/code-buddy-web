@@ -21,7 +21,6 @@ import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
 import RoomsLobby from "@/components/atoms/roomsLobby/RoomsLobby";
 
 // Import the RoomsLobby component
-
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -31,21 +30,45 @@ type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-lg font-bold">{title}</h2>
-        {children}
-        <button
-          onClick={onClose}
-          className="absolute right-2 top-2 text-gray-500 hover:text-gray-800">
-          ✖
-        </button>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+      onClick={onClose}>
+      <div
+        className="relative w-full max-w-lg transform rounded-xl bg-white shadow-2xl transition-all dark:bg-gray-800"
+        onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700">
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="max-h-[80vh] overflow-y-auto rounded-b-xl bg-gray-50 p-6 dark:bg-gray-800">
+          {children}
+        </div>
       </div>
     </div>
   );
 };
-
 const Lobby = () => {
   const scrolled = useScroll();
   const router = useRouter();
@@ -59,7 +82,18 @@ const Lobby = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout>();
-  
+  const inputClasses =
+    "w-full rounded-lg border border-gray-300 dark:border-gray-600 px-4 mt-2 py-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors";
+
+  const buttonClasses = {
+    primary:
+      "px-4 py-2.5 rounded-lg font-medium transition-colors bg-blue-500 hover:bg-blue-600 text-white shadow-sm",
+    secondary:
+      "px-4 py-2.5 rounded-lg font-medium transition-colors bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white shadow-sm",
+  };
+
+  const labelClasses =
+    "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
   const searchQuestions = async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
@@ -114,22 +148,20 @@ const Lobby = () => {
 
   const questionIdsInput = (
     <div className="relative">
-      <label className="block text-sm font-medium">Questions</label>
+       <label className={labelClasses}>Questions</label>
       <input
         type="text"
-        value={searchTerm} // Use separate search term state
+        value={searchTerm}
         onChange={e => {
           setSearchTerm(e.target.value);
-
           if (searchTimeoutRef.current) {
             clearTimeout(searchTimeoutRef.current);
           }
-
           searchTimeoutRef.current = setTimeout(() => {
             searchQuestions(e.target.value);
           }, 500);
         }}
-        className="w-full rounded border border-gray-300 px-3 py-2 text-black placeholder-gray-500"
+        className={`${inputClasses} pr-10`}
         placeholder="Search for questions..."
       />
 
@@ -160,45 +192,43 @@ const Lobby = () => {
 
       {/* Search Results Dropdown */}
       {searchResults.length > 0 && (
-  <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
-    {searchResults.map((question: any) => (
-      <div
-        key={question.title} // Changed from _id to title
-        className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-        onClick={() => {
-          // Get current IDs and titles
-          const currentIds = formData.questionIds
-            ? formData.questionIds.split(',').map(id => id.trim())
-            : [];
-          const currentTitles = formData.questionTitles
-            ? formData.questionTitles.split(',').map(title => title.trim())
-            : [];
-          
-          // Add new question if not already present
-          if (!currentTitles.includes(question.title)) { // Check title instead of _id
-            const newIds = [...currentIds, question.title]; // Use title as ID
-            const newTitles = [...currentTitles, question.title];
-            setFormData(prev => ({
-              ...prev,
-              questionIds: newIds.join(', '),
-              questionTitles: newTitles.join(', ')
-            }));
-          }
-          
-          setSearchTerm(""); // Clear search input
-          setSearchResults([]); // Clear search results
-        }}>
-        <div className="font-medium text-black">{question.title}</div>
-        <div className="text-sm text-gray-600">
-          Difficulty: {question.difficulty}
+        <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+          {searchResults.map((question: any) => (
+            <div
+              key={question.title}
+              className="cursor-pointer border-b border-gray-200 px-4 py-3 hover:bg-gray-50 last:border-b-0"
+              onClick={() => {
+                const currentIds = formData.questionIds
+                  ? formData.questionIds.split(",").map(id => id.trim())
+                  : [];
+                const currentTitles = formData.questionTitles
+                  ? formData.questionTitles.split(",").map(title => title.trim())
+                  : [];
+
+                if (!currentTitles.includes(question.title)) {
+                  const newIds = [...currentIds, question.title];
+                  const newTitles = [...currentTitles, question.title];
+                  setFormData(prev => ({
+                    ...prev,
+                    questionIds: newIds.join(", "),
+                    questionTitles: newTitles.join(", "),
+                  }));
+                }
+
+                setSearchTerm("");
+                setSearchResults([]);
+              }}>
+              <div className="font-medium text-gray-900">{question.title}</div>
+              <div className="text-sm text-gray-600">
+                Difficulty: {question.difficulty}
+              </div>
+              <div className="truncate text-xs text-gray-500">
+                {question.content.replace(/<[^>]*>/g, "").substring(0, 100)}...
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="truncate text-xs text-gray-500">
-          {question.content.replace(/<[^>]*>/g, "").substring(0, 100)}...
-        </div>
-      </div>
-    ))}
-  </div>
-)}
+      )}
     </div>
   );
 
@@ -225,7 +255,6 @@ const Lobby = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-
 
   const handleCreateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -292,7 +321,7 @@ const Lobby = () => {
     try {
       const payload: IJoinRoom = {
         roomCode,
-        message: ""
+        message: "",
       };
       const response = (await handlerJoinRoom(payload)) as
         | IJoinRoomResponse
@@ -352,14 +381,14 @@ const Lobby = () => {
         title="Join a Lobby">
         <form className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">Join Code</label>
+            {/* <label className="block text-sm font-medium">Join Code</label> */}
             <input
               type="text"
               value={roomCode}
               onChange={e => setRoomCode(e.target.value.toUpperCase())}
               maxLength={6}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
+              className={inputClasses}
               placeholder="Enter 6-character join code"
             />
           </div>
@@ -385,7 +414,7 @@ const Lobby = () => {
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
         title="Create a Lobby">
-        <h2 className="mb-4 text-lg font-bold">Create a Lobby</h2>
+        {/* <h2 className="mb-4 text-lg font-bold">Create a Lobby</h2> */}
         <form onSubmit={handleCreateSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Lobby Name</label>
@@ -395,21 +424,12 @@ const Lobby = () => {
               value={formData.roomName}
               onChange={handleChange}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
+             className={inputClasses}
               placeholder="Enter lobby name"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Question IDs</label>
-            {/* <input
-              type="text"
-              name="questionIds"
-              value={formData.questionIds}
-              onChange={handleChange}
-              required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
-              placeholder="Comma-separated question IDs"
-            /> */}
+            
             {questionIdsInput}
           </div>
           <div>
@@ -419,7 +439,7 @@ const Lobby = () => {
               value={formData.type}
               onChange={handleChange}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500">
+             className={inputClasses}>
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
@@ -432,7 +452,7 @@ const Lobby = () => {
               value={formData.roomSize}
               onChange={handleChange}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
+             className={inputClasses}
               placeholder="Enter room size"
             />
           </div>
@@ -444,7 +464,7 @@ const Lobby = () => {
               value={formData.credits}
               onChange={handleChange}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
+             className={inputClasses}
               placeholder="Enter credits (e.g., USD)"
             />
           </div>
@@ -456,7 +476,7 @@ const Lobby = () => {
               value={formData.startTime}
               onChange={handleChange}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
+             className={inputClasses}
             />
           </div>
           <div>
@@ -467,7 +487,7 @@ const Lobby = () => {
               value={formData.endTime}
               onChange={handleChange}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
+             className={inputClasses}
             />
           </div>
           <div className="flex justify-end space-x-2">
