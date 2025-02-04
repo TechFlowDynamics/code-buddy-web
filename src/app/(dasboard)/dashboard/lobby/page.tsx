@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "@mantine/core";
-import { v4 as uuid } from "uuid";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -11,11 +10,17 @@ import useScroll from "@/hooks/useScroll";
 
 import { useRoomHandler } from "@/actions/room.actions";
 
-import staticConstant from "@/core/constants/static.constant";
-import { RoomType } from "@/core/interface/room.interface";
+import {
+  ICreateRoomResponse,
+  IJoinRoom,
+  IJoinRoomResponse,
+  RoomType,
+} from "@/core/interface/room.interface";
 
-import LobbyCards from "@/components/atoms/cards/LobbyCards";
 import SelectDropdown from "@/components/atoms/dropdown/SelectDropdown";
+import RoomsLobby from "@/components/atoms/roomsLobby/RoomsLobby";
+
+// Import the RoomsLobby component
 
 type ModalProps = {
   isOpen: boolean;
@@ -26,7 +31,6 @@ type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
@@ -49,12 +53,55 @@ const Lobby = () => {
   const [lobbyType, setLobbyType] = useState<string | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
-
+  const [roomCode, setRoomCode] = useState("");
   const { handlerCreateRoom, handlerJoinRoom } = useRoomHandler();
 
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+  
+  const searchQuestions = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      const response = await fetch(
+        `http://localhost:8081/api/v1/questions/get`,
+      );
+      const data = await response.json();
+
+      // Filter questions based on title or content matching the query
+      const filteredQuestions = data.data.filter(
+        (question: any) =>
+          question.title.toLowerCase().includes(query.toLowerCase()) ||
+          question.content.toLowerCase().includes(query.toLowerCase()),
+      );
+
+      setSearchResults(filteredQuestions);
+    } catch (error) {
+      console.error("Error searching questions:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Replace the existing questionIds input with this:
   const [formData, setFormData] = useState({
     roomName: "",
-    questionIds: "",
+    questionIds: "", // This will store the IDs
+    questionTitles: "", // This will show the titles in the input
     type: "public",
     roomSize: 0,
     credits: "",
@@ -62,7 +109,115 @@ const Lobby = () => {
     endTime: "",
   });
 
-  const [roomCode, setRoomCode] = useState("");
+  // Search function remains the same...
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search input
+
+  const questionIdsInput = (
+    <div className="relative">
+      <label className="block text-sm font-medium">Questions</label>
+      <input
+        type="text"
+        value={searchTerm} // Use separate search term state
+        onChange={e => {
+          setSearchTerm(e.target.value);
+
+          if (searchTimeoutRef.current) {
+            clearTimeout(searchTimeoutRef.current);
+          }
+
+          searchTimeoutRef.current = setTimeout(() => {
+            searchQuestions(e.target.value);
+          }, 500);
+        }}
+        className="w-full rounded border border-gray-300 px-3 py-2 text-black placeholder-gray-500"
+        placeholder="Search for questions..."
+      />
+
+      {/* Selected Questions Display */}
+      {formData.questionTitles && (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {formData.questionTitles.split(",").map((title, index) => (
+            <div
+              key={index}
+              className="flex items-center rounded bg-blue-100 px-2 py-1 text-sm text-blue-800">
+              <span>{title.trim()}</span>
+              <button
+                type="button"
+                onClick={() => removeQuestion(index)}
+                className="ml-2 text-blue-600 hover:text-blue-800">
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {isSearching && (
+        <div className="absolute right-3 top-9">
+          <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-gray-900"></div>
+        </div>
+      )}
+
+      {/* Search Results Dropdown */}
+      {searchResults.length > 0 && (
+  <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
+    {searchResults.map((question: any) => (
+      <div
+        key={question.title} // Changed from _id to title
+        className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+        onClick={() => {
+          // Get current IDs and titles
+          const currentIds = formData.questionIds
+            ? formData.questionIds.split(',').map(id => id.trim())
+            : [];
+          const currentTitles = formData.questionTitles
+            ? formData.questionTitles.split(',').map(title => title.trim())
+            : [];
+          
+          // Add new question if not already present
+          if (!currentTitles.includes(question.title)) { // Check title instead of _id
+            const newIds = [...currentIds, question.title]; // Use title as ID
+            const newTitles = [...currentTitles, question.title];
+            setFormData(prev => ({
+              ...prev,
+              questionIds: newIds.join(', '),
+              questionTitles: newTitles.join(', ')
+            }));
+          }
+          
+          setSearchTerm(""); // Clear search input
+          setSearchResults([]); // Clear search results
+        }}>
+        <div className="font-medium text-black">{question.title}</div>
+        <div className="text-sm text-gray-600">
+          Difficulty: {question.difficulty}
+        </div>
+        <div className="truncate text-xs text-gray-500">
+          {question.content.replace(/<[^>]*>/g, "").substring(0, 100)}...
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+    </div>
+  );
+
+  // Function to remove a question
+  const removeQuestion = (indexToRemove: number) => {
+    const ids = formData.questionIds.split(",").map(id => id.trim());
+    const titles = formData.questionTitles
+      .split(",")
+      .map(title => title.trim());
+
+    ids.splice(indexToRemove, 1);
+    titles.splice(indexToRemove, 1);
+
+    setFormData(prev => ({
+      ...prev,
+      questionIds: ids.join(", "),
+      questionTitles: titles.join(", "),
+    }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -71,14 +226,28 @@ const Lobby = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+
   const handleCreateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      // Prepare the payload
+      // Convert comma-separated IDs string to array, remove whitespace and empty strings
+      const questionIdsArray = formData.questionIds
+        .split(",")
+        .map(id => id.trim())
+        .filter(Boolean); // Remove empty strings
+
+      // Log the array to verify it's not empty
+      console.log("Question IDs Array:", questionIdsArray);
+
+      // Validate that we have at least one question ID
+      if (questionIdsArray.length === 0) {
+        throw new Error("Please select at least one question");
+      }
+
       const payload = {
         roomName: formData.roomName,
-        questionIds: formData.questionIds.split(",").map(id => id.trim()),
+        questionIds: questionIdsArray,
         type: formData.type as RoomType,
         roomSize: Number(formData.roomSize),
         credits: formData.credits,
@@ -86,17 +255,23 @@ const Lobby = () => {
         endTime: new Date(formData.endTime),
       };
 
-      await handlerCreateRoom(payload);
+      // Log the payload to verify the structure
+      console.log("Payload:", payload);
 
-      alert("Lobby created successfully!");
+      const response = (await handlerCreateRoom(payload)) as
+        | ICreateRoomResponse
+        | undefined;
 
-      // Redirect to the room page
-      router.push("/dashboard/room");
+      const { room } = response || {};
+      if (response?.statusCode === 200) {
+        router.push(`/room/${room?.roomCode}`);
+      }
 
       // Reset form and close modal
       setFormData({
         roomName: "",
         questionIds: "",
+        questionTitles: "",
         type: "public",
         roomSize: 0,
         credits: "",
@@ -106,30 +281,33 @@ const Lobby = () => {
       setIsCreateOpen(false);
     } catch (error) {
       console.error("Error creating lobby:", error);
-      alert(error || "An error occurred while creating the lobby.");
+      // Add user feedback here
+      alert(error instanceof Error ? error.message : "Failed to create lobby");
     }
   };
-
-  const handleJoinSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleJoinSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault();
-    if (roomCode.length !== 6) {
-      alert("Join code must be exactly 6 characters.");
-      return;
-    }
-
     try {
-     
-      const payload = {
-        roomCode: roomCode,
-      };
-      const response = await handlerJoinRoom(payload);
-      
-      if (response) {
-        router.push(`/dashboard/room/${roomCode}`);
+      const payload: IJoinRoom = { roomCode };
+      const response = (await handlerJoinRoom(payload)) as
+        | IJoinRoomResponse
+        | undefined;
+
+      if (!response) {
+        throw new Error("No response received from the server.");
       }
-    } catch (error) {
+
+      if (response.status === "success" && response.room) {
+        const { room } = response;
+        router.push(`/room/${room.roomCode}`);
+      } else {
+        throw new Error(response?.message || "Failed to join the room.");
+      }
+    } catch (error: any) {
       console.error("Error joining room:", error);
-      alert(error || "An error occurred while joining the lobby.");
+      throw new Error(error.message);
     }
   };
 
@@ -169,7 +347,7 @@ const Lobby = () => {
         isOpen={isJoinOpen}
         onClose={() => setIsJoinOpen(false)}
         title="Join a Lobby">
-        <form onSubmit={handleJoinSubmit} className="space-y-4">
+        <form className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Join Code</label>
             <input
@@ -190,6 +368,7 @@ const Lobby = () => {
               Cancel
             </button>
             <button
+              onClick={e => handleJoinSubmit(e)}
               type="submit"
               className="rounded bg-blue-500 px-4 py-2 text-white">
               Join Lobby
@@ -198,6 +377,7 @@ const Lobby = () => {
         </form>
       </Modal>
 
+      {/* Modal for Creating Lobby */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -218,7 +398,7 @@ const Lobby = () => {
           </div>
           <div>
             <label className="block text-sm font-medium">Question IDs</label>
-            <input
+            {/* <input
               type="text"
               name="questionIds"
               value={formData.questionIds}
@@ -226,7 +406,8 @@ const Lobby = () => {
               required
               className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-500"
               placeholder="Comma-separated question IDs"
-            />
+            /> */}
+            {questionIdsInput}
           </div>
           <div>
             <label className="block text-sm font-medium">Type</label>
@@ -302,10 +483,9 @@ const Lobby = () => {
         </form>
       </Modal>
 
-      <div className="mx-0 mb-0 mt-[5%] flex h-[75vh] w-full flex-wrap justify-evenly gap-2 overflow-y-scroll rounded-xl border-2 border-dashed border-gray-500 p-2 md:gap-10">
-        {Array.from({ length: 5 }).map(() => (
-          <LobbyCards games={staticConstant.PRIVATE_LOBBY} key={uuid()} />
-        ))}
+      {/* Replace static dummy cards with dynamic RoomsLobby */}
+      <div className="mx-auto mb-0 mt-[5%] flex w-full max-w-6xl flex-wrap justify-center gap-4 overflow-y-scroll rounded-xl border-2 border-dashed border-gray-500 p-4 md:gap-6">
+        <RoomsLobby />
       </div>
     </div>
   );

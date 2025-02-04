@@ -28,5 +28,10 @@ export const roomValidatorSchema = yup.object().shape({
 });
 
 export const joinRoomValidatorSchema = yup.object().shape({
-  roomCode : yup.string().required("Room code is required"),
+  roomCode: yup
+    .string()
+    .trim()
+    .length(6, "Room code must be exactly 6 characters.")
+    .matches(/^[A-Za-z0-9]+$/, "Room code must be alphanumeric.")
+    .required("Room code is required."),
 });
