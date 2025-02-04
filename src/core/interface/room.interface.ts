@@ -47,6 +47,7 @@ export interface ICreateRoom {
 }
 
 export interface IJoinRoom {
+  message: string;
   roomCode: string;
 }
 
@@ -95,3 +96,62 @@ export interface ICreateRoomResponse {
   };
   statusCode: number;
 }
+
+
+export interface ChatProps {
+  roomId: string;
+  onExit: () => Promise<void>;
+  roomData: {
+    endTime: Date | string;
+    startTime: Date | string;
+    roomName: string;
+    questionIds: string[];
+    users?: string[];
+  };
+}
+
+export type RoomUser = {
+  userId: string;
+  userName: string;
+};
+
+export type Message = {
+  $id: string;
+  $collectionId: string;
+  $databaseId: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: string[];
+  userId: string;
+  userName: string;
+  body: string;
+  isSystem?: boolean;
+  roomId: string;
+};
+
+export type UserData = {
+  userId: string;
+  userName: string;
+  roomId: string;
+};
+
+export type UserDetails = {
+  userId: string;
+  userName: string;
+};
+
+export type Score = {
+  score: number;
+  bonus: number;
+  status: 'pending' | 'completed';
+};
+
+export type UserScore = {
+  questions: Record<string, Score>;
+  totalScore: number;
+  totalBonus: number;
+};
+
+export type Scores = {
+  [userId: string]: UserScore;
+};

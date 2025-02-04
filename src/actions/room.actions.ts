@@ -88,6 +88,7 @@ export const useRoomHandler = () => {
       setLoading(true);
       const { valid, errors } = await validateJoinRoom({
         roomCode,
+        message: ""
       });
 
       if (!valid) {

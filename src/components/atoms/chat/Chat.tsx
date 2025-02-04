@@ -1,50 +1,33 @@
 "use client";
 
-import { Client, Databases, ID, Query } from "appwrite";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ID } from "appwrite";
+import { ChatProps, Score, Scores, UserData } from "@/core/interface/room.interface";
+import { useMessages } from "@/hooks/useMessages";
+import { useTimer } from "@/hooks/useTimer";
+import { useUserDetails } from "@/hooks/useUserDetails";
+import { databases } from "@/features/appwrite";
+import { COLLECTION_ID_MESSAGES, DATABASE_ID } from "@/core/constants/appwriteConstants";
+import { Header } from "./Header";
+import { Scoreboard } from "./Scoreboard";
+import { MessageList } from "./MessageList";
+import { MessageInput } from "./MessageInput";
+import { useGetUsersByIdsQuery } from '@/features/apiSlice';
 
-// const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID as string;
-// const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID as string;
-// const COLLECTION_ID_MESSAGES = process.env.NEXT_PUBLIC_COLLECTION_ID_MESSAGES as string;
+const Chat = ({ roomId, onExit, roomData }: ChatProps) => {
+  // Refs
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-
-const PROJECT_ID = "678ca53800214a472c3d";
-const DATABASE_ID = "678ca9f50033014018f9";
- const COLLECTION_ID_MESSAGES = "678caa0c0018dfb97016";
-const client = new Client()
-  .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject(PROJECT_ID);
-const databases = new Databases(client);
-
-interface ChatProps {
-  roomId: string;
-  onExit: () => Promise<void>;
-}
-
-type Message = {
-  $id: string;
-  $collectionId: string;
-  $databaseId: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: string[];
-  userId: string;
-  userName: string;
-  body: string;
-  isSystem?: boolean;
-  roomId: string;
-};
-
-type UserData = {
-  userId: string;
-  userName: string;
-  roomId: string;
-};
-
-const Chat = ({ roomId, onExit }: ChatProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [message, setMessage] = useState<string>("");
+  // State
   const [user, setUser] = useState<UserData | null>(null);
+  const [showScoreboard, setShowScoreboard] = useState(false);
+  const [scores, setScores] = useState<Scores>({});
+
+  // Custom Hooks
+  const { messages, message, setMessage, fetchMessages, sendMessage, subscribeToMessages } = 
+    useMessages(roomId, user);
+  const { userDetails, storeUserDetails, fetchUserDetails } = useUserDetails();
+  const timeLeft = useTimer(roomData.endTime);
 
   // Load user data from localStorage
   useEffect(() => {
@@ -59,70 +42,64 @@ const Chat = ({ roomId, onExit }: ChatProps) => {
     }
   }, []);
 
-  // Fetch messages for the current room
-  const fetchMessages = useCallback(async () => {
-    try {
-      const response = await databases.listDocuments<Message>(
-        DATABASE_ID,
-        COLLECTION_ID_MESSAGES,
-        [Query.equal("roomId", roomId)],
-      );
-      setMessages(response.documents);
-    } catch (error) {
-      console.error("Failed to fetch messages:", error);
-    }
-  }, [roomId]);
+  // Initialize scores
+  useEffect(() => {
+    const initialScores: Scores = {};
+    roomData.users?.forEach(userId => {
+      const questionScores: Record<string, Score> = {};
+      
+      roomData.questionIds.forEach(qId => {
+        questionScores[qId] = {
+          score: 0,
+          bonus: 0,
+          status: 'pending' as const
+        };
+      });
 
+      initialScores[userId] = {
+        questions: questionScores,
+        totalScore: 0,
+        totalBonus: 0
+      };
+    });
+    setScores(initialScores);
+  }, [roomData.users, roomData.questionIds]);
+
+  // Set up WebSocket subscription
+  useEffect(() => {
+    const unsubscribe = subscribeToMessages();
+    return () => {
+      unsubscribe();
+    };
+  }, [subscribeToMessages]);
+
+  // Fetch initial messages and user details
   useEffect(() => {
     fetchMessages();
-  }, [fetchMessages]);
+    fetchUserDetails(roomId, roomData.users);
+  }, [fetchMessages, fetchUserDetails, roomId, roomData.users]);
 
-  // Subscribe to WebSocket for real-time updates
+  // Send join message
   useEffect(() => {
-    let unsubscribe: (() => void) | null = null;
-
-    const subscribeToMessages = async () => {
+    const sendJoinMessage = async () => {
+      if (!user) return;
       try {
-        unsubscribe = client.subscribe(
-          `databases.${DATABASE_ID}.collections.${COLLECTION_ID_MESSAGES}.documents`,
-          (response) => {
-            const newMessage = response.payload as Message;
-            if (newMessage && newMessage.roomId === roomId) {
-              setMessages((prevMessages) => [...prevMessages, newMessage]);
-            }
-          },
-        );
+        await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
+          userId: user.userId,
+          userName: user.userName,
+          body: `${user.userName} joined the chat`,
+          roomId: roomId,
+          isSystem: true,
+        });
       } catch (error) {
-        console.error("WebSocket subscription error:", error);
+        console.error("Error sending join message:", error);
       }
     };
 
-    subscribeToMessages();
+    sendJoinMessage();
+  }, [user, roomId]);
 
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [roomId]);
-
-  // Handle sending a new message
-  const sendMessage = async () => {
-    if (!message.trim() || !user) return;
-    try {
-      await databases.createDocument(DATABASE_ID, COLLECTION_ID_MESSAGES, ID.unique(), {
-        userId: user.userId,
-        userName: user.userName,
-        body: message,
-        roomId,
-      });
-      setMessage("");
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
-  };
-
-  // Handle exiting the room
+  // Handle exit room
   const exitRoom = async () => {
     if (!user) return;
     try {
@@ -142,73 +119,54 @@ const Chat = ({ roomId, onExit }: ChatProps) => {
     }
   };
 
+  // Handle message sending
+  const handleSendMessage = () => {
+    sendMessage(storeUserDetails);
+  };
+
   return (
-    <div className="h-full flex flex-col">
-      {/* Chat Room Header */}
-      <div className="flex items-center justify-between border-b border-gray-800 p-4">
-        <h3 className="font-semibold">Chat</h3>
-        <button
-          onClick={exitRoom}
-          className="rounded bg-red-500 px-3 py-1 text-sm hover:bg-red-600">
-          Leave
-        </button>
+    <div className="h-full flex flex-col bg-[#1e1e1e] text-white">
+      <Header roomName={roomData.roomName} />
+
+      <div className="px-4 py-2 text-sm text-gray-400">
+        {roomData.users?.length || 1} players
       </div>
 
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {messages.length === 0 ? (
-          <p className="text-center text-gray-500">
-            No messages yet. Start the conversation!
-          </p>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg.$id}
-              className={`mb-2 ${
-                msg.isSystem
-                  ? "text-center italic text-gray-500"
-                  : msg.userId === user?.userId
-                  ? "ml-auto bg-[#1e4d8f]"
-                  : "bg-[#2d2d2d]"
-              } rounded p-2 max-w-[80%]`}
-            >
-              {!msg.isSystem && (
-                <div className="flex items-center justify-between gap-2">
-                  <strong className="text-gray-300">{msg.userName}</strong>
-                  <span className="text-xs text-gray-500">
-                    {new Date(msg.$createdAt).toLocaleTimeString()}
-                  </span>
-                </div>
-              )}
-              <span className="text-gray-200 break-words">{msg.body}</span>
-            </div>
-          ))
-        )}
+      <button
+        onClick={() => setShowScoreboard(true)}
+        className="mx-4 mb-2 p-3 bg-[#2b2b2b] hover:bg-[#323232] rounded flex items-center justify-between"
+      >
+        <span className="text-gray-200">Scoreboard</span>
+        <span>📊</span>
+      </button>
+
+      <Scoreboard
+        show={showScoreboard}
+        onClose={() => setShowScoreboard(false)}
+        roomData={roomData}
+        scores={scores}
+        userDetails={userDetails}
+      />
+
+      <div className="mx-4 mb-2 p-3 bg-[#006d5b] rounded flex items-center gap-2">
+        <span>⏱️</span>
+        <span>Round ends in {timeLeft}</span>
       </div>
 
-      {/* Message Input */}
-      <div className="border-t border-gray-800 p-4">
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                sendMessage();
-              }
-            }}
-            placeholder="Type a message..."
-            className="flex-1 rounded bg-[#2d2d2d] px-3 py-2 text-gray-300 placeholder-gray-500"
-          />
-          <button
-            onClick={sendMessage}
-            disabled={!message.trim()}
-            className="rounded bg-[#0a84ff] px-4 py-2 hover:bg-[#0074e4] disabled:opacity-50 disabled:cursor-not-allowed">
-            Send
-          </button>
-        </div>
-      </div>
+      <button
+        onClick={exitRoom}
+        className="mx-4 mb-2 p-3 bg-red-900/30 hover:bg-red-900/40 rounded flex items-center justify-center gap-2 text-red-400"
+      >
+        <span>Leave Room</span>
+      </button>
+
+      <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+      
+      <MessageInput
+        message={message}
+        setMessage={setMessage}
+        sendMessage={handleSendMessage}
+      />
     </div>
   );
 };

@@ -10,55 +10,86 @@ import { useParams, useRouter } from "next/navigation";
 import { useRoomQueryHandler } from "@/actions/room.actions";
 
 import { useQuestionQuery } from "@/api/questions/questionApiSlice";
-import { useVerifyRoomQuery } from "@/api/rooms/roomApiSlice";
+import { usePollingVerifyRoomQuery } from "@/api/rooms/roomApiSlice";
 
 import { codeTemplates } from "@/core/constants/editor";
 import { Language, Problem } from "@/core/interface/question.interface";
 
 import Chat from "@/components/atoms/chat/Chat";
 
-const Page = () => {
-  const { roomId } = useParams() as { roomId: string };
+const ResizeHandle = () => (
+  <PanelResizeHandle className="group w-2 transition-colors hover:bg-gray-700">
+    <div className="mx-auto h-full w-0.5 bg-gray-800 group-hover:bg-gray-600" />
+  </PanelResizeHandle>
+);
 
-  // Room and Questions data
-  const { data: questionsData, isLoading: isQuestionsLoading } =
-    useQuestionQuery({});
-  const { data: roomData, isLoading: isRoomLoading } =
-    useVerifyRoomQuery(roomId);
+const Page = () => {
+  const router = useRouter();
+  const { roomId } = useParams() as { roomId: string };
   const { handlerVerifyRoom, handlerExitRoom } = useRoomQueryHandler(roomId);
 
-  // Local state
-  const [selectedQuestion, setSelectedQuestion] = useState<Problem | null>(
-    null,
-  );
+  // All state declarations at the top
+  const [selectedQuestion, setSelectedQuestion] = useState<Problem | null>(null);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [language, setLanguage] = useState<Language>("javascript");
   const [code, setCode] = useState(codeTemplates.javascript);
-
-  const router = useRouter();
-  // const { roomId } = useParams() as { roomId: string };
-  // const { handlerVerifyRoom, handlerExitRoom } = useRoomQueryHandler(roomId);
   const [accessGranted, setAccessGranted] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Filter questions based on room's questionIds
-  const questions =
-    questionsData?.data?.filter(question =>
-      roomData?.room?.questionIds?.includes(question.title),
-    ) || [];
+  // Queries
+  const { data: questionsData, isLoading: isQuestionsLoading } = useQuestionQuery({});
+  const { data: roomData, isLoading: isRoomLoading } = usePollingVerifyRoomQuery(roomId);
 
-  // Loading state
-  if (isQuestionsLoading || isRoomLoading) {
-    return <div>Loading...</div>;
-  }
+  // Derived state
+  const questions = questionsData?.data?.filter(question =>
+    roomData?.room?.questionIds?.includes(question.title)
+  ) || [];
 
-  const ResizeHandle = () => {
-    return (
-      <PanelResizeHandle className="group w-2 transition-colors hover:bg-gray-700">
-        <div className="mx-auto h-full w-0.5 bg-gray-800 group-hover:bg-gray-600" />
-      </PanelResizeHandle>
-    );
-  };
+  // Effects and callbacks
+  const verifyAccess = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const res = await handlerVerifyRoom(roomId);
+      
+      if (!res) {
+        setAccessGranted(false);
+        return false;
+      }
+      
+      setAccessGranted(true);
+      return true;
+    } catch (error) {
+      console.error("Error verifying room access:", error);
+      setAccessGranted(false);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [roomId, handlerVerifyRoom]);
+
+  // Modified retry logic with initial delay
+  useEffect(() => {
+    let retryCount = 0;
+    const maxRetries = 3; // Increased retries
+    const initialDelay = 1000; // 1 second delay before first attempt
+    const retryDelay = 1500; // 1.5 seconds between retries
+
+    const attemptVerification = async () => {
+      // Initial delay only on first attempt
+      if (retryCount === 0) {
+        await new Promise(resolve => setTimeout(resolve, initialDelay));
+      }
+
+      const success = await verifyAccess();
+      
+      if (!success && retryCount < maxRetries) {
+        retryCount++;
+        setTimeout(attemptVerification, retryDelay);
+      }
+    };
+
+    attemptVerification();
+  }, [verifyAccess]);
 
   useEffect(() => {
     if (questions.length > 0 && !selectedQuestion) {
@@ -67,28 +98,13 @@ const Page = () => {
     }
   }, [questions, selectedQuestion]);
 
-  const verifyAccess = useCallback(async () => {
-    try {
-      const res = await handlerVerifyRoom(roomId);
-      setAccessGranted(!!res);
-    } catch (error) {
-      console.error("Error verifying room access:", error);
-      setAccessGranted(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [roomId, handlerVerifyRoom]);
-
-  useEffect(() => {
-    verifyAccess();
-  }, [verifyAccess]);
-
   const handleExit = async () => {
     const response = await handlerExitRoom(roomId);
     if (response) router.push("/dashboard/lobby");
   };
 
-  if (isLoading) {
+  // Loading and error states
+  if (isLoading || isQuestionsLoading || isRoomLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         Loading...
@@ -237,7 +253,11 @@ const Page = () => {
 
           {/* Right Panel - Chat */}
           <Panel defaultSize={25} minSize={15}>
-            <Chat roomId={roomId} onExit={handleExit} />
+            <Chat 
+              roomId={roomId} 
+              onExit={handleExit} 
+              roomData={roomData?.room!}
+            />
           </Panel>
         </PanelGroup>
       </div>

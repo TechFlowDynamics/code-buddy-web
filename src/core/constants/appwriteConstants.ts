@@ -1,0 +1,3 @@
+export const PROJECT_ID = "678ca53800214a472c3d";
+export const DATABASE_ID = "678ca9f50033014018f9";
+export const COLLECTION_ID_MESSAGES = "678caa0c0018dfb97016";

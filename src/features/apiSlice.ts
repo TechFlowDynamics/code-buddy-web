@@ -48,8 +48,23 @@ const baseQueryWithReAuth: BaseQueryFn<
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ["User"],
-  endpoints: () => ({}),
+  tagTypes: ["User", "Room", "RoomList"],
+  endpoints: (builder) => ({
+    getUsersByIds: builder.query<{ userId: string; userName: string }[], string[]>({
+      query: (userIds) => ({
+        url: '/users/details',
+        method: 'POST',
+        body: { userIds }
+      }),
+      providesTags: ['User']
+    }),
+  }),
+  keepUnusedDataFor: 30,
+  refetchOnMountOrArgChange: true,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
 });
+
+export const { useGetUsersByIdsQuery } = apiSlice;
 
 export default apiSlice;

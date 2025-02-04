@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useGetRoomsQuery } from "@/api/rooms/roomApiSlice";
+import {  usePollingGetRoomsQuery } from "@/api/rooms/roomApiSlice";
 import { IRoom } from "@/core/interface/room.interface";
 import LobbyCards from "../cards/LobbyCards";
 
@@ -9,12 +9,7 @@ const RoomsLobby: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number | null>(null);
 
   // Fetch rooms for the current page
-  const { data, error, isLoading, refetch } = useGetRoomsQuery({ page, limit: 10 },{
-    // Prevent unnecessary refetches
-    refetchOnMountOrArgChange: true,
-    refetchOnFocus: false,
-    refetchOnReconnect: false
-  });
+  const { data, error, isLoading, refetch } = usePollingGetRoomsQuery();
 
   useEffect(() => {
     if (data?.rooms) {

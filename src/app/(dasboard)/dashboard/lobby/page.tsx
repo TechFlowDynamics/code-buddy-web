@@ -290,7 +290,10 @@ const Lobby = () => {
   ) => {
     e.preventDefault();
     try {
-      const payload: IJoinRoom = { roomCode };
+      const payload: IJoinRoom = {
+        roomCode,
+        message: ""
+      };
       const response = (await handlerJoinRoom(payload)) as
         | IJoinRoomResponse
         | undefined;
