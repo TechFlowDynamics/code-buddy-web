@@ -157,29 +157,29 @@ export const useRoomQueryHandler = (roomCode: string) => {
   const handleApiError = useApiErrorHandler();
   const [loading, setLoading] = useState(false);
 
+
   const handlerVerifyRoom = useCallback(
     async (roomCode: string) => {
       setLoading(true);
       try {
-        refetch();
-
-        if (data) {
+        const updatedData = await refetch().unwrap();
+  
+        if (updatedData) {
           snackbar.success("Room joined successfully!");
-          router.push(`/room/${roomCode}`);
-          return data;
-        } else if (getRoomError) {
-          router.push(`/dashboard/lobby`);
-          snackbar.error("Access Denied");
-        }
+          return updatedData;
+        } 
+        
+        snackbar.error("Access Denied");
+        return null;
       } catch (error) {
         handleApiError(error);
+        return null;
       } finally {
         setLoading(false);
       }
     },
-    [handleApiError, roomCode],
+    [refetch, handleApiError]
   );
-
   const handlerExitRoom = useCallback(
     async (roomCode: string) => {
       setLoading(true);

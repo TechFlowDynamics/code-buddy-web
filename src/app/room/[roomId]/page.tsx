@@ -10,7 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useRoomQueryHandler } from "@/actions/room.actions";
 
 import { useQuestionQuery } from "@/api/questions/questionApiSlice";
-import { usePollingVerifyRoomQuery } from "@/api/rooms/roomApiSlice";
+import { usePollingVerifyRoomQuery, useVerifyRoomQuery } from "@/api/rooms/roomApiSlice";
 
 import { codeTemplates } from "@/core/constants/editor";
 import { Language, Problem } from "@/core/interface/question.interface";
@@ -38,59 +38,23 @@ const Page = () => {
 
   // Queries
   const { data: questionsData, isLoading: isQuestionsLoading } = useQuestionQuery({});
-  const { data: roomData, isLoading: isRoomLoading } = usePollingVerifyRoomQuery(roomId);
+  // const { data: roomData, isLoading: isRoomLoading } = usePollingVerifyRoomQuery(roomId);
+  const { data: roomData, isLoading: isRoomLoading } = useVerifyRoomQuery(roomId);
 
   // Derived state
   const questions = questionsData?.data?.filter(question =>
     roomData?.room?.questionIds?.includes(question.title)
   ) || [];
 
-  // Effects and callbacks
-  const verifyAccess = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const res = await handlerVerifyRoom(roomId);
-      
-      if (!res) {
-        setAccessGranted(false);
-        return false;
-      }
-      
-      setAccessGranted(true);
-      return true;
-    } catch (error) {
-      console.error("Error verifying room access:", error);
-      setAccessGranted(false);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  }, [roomId, handlerVerifyRoom]);
-
-  // Modified retry logic with initial delay
+ 
   useEffect(() => {
-    let retryCount = 0;
-    const maxRetries = 3; // Increased retries
-    const initialDelay = 1000; // 1 second delay before first attempt
-    const retryDelay = 1500; // 1.5 seconds between retries
-
-    const attemptVerification = async () => {
-      // Initial delay only on first attempt
-      if (retryCount === 0) {
-        await new Promise(resolve => setTimeout(resolve, initialDelay));
-      }
-
-      const success = await verifyAccess();
-      
-      if (!success && retryCount < maxRetries) {
-        retryCount++;
-        setTimeout(attemptVerification, retryDelay);
-      }
-    };
-
-    attemptVerification();
-  }, [verifyAccess]);
-
+    if (roomData) {
+      setAccessGranted(true);
+    } else if (roomData === null) {
+      setAccessGranted(false);
+      router.push('/dashboard/lobby');
+    }
+  }, [roomData, router]);
   useEffect(() => {
     if (questions.length > 0 && !selectedQuestion) {
       setSelectedQuestion(questions[0]);
@@ -104,7 +68,7 @@ const Page = () => {
   };
 
   // Loading and error states
-  if (isLoading || isQuestionsLoading || isRoomLoading) {
+  if ( isQuestionsLoading || isRoomLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         Loading...
