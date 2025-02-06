@@ -1,6 +1,7 @@
 import { PaginationInerface } from "./general.interface";
 
 export interface Problem {
+  _id: string;
   acRate: number;
   content: string;
   difficulty: string;
